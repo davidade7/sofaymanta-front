@@ -1,12 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { MovieService, Movie } from './services/movie.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'safaymanta-front';
+export class AppComponent implements OnInit {
+  title = 'SofayManta';
+  movies: Movie[] = [];
+  loading = true;
+  error = '';
+
+  constructor(private movieService: MovieService) {}
+
+  ngOnInit() {
+    this.loadMovies();
+  }
+
+  loadMovies() {
+    this.movieService.getRecentMovies().subscribe({
+      next: (movies) => {
+        this.movies = movies;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = 'Erreur lors du chargement des films';
+        this.loading = false;
+        console.error('Erreur:', error);
+      }
+    });
+  }
+
+  getImageUrl(posterPath: string): string {
+    if (!posterPath) return '';
+    return `https://image.tmdb.org/t/p/w500${posterPath}`;
+  }
 }
