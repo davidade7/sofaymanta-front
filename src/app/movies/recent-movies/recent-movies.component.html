@@ -1,14 +1,6 @@
 <div class="container">
   <div class="section-header">
     <h2>Films récents</h2>
-    <div class="carousel-controls" *ngIf="!loading && !error && movies.length > 0">
-      <button class="control-btn prev" (click)="scrollCarousel('left')" aria-label="Films précédents">
-        <lucide-icon [img]="ChevronLeft"></lucide-icon>
-      </button>
-      <button class="control-btn next" (click)="scrollCarousel('right')" aria-label="Films suivants">
-        <lucide-icon [img]="ChevronRight"></lucide-icon>
-      </button>
-    </div>
   </div>
 
   <div *ngIf="loading" class="loading">
@@ -20,6 +12,11 @@
   </div>
 
   <div *ngIf="!loading && !error" class="carousel-container">
+    <!-- Bouton gauche -->
+    <button class="carousel-nav-left" (click)="scrollCarousel('left')" aria-label="Films précédents">
+      <lucide-icon [img]="ChevronLeft"></lucide-icon>
+    </button>
+
     <div class="movies-carousel" #moviesCarousel>
       <div *ngFor="let movie of movies" class="movie-card" (click)="navigateToDetail(movie.id)">
         <div class="poster">
@@ -35,5 +32,10 @@
         </div>
       </div>
     </div>
+
+    <!-- Bouton droit -->
+    <button class="carousel-nav-right" (click)="scrollCarousel('right')" aria-label="Films suivants">
+      <lucide-icon [img]="ChevronRight"></lucide-icon>
+    </button>
   </div>
 </div>
