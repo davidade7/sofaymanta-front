@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="section-header">
+    <h2>Séries TV récentes</h2>
+    <div class="carousel-controls">
+      <!-- Ces boutons ne sont plus utilisés car nous avons des boutons sur les côtés -->
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    Chargement des séries TV...
+  </div>
+
+  <div class="error" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div class="carousel-container" *ngIf="!loading && !error">
+    <button class="carousel-nav-left" (click)="scrollCarousel('left')" aria-label="Défiler à gauche">
+      <lucide-icon [img]="ChevronLeft"></lucide-icon>
+    </button>
+
+    <div class="tv-shows-carousel" #tvShowsCarousel>
+      <div class="tv-show-card" *ngFor="let tvShow of tvShows" (click)="navigateToDetail(tvShow.id)">
+        <div class="poster">
+          <img [src]="getImageUrl(tvShow.poster_path)" [alt]="tvShow.name" loading="lazy">
+        </div>
+        <div class="tv-show-info">
+          <h3>{{ tvShow.name }}</h3>
+          <p class="overview">{{ tvShow.overview }}</p>
+          <div class="details">
+            <span>{{ tvShow.first_air_date | date:'yyyy' }}</span>
+            <span>⭐ {{ tvShow.vote_average | number:'1.1-1' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="carousel-nav-right" (click)="scrollCarousel('right')" aria-label="Défiler à droite">
+      <lucide-icon [img]="ChevronRight"></lucide-icon>
+    </button>
+  </div>
+</div>

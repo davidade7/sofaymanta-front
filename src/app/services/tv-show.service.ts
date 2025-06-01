@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Movie {
+export interface TvShow {
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
   id: number;
+  origin_country: string[];
   original_language: string;
-  original_title: string;
+  original_name: string;
   overview: string;
   popularity: number;
   poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
+  first_air_date: string;
+  name: string;
   vote_average: number;
   vote_count: number;
 }
@@ -22,16 +22,16 @@ export interface Movie {
 @Injectable({
   providedIn: 'root'
 })
-export class MovieService {
+export class TvShowService {
   private apiUrl = 'https://sofaymanta-back-production.up.railway.app';
 
   constructor(private http: HttpClient) { }
 
-  getRecentMovies(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(`${this.apiUrl}/media/movies/recent`);
+  getRecentTvShows(): Observable<TvShow[]> {
+    return this.http.get<TvShow[]>(`${this.apiUrl}/media/tv/recent`);
   }
 
-  getMovieDetail(id: string, lang: string = 'es-ES'): Observable<any> {
-    return this.http.get(`${this.apiUrl}/media/movies/detail/${id}?lang=${lang}`);
+  getTvShowDetail(id: string, lang: string = 'es-ES'): Observable<any> {
+    return this.http.get(`${this.apiUrl}/media/tv/detail/${id}?lang=${lang}`);
   }
 }
