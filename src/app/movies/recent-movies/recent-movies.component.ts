@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
 import { MovieService, Movie } from '../../services/movie.service';
 
 @Component({
   selector: 'app-recent-movies',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './recent-movies.component.html',
   styleUrl: './recent-movies.component.css'
 })
@@ -14,6 +15,10 @@ export class RecentMoviesComponent implements OnInit {
   movies: Movie[] = [];
   loading = true;
   error = '';
+  ChevronLeft = ChevronLeft;
+  ChevronRight = ChevronRight;
+
+  @ViewChild('moviesCarousel') moviesCarousel!: ElementRef;
 
   constructor(private movieService: MovieService, private router: Router) {}
 
@@ -42,5 +47,19 @@ export class RecentMoviesComponent implements OnInit {
 
   navigateToDetail(id: number): void {
     this.router.navigate(['/movies/detail', id]);
+  }
+
+  scrollCarousel(direction: 'left' | 'right'): void {
+    if (!this.moviesCarousel) return;
+
+    const carousel = this.moviesCarousel.nativeElement;
+    const cardWidth = 260 + 16; // Largeur de carte + gap
+    const scrollAmount = cardWidth * 3; // Défiler de 3 cartes à la fois
+
+    if (direction === 'left') {
+      carousel.scrollLeft -= scrollAmount;
+    } else {
+      carousel.scrollLeft += scrollAmount;
+    }
   }
 }

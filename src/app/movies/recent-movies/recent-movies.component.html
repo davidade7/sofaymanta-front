@@ -1,5 +1,15 @@
 <div class="container">
-  <h2>Films récents</h2>
+  <div class="section-header">
+    <h2>Films récents</h2>
+    <div class="carousel-controls" *ngIf="!loading && !error && movies.length > 0">
+      <button class="control-btn prev" (click)="scrollCarousel('left')" aria-label="Films précédents">
+        <lucide-icon [img]="ChevronLeft"></lucide-icon>
+      </button>
+      <button class="control-btn next" (click)="scrollCarousel('right')" aria-label="Films suivants">
+        <lucide-icon [img]="ChevronRight"></lucide-icon>
+      </button>
+    </div>
+  </div>
 
   <div *ngIf="loading" class="loading">
     Chargement des films...
@@ -9,17 +19,19 @@
     {{ error }}
   </div>
 
-  <div *ngIf="!loading && !error" class="movies-grid">
-    <div *ngFor="let movie of movies" class="movie-card" (click)="navigateToDetail(movie.id)">
-      <div class="poster">
-        <img [src]="getImageUrl(movie.poster_path)" [alt]="movie.title">
-      </div>
-      <div class="movie-info">
-        <h3>{{ movie.title }}</h3>
-        <p class="overview">{{ movie.overview }}</p>
-        <div class="details">
-          <span class="year">{{ movie.release_date | date:'yyyy' }}</span>
-          <span class="rating">⭐ {{ movie.vote_average.toFixed(1) }}</span>
+  <div *ngIf="!loading && !error" class="carousel-container">
+    <div class="movies-carousel" #moviesCarousel>
+      <div *ngFor="let movie of movies" class="movie-card" (click)="navigateToDetail(movie.id)">
+        <div class="poster">
+          <img [src]="getImageUrl(movie.poster_path)" [alt]="movie.title">
+        </div>
+        <div class="movie-info">
+          <h3>{{ movie.title }}</h3>
+          <p class="overview">{{ movie.overview }}</p>
+          <div class="details">
+            <span class="year">{{ movie.release_date | date:'yyyy' }}</span>
+            <span class="rating">⭐ {{ movie.vote_average.toFixed(1) }}</span>
+          </div>
         </div>
       </div>
     </div>
