@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
 import { MovieService, Movie } from './services/movie.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   loading = true;
   error = '';
 
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService, private router: Router) {}
 
   ngOnInit() {
     this.loadMovies();
@@ -39,5 +39,9 @@ export class AppComponent implements OnInit {
   getImageUrl(posterPath: string): string {
     if (!posterPath) return '';
     return `https://image.tmdb.org/t/p/w500${posterPath}`;
+  }
+
+  navigateToDetail(id: number): void {
+    this.router.navigate(['/movies/detail', id]);
   }
 }

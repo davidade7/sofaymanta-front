@@ -30,4 +30,8 @@ export class MovieService {
   getRecentMovies(): Observable<Movie[]> {
     return this.http.get<Movie[]>(`${this.apiUrl}/movies/recent`);
   }
+
+  getMovieDetail(id: string, lang: string = 'es-ES'): Observable<any> {
+    return this.http.get(`${this.apiUrl}/movies/detail/${id}?lang=${lang}`);
+  }
 }

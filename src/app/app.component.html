@@ -18,7 +18,7 @@
   </div>
 
   <div *ngIf="!loading && !error && movies.length > 0" class="movies-grid">
-    <div *ngFor="let movie of movies" class="movie-card">
+    <div class="movie-card" *ngFor="let movie of movies" (click)="navigateToDetail(movie.id)">
       <div class="movie-poster">
         <img
           *ngIf="movie.poster_path"

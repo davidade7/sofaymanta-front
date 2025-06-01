@@ -1,0 +1,66 @@
+<div class="movie-detail-container">
+  <!-- Bouton retour -->
+  <div class="back-button-container">
+    <button (click)="goBack()" class="back-button">
+      <lucide-icon [img]="ArrowLeft"></lucide-icon> Volver
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-container">
+    <p>Cargando...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="error-container">
+    <p class="error-message">{{ error }}</p>
+    <button (click)="goBack()" class="back-button">Volver</button>
+  </div>
+
+  <!-- Movie details -->
+  <div *ngIf="movie && !loading && !error" class="movie-content">
+    <!-- Backdrop -->
+    <div class="movie-backdrop" [style.background-image]="movie.backdrop_path ? 'url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')' : 'none'">
+      <div class="backdrop-overlay"></div>
+    </div>
+
+    <div class="movie-info-container">
+      <!-- Poster -->
+      <div class="movie-poster">
+        <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" [alt]="movie.title">
+      </div>
+
+      <!-- Info -->
+      <div class="movie-info">
+        <h1 class="movie-title">{{ movie.title }}</h1>
+        <p *ngIf="movie.tagline" class="movie-tagline">{{ movie.tagline }}</p>
+
+        <!-- Rating and basic info -->
+        <div class="movie-stats">
+          <div class="movie-rating">
+            <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon> {{ movie.vote_average?.toFixed(1) || 'N/A' }}
+            <span class="vote-count">({{ movie.vote_count || 0 }} votos)</span>
+          </div>
+          <div class="movie-runtime">{{ movie.runtime }} min</div>
+          <div class="movie-year">{{ movie.release_date ? (movie.release_date | date:'yyyy') : 'N/A' }}</div>
+        </div>
+
+        <!-- Genres -->
+        <div class="movie-genres">
+          <h3>Géneros</h3>
+          <div class="genre-tags">
+            <span *ngFor="let genre of movie.genres" class="genre-tag">
+              {{ genre.name }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Synopsis -->
+        <div class="movie-overview">
+          <h3>Synopsis</h3>
+          <p>{{ movie.overview }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
