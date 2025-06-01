@@ -1,0 +1,90 @@
+<div class="container">
+  <div class="loading" *ngIf="loading">
+    Chargement des détails de la série TV...
+  </div>
+
+  <div class="error" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div class="tv-show-detail" *ngIf="!loading && !error && tvShow">
+    <button class="back-button" (click)="goBack()">← Retour</button>
+
+    <div class="backdrop" [style.background-image]="'url(' + getImageUrl(tvShow.backdrop_path, 'original') + ')'">
+      <div class="backdrop-overlay"></div>
+    </div>
+
+    <div class="content">
+      <div class="poster">
+        <img [src]="getImageUrl(tvShow.poster_path)" [alt]="tvShow.name" onerror="this.src='assets/images/no-poster.png'">
+      </div>
+
+      <div class="info">
+        <h1>{{ tvShow.name }}</h1>
+        <div class="tagline" *ngIf="tvShow.tagline">{{ tvShow.tagline }}</div>
+
+        <div class="meta">
+          <span class="year" *ngIf="tvShow.first_air_date">{{ getYear(tvShow.first_air_date) }}</span>
+          <span class="separator" *ngIf="tvShow.first_air_date && tvShow.episode_run_time && tvShow.episode_run_time.length">•</span>
+          <span class="runtime" *ngIf="tvShow.episode_run_time && tvShow.episode_run_time.length">{{ formatRuntime(tvShow.episode_run_time) }} par épisode</span>
+          <span class="separator" *ngIf="tvShow.vote_average">•</span>
+          <span class="rating" *ngIf="tvShow.vote_average">⭐ {{ tvShow.vote_average | number:'1.1-1' }}</span>
+        </div>
+
+        <div class="genres" *ngIf="tvShow.genres && tvShow.genres.length">
+          <span class="genre" *ngFor="let genre of tvShow.genres">{{ genre.name }}</span>
+        </div>
+
+        <div class="overview">
+          <h3>Synopsis</h3>
+          <p>{{ tvShow.overview || 'Aucun synopsis disponible' }}</p>
+        </div>
+
+        <div class="seasons" *ngIf="tvShow.seasons && tvShow.seasons.length">
+          <h3>Saisons ({{ tvShow.number_of_seasons || tvShow.seasons.length }})</h3>
+          <div class="seasons-list">
+            <div class="season-item" *ngFor="let season of tvShow.seasons | slice:0:6">
+              <div class="season-poster">
+                <img [src]="getImageUrl(season.poster_path)" [alt]="season.name" onerror="this.src='assets/images/no-poster.png'">
+              </div>
+              <div class="season-info">
+                <h4>{{ season.name }}</h4>
+                <p>{{ season.episode_count }} épisodes</p>
+                <p *ngIf="season.air_date">{{ season.air_date | date:'yyyy' }}</p>
+              </div>
+            </div>
+            <div class="more-seasons" *ngIf="tvShow.seasons && tvShow.seasons.length > 6">
+              +{{ tvShow.seasons.length - 6 }} saisons supplémentaires
+            </div>
+          </div>
+        </div>
+
+        <div class="details" *ngIf="tvShow.created_by && tvShow.created_by.length">
+          <h3>Créé par</h3>
+          <div class="creators">
+            <span *ngFor="let creator of tvShow.created_by; let last = last">
+              {{ creator.name }}{{ !last ? ', ' : '' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="networks" *ngIf="tvShow.networks && tvShow.networks.length">
+          <h3>Réseaux</h3>
+          <div class="networks-list">
+            <div class="network" *ngFor="let network of tvShow.networks">
+              <img *ngIf="network.logo_path" [src]="getImageUrl(network.logo_path, 'w200')" [alt]="network.name">
+              <span *ngIf="!network.logo_path">{{ network.name }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="status">
+          <h3>Statut</h3>
+          <p>{{ tvShow.status || 'Inconnu' }}</p>
+          <p *ngIf="tvShow.last_air_date">Dernier épisode: {{ tvShow.last_air_date | date:'dd/MM/yyyy' }}</p>
+          <p *ngIf="tvShow.next_episode_to_air && tvShow.next_episode_to_air.air_date">Prochain épisode: {{ tvShow.next_episode_to_air.air_date | date:'dd/MM/yyyy' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
