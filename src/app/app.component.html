@@ -1,55 +1,17 @@
-<div class="container">
-  <header class="header">
+<div class="app-container">
+  <header>
     <h1>{{ title }}</h1>
-    <p>Films récents</p>
+    <nav>
+      <a [routerLink]="['/']">Accueil</a>
+      <!-- Autres liens de navigation à ajouter plus tard -->
+    </nav>
   </header>
 
-  <div *ngIf="loading" class="loading">
-    <div class="spinner"></div>
-    <p>Chargement des films...</p>
-  </div>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
 
-  <div *ngIf="error" class="error">
-    {{ error }}
-  </div>
-
-  <div *ngIf="!loading && !error && movies.length === 0" class="no-movies">
-    Aucun film trouvé.
-  </div>
-
-  <div *ngIf="!loading && !error && movies.length > 0" class="movies-grid">
-    <div class="movie-card" *ngFor="let movie of movies" (click)="navigateToDetail(movie.id)">
-      <div class="movie-poster">
-        <img
-          *ngIf="movie.poster_path"
-          [src]="getImageUrl(movie.poster_path)"
-          [alt]="movie.title"
-          loading="lazy"
-        />
-        <div *ngIf="!movie.poster_path" class="no-image">
-          <span>Pas d'image</span>
-        </div>
-      </div>
-
-      <div class="movie-info">
-        <h3 class="movie-title">{{ movie.title }}</h3>
-
-        <div class="movie-meta">
-          <span class="release-date">{{ movie.release_date | date:'yyyy' }}</span>
-          <span class="rating">
-            ⭐ {{ movie.vote_average }}/10
-          </span>
-        </div>
-
-        <p class="movie-overview">{{ movie.overview }}</p>
-
-        <div class="movie-stats">
-          <span class="popularity">Popularité: {{ movie.popularity | number:'1.0-0' }}</span>
-          <span class="votes">{{ movie.vote_count }} votes</span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <footer>
+    <p>© 2025 SofayManta - Tous droits réservés</p>
+  </footer>
 </div>
-
-<router-outlet />
