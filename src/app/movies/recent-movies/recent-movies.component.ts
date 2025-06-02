@@ -1,65 +1,77 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
-import { MovieService, Movie } from '../../services/movie.service';
+import { MovieService } from '../../services/movie.service';
+import { ChevronLeft, ChevronRight } from 'lucide-angular';
+import { CommonModule } from '@angular/common';
+import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-recent-movies',
   standalone: true,
   imports: [CommonModule, LucideAngularModule],
   templateUrl: './recent-movies.component.html',
-  styleUrl: './recent-movies.component.css'
+  styleUrls: ['./recent-movies.component.css']
 })
 export class RecentMoviesComponent implements OnInit {
-  movies: Movie[] = [];
-  loading = true;
-  error = '';
+  // Icons for carousel navigation
   ChevronLeft = ChevronLeft;
   ChevronRight = ChevronRight;
 
+  movies: any[] = [];
+  loading = true;
+  error: string | null = null;
+
   @ViewChild('moviesCarousel') moviesCarousel!: ElementRef;
 
-  constructor(private movieService: MovieService, private router: Router) {}
+  constructor(
+    private movieService: MovieService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
-    this.loadMovies();
+  ngOnInit(): void {
+    this.loadRecentMovies();
   }
 
-  loadMovies() {
+  // Load recent movies from API
+  loadRecentMovies(): void {
+    this.loading = true;
+    this.error = null;
+
     this.movieService.getRecentMovies().subscribe({
-      next: (movies) => {
-        this.movies = movies;
+      next: (response) => {
+        this.movies = response;
         this.loading = false;
       },
-      error: (error) => {
-        this.error = 'Erreur lors du chargement des films';
+      error: (err) => {
+        this.error = 'Error al cargar las películas recientes. Por favor intente nuevamente.';
         this.loading = false;
-        console.error('Erreur:', error);
+        console.error('Error cargando películas recientes:', err);
       }
     });
   }
 
+  // Get image URL for movie poster
   getImageUrl(posterPath: string): string {
-    if (!posterPath) return '';
+    if (!posterPath) {
+      return 'assets/images/no-poster.jpg';
+    }
     return `https://image.tmdb.org/t/p/w500${posterPath}`;
   }
 
-  navigateToDetail(id: number): void {
-    this.router.navigate(['/movies/detail', id]);
-  }
-
+  // Handle carousel scrolling
   scrollCarousel(direction: 'left' | 'right'): void {
-    if (!this.moviesCarousel) return;
-
     const carousel = this.moviesCarousel.nativeElement;
-    const cardWidth = 260 + 16; // Largeur de carte + gap
-    const scrollAmount = cardWidth * 3; // Défiler de 3 cartes à la fois
+    const scrollAmount = carousel.clientWidth * 0.8; // Scroll 80% of visible width
 
     if (direction === 'left') {
       carousel.scrollLeft -= scrollAmount;
     } else {
       carousel.scrollLeft += scrollAmount;
     }
+  }
+
+  // Navigate to movie detail page
+  navigateToDetail(movieId: number): void {
+    this.router.navigate(['/movies/detail', movieId]);
   }
 }
