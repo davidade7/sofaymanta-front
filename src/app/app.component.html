@@ -2,8 +2,21 @@
   <header>
     <h1>{{ title }}</h1>
     <nav>
-      <a [routerLink]="['/']">Accueil</a>
-      <!-- Autres liens de navigation à ajouter plus tard -->
+      <a [routerLink]="['/']">Inicio</a>
+
+      <!-- Navigation pour utilisateur non connecté -->
+      <ng-container *ngIf="!currentUser">
+        <a [routerLink]="['/signin']">Iniciar sesión</a>
+        <a [routerLink]="['/signup']">Registrarse</a>
+      </ng-container>
+
+      <!-- Navigation pour utilisateur connecté -->
+      <ng-container *ngIf="currentUser">
+        <a [routerLink]="['/dashboard']">Dashboard</a>
+        <a [routerLink]="['/profile']">Perfil</a>
+        <a href="#" (click)="logout($event)">Cerrar sesión</a>
+        <span class="user-info">{{ currentUser.email }}</span>
+      </ng-container>
     </nav>
   </header>
 
@@ -12,6 +25,6 @@
   </main>
 
   <footer>
-    <p>© 2025 SofayManta - Tous droits réservés</p>
+    <p>© 2025 Sofa y Manta - Todos los derechos reservados</p>
   </footer>
 </div>
