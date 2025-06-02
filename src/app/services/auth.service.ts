@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
+import { environment } from '../../environments/environment';
 
-const supabaseUrl = process.env['SUPABASE_URL'];
-const supabaseKey = process.env['SUPABASE_KEY'];
+const supabaseUrl = environment.supabaseUrl;
+const supabaseKey = environment.supabaseKey;
 
 if (!supabaseUrl || !supabaseKey) {
   throw new Error('SUPABASE_URL and SUPABASE_KEY must be defined in environment variables.');

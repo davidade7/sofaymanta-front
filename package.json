@@ -18,7 +18,6 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@supabase/supabase-js": "^2.49.9",
-    "dotenv": "^16.5.0",
     "lucide-angular": "^0.511.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
