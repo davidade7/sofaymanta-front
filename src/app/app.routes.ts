@@ -4,8 +4,12 @@ import { MovieDetailComponent } from './movies/movie-detail/movie-detail.compone
 import { RecentTvShowComponent } from './tv-show/recent-tv-show/recent-tv-show.component';
 import { TvShowDetailComponent } from './tv-show/tv-show-detail/tv-show-detail.component';
 import { HomeComponent } from './home/home.component';
+import { SigninComponent } from './pages/signin/signin.component';
+import { SignupComponent } from './pages/signup/signup.component';
 
 export const routes: Routes = [
+    { path: 'signin', component: SigninComponent },
+    { path: 'signup', component: SignupComponent },
     { path: '', component: HomeComponent },
     { path: 'movies/recent', component: RecentMoviesComponent },
     { path: 'movies/detail/:id', component: MovieDetailComponent },
