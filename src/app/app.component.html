@@ -2,19 +2,33 @@
   <header>
     <h1>{{ title }}</h1>
     <nav>
-      <a [routerLink]="['/']">Inicio</a>
+      <a [routerLink]="['/']">
+        <lucide-icon [img]="House"></lucide-icon>
+        <span>Inicio</span>
+      </a>
 
       <!-- Navigation pour utilisateur non connecté -->
       <ng-container *ngIf="!currentUser">
-        <a [routerLink]="['/signin']">Iniciar sesión</a>
-        <a [routerLink]="['/signup']">Registrarse</a>
+        <a [routerLink]="['/signin']">
+          <lucide-icon [img]="LogIn"></lucide-icon>
+          <span>Iniciar sesión</span>
+        </a>
+        <a [routerLink]="['/signup']">
+          <lucide-icon [img]="UserPlus"></lucide-icon>
+          <span>Registrarse</span>
+        </a>
       </ng-container>
 
       <!-- Navigation pour utilisateur connecté -->
       <ng-container *ngIf="currentUser">
-        <a [routerLink]="['/dashboard']">Dashboard</a>
-        <a [routerLink]="['/profile']">Perfil</a>
-        <a href="#" (click)="logout($event)">Cerrar sesión</a>
+        <a [routerLink]="['/profile']">
+          <lucide-icon [img]="User"></lucide-icon>
+          <span>Perfil</span>
+        </a>
+        <a href="#" (click)="logout($event)">
+          <lucide-icon [img]="LogOut"></lucide-icon>
+          <span>Cerrar sesión</span>
+        </a>
         <span class="user-info">{{ currentUser.email }}</span>
       </ng-container>
     </nav>

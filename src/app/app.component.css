@@ -25,6 +25,9 @@ nav {
 }
 
 nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   color: white;
   text-decoration: none;
   padding: 0.5rem 0.75rem;

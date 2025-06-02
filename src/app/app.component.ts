@@ -3,15 +3,22 @@ import { RouterOutlet, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
+import { LucideAngularModule, House, LogIn, UserPlus, User, LogOut } from 'lucide-angular';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CommonModule],
+  imports: [RouterOutlet, RouterLink, CommonModule, LucideAngularModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  readonly House = House;
+  readonly LogIn = LogIn;
+  readonly UserPlus = UserPlus;
+  readonly User = User;
+  readonly LogOut = LogOut;
+
   title = 'Sofa y Manta';
   currentUser: any = null;
 
