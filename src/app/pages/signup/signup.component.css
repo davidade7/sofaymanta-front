@@ -1,4 +1,4 @@
-.signin-container {
+.signup-container {
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
@@ -6,21 +6,21 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.signin-container h2 {
+.signup-container h2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.signin-container .form-group {
+.signup-container .form-group {
   margin-bottom: 15px;
 }
 
-.signin-container .form-group label {
+.signup-container .form-group label {
   display: block;
   margin-bottom: 5px;
 }
 
-.signin-container .form-group input {
+.signup-container .form-group input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
@@ -28,13 +28,13 @@
   font-size: 16px;
 }
 
-.signin-container .form-group .error {
+.signup-container .form-group .error {
   color: #e53935;
   font-size: 12px;
   margin-top: 5px;
 }
 
-.signin-container button {
+.signup-container button {
   width: 100%;
   padding: 12px;
   background-color: #1976d2;
@@ -46,27 +46,27 @@
   margin-top: 15px;
 }
 
-.signin-container button:disabled {
+.signup-container button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
 
-.signin-container .error-message {
+.signup-container .error-message {
   color: #e53935;
   margin: 15px 0;
   text-align: center;
 }
 
-.signin-container .signup-link {
+.signup-container .signup-link {
   text-align: center;
   margin-top: 20px;
 }
 
-.signin-container .signup-link a {
+.signup-container .signup-link a {
   color: #1976d2;
   text-decoration: none;
 }
 
-.signin-container .signup-link a:hover {
+.signup-container .signup-link a:hover {
   text-decoration: underline;
 }
