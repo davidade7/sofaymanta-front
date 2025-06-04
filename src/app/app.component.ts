@@ -1,42 +1,62 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
-import { LucideAngularModule, House, LogIn, UserPlus, User, LogOut } from 'lucide-angular';
+import { House, LogIn, LogOut, Menu, User, UserPlus, X } from 'lucide-angular';
+import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, CommonModule, LucideAngularModule],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    CommonModule,
+    LucideAngularModule
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  readonly House = House;
-  readonly LogIn = LogIn;
-  readonly UserPlus = UserPlus;
-  readonly User = User;
-  readonly LogOut = LogOut;
-
   title = 'Sofa y Manta';
   currentUser: any = null;
+  menuOpen = false;
+
+  // Icons
+  House = House;
+  LogIn = LogIn;
+  LogOut = LogOut;
+  Menu = Menu;
+  X = X;
+  User = User;
+  UserPlus = UserPlus;
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  async ngOnInit() {
-    await this.checkAuthStatus();
+  ngOnInit() {
+    this.checkAuthStatus();
   }
 
-  // Check if user is authenticated
+  // Check authentication status
   async checkAuthStatus() {
     try {
       const { data } = await this.authService.getUser();
       this.currentUser = data.user;
     } catch (error) {
       this.currentUser = null;
-      console.log('No hay usuario autenticado');
     }
+  }
+
+  // Toggle menu visibility
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  // Close menu (after navigation)
+  closeMenu() {
+    this.menuOpen = false;
   }
 
   // Handle logout
@@ -47,7 +67,6 @@ export class AppComponent implements OnInit {
       await this.authService.signOut();
       this.currentUser = null;
       this.router.navigate(['/signin']);
-      console.log('Cierre de sesión exitoso');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
