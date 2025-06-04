@@ -1,41 +1,33 @@
 <div class="movie-detail-container">
-  <!-- Bouton retour -->
   <div class="back-button-container">
     <button (click)="goBack()" class="back-button">
       <lucide-icon [img]="ArrowLeft"></lucide-icon> Volver
     </button>
   </div>
 
-  <!-- Loading -->
   <div *ngIf="loading" class="loading-container">
     <p>Cargando...</p>
   </div>
 
-  <!-- Error -->
   <div *ngIf="error" class="error-container">
     <p class="error-message">{{ error }}</p>
     <button (click)="goBack()" class="back-button">Volver</button>
   </div>
 
-  <!-- Movie details -->
   <div *ngIf="movie && !loading && !error" class="movie-content">
-    <!-- Backdrop -->
     <div class="movie-backdrop" [style.background-image]="movie.backdrop_path ? 'url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')' : 'none'">
       <div class="backdrop-overlay"></div>
     </div>
 
     <div class="movie-info-container">
-      <!-- Poster -->
       <div class="movie-poster">
         <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" [alt]="movie.title">
       </div>
 
-      <!-- Info -->
       <div class="movie-info">
         <h1 class="movie-title">{{ movie.title }}</h1>
         <p *ngIf="movie.tagline" class="movie-tagline">{{ movie.tagline }}</p>
 
-        <!-- Rating and basic info -->
         <div class="movie-stats">
           <div class="movie-rating">
             <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon> {{ movie.vote_average?.toFixed(1) || 'N/A' }}
@@ -45,7 +37,6 @@
           <div class="movie-year">{{ movie.release_date ? (movie.release_date | date:'yyyy') : 'N/A' }}</div>
         </div>
 
-        <!-- Genres -->
         <div class="movie-genres">
           <h3>Géneros</h3>
           <div class="genre-tags">
@@ -55,10 +46,42 @@
           </div>
         </div>
 
-        <!-- Synopsis -->
         <div class="movie-overview">
           <h3>Synopsis</h3>
           <p>{{ movie.overview }}</p>
+        </div>
+
+        <div class="additional-info">
+          <div class="info-grid">
+            <h3 class="label">Presupuesto:</h3>
+            <p>{{ movie.budget | currency:'USD':'symbol':'1.0-0' }}</p>
+          </div>
+          <div class="info-grid">
+            <h3 class="label">Ingresos:</h3>
+            <p>{{ movie.revenue | currency:'USD':'symbol':'1.0-0' }}</p>
+          </div>
+          <div class="info-grid">
+            <h3 class="label">Idioma original:</h3>
+            <p>{{ movie.spoken_languages && movie.spoken_languages.length > 0 ? movie.spoken_languages[0].name : 'N/A' }}</p>
+          </div>
+          <div class="info-grid">
+            <h3 class="label">Países de producción:</h3>
+            <div class="country-tags">
+              <span *ngFor="let country of movie.production_countries" class="genre-tag">
+                {{ country.name }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="movie-companies" *ngIf="movie.production_companies && movie.production_companies.length > 0">
+          <h3>Compañías de producción</h3>
+          <div class="company-list">
+            <div *ngFor="let company of movie.production_companies" class="company-item">
+              <img *ngIf="company.logo_path" [src]="'https://image.tmdb.org/t/p/w92' + company.logo_path" [alt]="company.name">
+              <span>{{ company.name }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
