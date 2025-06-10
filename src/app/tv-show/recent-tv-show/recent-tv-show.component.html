@@ -1,13 +1,13 @@
 <div class="container">
   <div class="section-header">
-    <h2>Séries TV récentes</h2>
+    <h2>Series TV recientes</h2>
     <div class="carousel-controls">
-      <!-- Ces boutons ne sont plus utilisés car nous avons des boutons sur les côtés -->
+      <!-- These buttons are no longer used as we have buttons on the sides -->
     </div>
   </div>
 
   <div class="loading" *ngIf="loading">
-    Chargement des séries TV...
+    Cargando series de TV...
   </div>
 
   <div class="error" *ngIf="error">
@@ -15,7 +15,7 @@
   </div>
 
   <div class="carousel-container" *ngIf="!loading && !error">
-    <button class="carousel-nav-left" (click)="scrollCarousel('left')" aria-label="Défiler à gauche">
+    <button class="carousel-nav-left" (click)="scrollCarousel('left')" aria-label="Desplazar a la izquierda">
       <lucide-icon [img]="ChevronLeft"></lucide-icon>
     </button>
 
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <button class="carousel-nav-right" (click)="scrollCarousel('right')" aria-label="Défiler à droite">
+    <button class="carousel-nav-right" (click)="scrollCarousel('right')" aria-label="Desplazar a la derecha">
       <lucide-icon [img]="ChevronRight"></lucide-icon>
     </button>
   </div>

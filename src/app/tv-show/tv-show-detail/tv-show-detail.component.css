@@ -1,47 +1,57 @@
-.container {
-  position: relative;
-  min-height: 100vh;
+.tv-show-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
   color: #fff;
 }
 
-.loading, .error {
-  padding: 100px 20px;
-  text-align: center;
-  font-size: 1.2rem;
-}
-
-.error {
-  color: #dc3545;
+.back-button-container {
+  margin-bottom: 20px;
 }
 
 .back-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 100;
-  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
   border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 1rem;
   transition: background-color 0.3s;
 }
 
 .back-button:hover {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
-.backdrop {
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  text-align: center;
+}
+
+.error-message {
+  margin-bottom: 20px;
+  color: #ff6b6b;
+}
+
+.tv-show-content {
+  position: relative;
+}
+
+.tv-show-backdrop {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100vh;
+  right: 0;
+  height: 100%;
   background-size: cover;
   background-position: center top;
-  background-repeat: no-repeat;
   z-index: -1;
 }
 
@@ -49,207 +59,217 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.9) 100%);
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9));
 }
 
-.content {
+.tv-show-info-container {
   display: flex;
-  padding: 80px 40px 40px;
-  max-width: 1200px;
-  margin: 0 auto;
+  gap: 30px;
   position: relative;
-  z-index: 1;
-}
-
-.poster {
-  flex: 0 0 300px;
-  margin-right: 40px;
-}
-
-.poster img {
-  width: 100%;
+  padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
 }
 
-.info {
+.tv-show-poster {
+  flex: 0 0 300px;
+  position: relative;
+}
+
+.tv-show-poster img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+}
+
+.tv-show-info {
   flex: 1;
 }
 
-h1 {
+.tv-show-title {
   font-size: 2.5rem;
-  margin: 0 0 10px;
+  margin-bottom: 8px;
 }
 
-.tagline {
+.tv-show-tagline {
   font-style: italic;
-  color: #ddd;
+  color: #ccc;
   margin-bottom: 20px;
 }
 
-.meta {
+.tv-show-stats {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
   margin-bottom: 20px;
-  color: #ddd;
+  font-size: 1.1rem;
 }
 
-.separator {
-  margin: 0 8px;
+.tv-show-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.genres {
+.vote-count {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.tv-show-genres {
+  margin-bottom: 25px;
+}
+
+.genre-tags {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 30px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
-.genre {
+.genre-tag {
   background-color: rgba(255, 255, 255, 0.1);
-  padding: 5px 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  padding: 5px 12px;
   border-radius: 20px;
   font-size: 0.9rem;
 }
 
-.overview {
+.tv-show-overview {
   margin-bottom: 30px;
-  max-width: 800px;
+  line-height: 1.6;
 }
 
-.overview h3 {
+.tv-show-overview h3 {
   margin-bottom: 10px;
 }
 
-.overview p {
-  line-height: 1.6;
-  color: #ddd;
+h3 {
+  color: #64b5f6;
+  margin-bottom: 10px;
+  font-weight: 600;
 }
 
-.seasons h3, .details h3, .networks h3, .status h3 {
-  margin-bottom: 15px;
-}
-
-.seasons-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+.seasons {
   margin-bottom: 30px;
 }
 
+.seasons-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+}
+
 .season-item {
-  width: 150px;
-  transition: transform 0.2s;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .season-item:hover {
   transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .season-poster {
+  position: relative;
   width: 100%;
-  height: 225px;
+  padding-top: 150%; /* Ratio 2:3 (500×750) - 150% = 3/2 * 100% */
+  overflow: hidden;
 }
 
 .season-poster img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 5px;
 }
 
 .season-info {
-  padding: 10px 0;
+  padding: 10px;
 }
 
 .season-info h4 {
-  margin: 0 0 5px;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 5px;
 }
 
-.season-info p {
+.additional-info {
+  margin-bottom: 30px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  margin-bottom: 15px;
+  align-items: baseline;
+}
+
+.info-grid .label {
+  color: #7fa1c0;
   margin: 0;
-  font-size: 0.8rem;
-  color: #ddd;
 }
 
-.more-seasons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;
-  height: 225px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
-  font-size: 0.9rem;
-  text-align: center;
-  padding: 10px;
+.networks {
+  margin-top: 25px;
 }
 
 .networks-list {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  margin-bottom: 30px;
+  margin-top: 10px;
 }
 
 .network {
   background-color: rgba(255, 255, 255, 0.9);
   padding: 10px;
-  border-radius: 5px;
-  max-width: 100px;
-  height: 50px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 100px;
+  height: 40px;
 }
 
 .network img {
   max-width: 100%;
   max-height: 100%;
+  object-fit: contain;
 }
 
-.status {
-  margin-bottom: 30px;
+.text-yellow-500 {
+  color: #eab308;
 }
 
-.status p {
-  margin: 5px 0;
-  color: #ddd;
-}
-
-/* Responsive */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .content {
+  .tv-show-info-container {
     flex-direction: column;
-    padding: 70px 20px 30px;
   }
 
-  .poster {
+  .tv-show-poster {
     flex: 0 0 auto;
-    margin-right: 0;
-    margin-bottom: 30px;
     max-width: 250px;
+    margin: 0 auto;
   }
 
-  h1 {
+  .tv-show-title {
     font-size: 2rem;
   }
 
-  .season-item {
-    width: 120px;
+  .info-grid {
+    grid-template-columns: 1fr;
   }
 
-  .season-poster {
-    height: 180px;
-  }
-
-  .more-seasons {
-    width: 120px;
-    height: 180px;
+  .seasons-list {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }

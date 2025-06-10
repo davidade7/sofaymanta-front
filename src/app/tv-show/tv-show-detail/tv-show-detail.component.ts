@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TvShowService } from '../../services/tv-show.service';
+import { ArrowLeft, Star, ChevronRight } from 'lucide-angular';
+import { LucideAngularModule } from 'lucide-angular';
 
 interface Season {
   air_date: string;
@@ -39,6 +41,7 @@ interface TvShowDetail {
   first_air_date: string;
   last_air_date: string;
   vote_average: number;
+  vote_count: number;
   episode_run_time: number[];
   number_of_seasons: number;
   seasons: Season[];
@@ -59,7 +62,7 @@ interface TvShowDetail {
 @Component({
   selector: 'app-tv-show-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './tv-show-detail.component.html',
   styleUrls: ['./tv-show-detail.component.css']
 })
@@ -67,6 +70,11 @@ export class TvShowDetailComponent implements OnInit {
   tvShow?: TvShowDetail;
   loading = true;
   error = '';
+
+  // Lucide icons
+  ArrowLeft = ArrowLeft;
+  Star = Star;
+  ChevronRight = ChevronRight;
 
   constructor(
     private route: ActivatedRoute,
@@ -80,7 +88,7 @@ export class TvShowDetailComponent implements OnInit {
       if (id) {
         this.loadTvShowDetails(id);
       } else {
-        this.error = 'ID de série TV invalide';
+        this.error = 'ID de serie TV inválido';
         this.loading = false;
       }
     });
@@ -93,15 +101,15 @@ export class TvShowDetailComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        this.error = 'Erreur lors du chargement des détails de la série TV';
+        this.error = 'Error al cargar los detalles de la serie TV';
         this.loading = false;
-        console.error('Erreur:', error);
+        console.error('Error:', error);
       }
     });
   }
 
   getImageUrl(path: string | null | undefined, size: string = 'w500'): string {
-    if (!path) return 'assets/images/no-poster.png';
+    if (!path) return 'https://placehold.co/500x750?text=No+Poster+Available';
     return `https://image.tmdb.org/t/p/${size}${path}`;
   }
 
@@ -117,13 +125,29 @@ export class TvShowDetailComponent implements OnInit {
     const mins = runtime % 60;
 
     if (hours > 0) {
-      return `${hours}h ${mins}m`;
+      return `${hours}h ${mins}min`;
     } else {
-      return `${mins}m`;
+      return `${mins}min`;
     }
   }
 
   goBack(): void {
-    this.router.navigate(['/home']);
+    window.history.back();
   }
+
+  getSortedSeasons(): Season[] {
+  if (!this.tvShow || !this.tvShow.seasons) {
+    return [];
+  }
+
+  // Create a copy of seasons array to avoid modifying the original
+  return [...this.tvShow.seasons].sort((a, b) => {
+    // First, handle cases where air_date might be missing
+    if (!a.air_date) return 1;  // Put items without date at the end
+    if (!b.air_date) return -1;
+
+    // Sort by air_date in descending order (newest first)
+    return new Date(b.air_date).getTime() - new Date(a.air_date).getTime();
+  });
+}
 }
