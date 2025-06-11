@@ -34,4 +34,8 @@ export class TvShowService {
   getTvShowDetail(id: string, lang: string = 'es-ES'): Observable<any> {
     return this.http.get(`${this.apiUrl}/media/tv/detail/${id}?lang=${lang}`);
   }
+
+  getTvShowSeasonDetail(id: string, season: number, lang: string = 'es-ES'): Observable<any> {
+    return this.http.get(`${this.apiUrl}/media/tv/${id}/season/${season}?lang=${lang}`);
+  }
 }

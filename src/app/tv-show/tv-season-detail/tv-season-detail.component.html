@@ -1,0 +1,46 @@
+<div class="season-detail-container" *ngIf="!loading && !error">
+  <div class="season-header">
+    <img [src]="getImageUrl(seasonDetail?.poster_path)" [alt]="seasonDetail?.name" class="season-poster">
+    <div class="season-info">
+      <h1>{{ seasonDetail?.name }}</h1>
+      <p class="season-overview" *ngIf="seasonDetail?.overview">{{ seasonDetail?.overview }}</p>
+      <p class="season-overview" *ngIf="!seasonDetail?.overview">No hay descripción disponible para esta temporada.</p>
+      <div class="season-meta">
+        <span *ngIf="seasonDetail?.air_date">{{ seasonDetail?.air_date | date:'yyyy' }}</span>
+        <span>{{ seasonDetail?.episodes?.length || seasonDetail?.episode_count || 0 }} episodios</span>
+        <span *ngIf="seasonDetail?.vote_average">★ {{ seasonDetail?.vote_average.toFixed(1) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="episodes-section" *ngIf="seasonDetail?.episodes && seasonDetail.episodes.length > 0">
+    <div class="episodes-list">
+      <div class="episode-item" *ngFor="let episode of seasonDetail.episodes">
+        <div class="episode-number">{{ episode.episode_number }}</div>
+        <div class="episode-content">
+          <h3 class="episode-title">{{ episode.name }}</h3>
+          <p class="episode-overview" *ngIf="episode.overview">{{ episode.overview }}</p>
+          <p class="episode-overview no-overview" *ngIf="!episode.overview">No hay descripción disponible para este episodio.</p>
+          <div class="episode-meta">
+            <span class="episode-date" *ngIf="episode.air_date">{{ episode.air_date | date:'dd/MM/yyyy' }}</span>
+            <span class="episode-runtime" *ngIf="episode.runtime">{{ episode.runtime }} min</span>
+            <span class="episode-rating" *ngIf="episode.vote_average > 0">★ {{ episode.vote_average.toFixed(1) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-episodes" *ngIf="seasonDetail && (!seasonDetail.episodes || seasonDetail.episodes.length === 0)">
+    <h2>No hay episodios disponibles</h2>
+    <p>Los episodios de esta temporada no están disponibles actualmente.</p>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading">
+  Cargando...
+</div>
+
+<div *ngIf="error" class="error">
+  {{ error }}
+</div>

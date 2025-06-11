@@ -56,7 +56,10 @@
         <div class="seasons" *ngIf="tvShow.seasons && tvShow.seasons.length">
           <h3>Temporadas ({{ tvShow.number_of_seasons || tvShow.seasons.length }})</h3>
           <div class="seasons-list">
-            <div class="season-item" *ngFor="let season of getSortedSeasons()">
+            <div class="season-item"
+                 *ngFor="let season of getSortedSeasons()"
+                 (click)="navigateToSeason(tvShow.id, season.season_number)"
+                 style="cursor: pointer;">
               <div class="season-poster">
                 <img [src]="getImageUrl(season.poster_path)" [alt]="season.name" onerror="this.src='https://placehold.co/500x750?text=No+Poster+Available'">
               </div>

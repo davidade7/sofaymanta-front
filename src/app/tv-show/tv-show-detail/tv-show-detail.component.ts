@@ -136,18 +136,22 @@ export class TvShowDetailComponent implements OnInit {
   }
 
   getSortedSeasons(): Season[] {
-  if (!this.tvShow || !this.tvShow.seasons) {
-    return [];
+    if (!this.tvShow || !this.tvShow.seasons) {
+      return [];
+    }
+
+    // Create a copy of seasons array to avoid modifying the original
+    return [...this.tvShow.seasons].sort((a, b) => {
+      // First, handle cases where air_date might be missing
+      if (!a.air_date) return 1;  // Put items without date at the end
+      if (!b.air_date) return -1;
+
+      // Sort by air_date in descending order (newest first)
+      return new Date(b.air_date).getTime() - new Date(a.air_date).getTime();
+    });
   }
 
-  // Create a copy of seasons array to avoid modifying the original
-  return [...this.tvShow.seasons].sort((a, b) => {
-    // First, handle cases where air_date might be missing
-    if (!a.air_date) return 1;  // Put items without date at the end
-    if (!b.air_date) return -1;
-
-    // Sort by air_date in descending order (newest first)
-    return new Date(b.air_date).getTime() - new Date(a.air_date).getTime();
-  });
-}
+  navigateToSeason(showId: number, seasonNumber: number): void {
+    this.router.navigate(['/tv', showId, 'season', seasonNumber]);
+  }
 }
