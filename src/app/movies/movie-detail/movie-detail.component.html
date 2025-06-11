@@ -62,7 +62,7 @@
           </div>
           <div class="info-grid">
             <h3 class="label">Idioma original:</h3>
-            <p>{{ movie.spoken_languages && movie.spoken_languages.length > 0 ? movie.spoken_languages[0].name : 'N/A' }}</p>
+            <p>{{ getLanguageName(movie.original_language) }}</p>
           </div>
           <div class="info-grid">
             <h3 class="label">Países de producción:</h3>
