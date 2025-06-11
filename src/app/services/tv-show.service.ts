@@ -31,6 +31,10 @@ export class TvShowService {
     return this.http.get<TvShow[]>(`${this.apiUrl}/media/tv/recent`);
   }
 
+  getPopularTvShows(): Observable<TvShow[]> {
+    return this.http.get<TvShow[]>(`${this.apiUrl}/media/tv/popular`);
+  }
+
   getTvShowDetail(id: string, lang: string = 'es-ES'): Observable<any> {
     return this.http.get(`${this.apiUrl}/media/tv/detail/${id}?lang=${lang}`);
   }
