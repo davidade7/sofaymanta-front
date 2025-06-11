@@ -4,6 +4,35 @@
   padding: 20px;
 }
 
+.back-button-container {
+  margin-bottom: 20px;
+}
+
+.back-button {
+  background: #374151;
+  color: #ffffff;
+  border: 1px solid #4b5563;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-button:hover {
+  background: #4b5563;
+  border-color: #6b7280;
+  transform: translateY(-1px);
+}
+
+.back-button:active {
+  transform: translateY(0);
+}
+
 .season-header {
   display: flex;
   gap: 30px;

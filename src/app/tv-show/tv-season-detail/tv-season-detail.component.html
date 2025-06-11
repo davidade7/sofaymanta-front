@@ -1,4 +1,10 @@
 <div class="season-detail-container" *ngIf="!loading && !error">
+  <div class="back-button-container">
+    <button class="back-button" (click)="goBack()">
+      ← Volver
+    </button>
+  </div>
+
   <div class="season-header">
     <img [src]="getImageUrl(seasonDetail?.poster_path)" [alt]="seasonDetail?.name" class="season-poster">
     <div class="season-info">

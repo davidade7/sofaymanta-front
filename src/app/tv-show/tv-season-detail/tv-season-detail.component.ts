@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TvShowService } from '../../services/tv-show.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-tv-season-detail',
@@ -16,7 +16,8 @@ export class TvSeasonDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private tvShowService: TvShowService
+    private tvShowService: TvShowService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -53,5 +54,9 @@ export class TvSeasonDetailComponent implements OnInit {
   getStillImageUrl(path: string | null | undefined): string {
     if (!path) return 'https://placehold.co/500x280?text=No+Image+Available';
     return `https://image.tmdb.org/t/p/w500${path}`;
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }
