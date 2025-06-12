@@ -1,0 +1,15 @@
+<div class="search-container">
+  <input
+    type="text"
+    [formControl]="searchControl"
+    placeholder="Buscar películas o series o actores ..."
+    class="search-input"
+    (keyup.enter)="search()">
+
+  <button
+    class="search-button"
+    (click)="search()"
+    aria-label="Rechercher">
+    <lucide-icon [img]="Search"></lucide-icon>
+  </button>
+</div>

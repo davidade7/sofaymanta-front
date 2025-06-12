@@ -4,11 +4,12 @@ import { RecentMoviesComponent } from '../movies/recent-movies/recent-movies.com
 import { PopularMoviesComponent } from '../movies/popular-movies/popular-movies.component';
 import { RecentTvShowComponent } from '../tv-show/recent-tv-show/recent-tv-show.component';
 import { TvShowPopularComponent } from '../tv-show/tv-show-popular/tv-show-popular.component';
+import { SearchInputComponent } from '../components/search-input/search-input.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RecentMoviesComponent, PopularMoviesComponent, RecentTvShowComponent, TvShowPopularComponent],
+  imports: [CommonModule, SearchInputComponent, RecentMoviesComponent, PopularMoviesComponent, RecentTvShowComponent, TvShowPopularComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
