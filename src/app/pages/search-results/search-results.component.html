@@ -25,19 +25,11 @@
       </div>
 
       <div class="items-grid">
-        <div *ngFor="let movie of movies" class="movie-card" (click)="navigateToDetail('movie', movie.id)">
-          <div class="poster-container">
-            <img [src]="getImageUrl(movie.poster_path)" [alt]="movie.title" class="poster-image">
-          </div>
-          <div class="item-details">
-            <h3>{{ movie.title }}</h3>
-            <p class="release-date" *ngIf="movie.release_date">{{ movie.release_date | date:'yyyy' }}</p>
-            <p class="rating" *ngIf="movie.vote_average">
-              <span class="star">★</span>
-              {{ movie.vote_average | number:'1.1-1' }}/10
-            </p>
-          </div>
-        </div>
+        <app-movie-card
+          *ngFor="let movie of movies"
+          [movie]="movie"
+          (cardClick)="navigateToDetail('movie', movie.id)">
+        </app-movie-card>
       </div>
     </div>
 

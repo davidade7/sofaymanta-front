@@ -6,11 +6,12 @@ import { Observable, switchMap } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { LucideAngularModule, Film, Tv, Users } from 'lucide-angular';
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
+import { MovieCardComponent } from '../../shared/movie-card/movie-card.component';
 
 @Component({
   selector: 'app-search-result',
   standalone: true,
-  imports: [CommonModule, RouterModule, LucideAngularModule, SearchInputComponent],
+  imports: [CommonModule, RouterModule, LucideAngularModule, SearchInputComponent, MovieCardComponent],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css'
 })
