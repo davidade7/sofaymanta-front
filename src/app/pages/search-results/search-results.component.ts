@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SearchService } from '../../services/search.service';
 import { Observable, switchMap } from 'rxjs';
@@ -28,7 +28,8 @@ export class SearchResultComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -70,5 +71,23 @@ export class SearchResultComponent implements OnInit {
   // Méthode pour déterminer si nous avons des résultats
   hasResults(): boolean {
     return this.searchResults && this.searchResults.length > 0;
+  }
+
+  navigateToDetail(type: string, id: number): void {
+    console.log(`Navigation vers ${type} avec l'ID: ${id}`);
+
+    switch(type) {
+      case 'movie':
+        this.router.navigate(['/movies/detail', id]);
+        break;
+      case 'tv':
+        this.router.navigate(['/tv/detail', id]);
+        break;
+      case 'person':
+        this.router.navigate(['/person', id]);
+        break;
+      default:
+        console.error(`Type non reconnu: ${type}`);
+    }
   }
 }
