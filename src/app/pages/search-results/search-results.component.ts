@@ -5,11 +5,12 @@ import { SearchService } from '../../services/search.service';
 import { Observable, switchMap } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { LucideAngularModule, Film, Tv, Users } from 'lucide-angular';
+import { SearchInputComponent } from '../../components/search-input/search-input.component';
 
 @Component({
   selector: 'app-search-result',
   standalone: true,
-  imports: [CommonModule, RouterModule, LucideAngularModule],
+  imports: [CommonModule, RouterModule, LucideAngularModule, SearchInputComponent],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css'
 })
