@@ -1,11 +1,11 @@
 <div class="search-results-container">
   <app-search-input></app-search-input>
 
-  <h1>Résultats pour "{{ searchQuery }}"</h1>
+  <h1>Resultados para "{{ searchQuery }}"</h1>
 
   <div *ngIf="loading" class="loading-container">
     <div class="loading-spinner"></div>
-    <p>Recherche en cours...</p>
+    <p>Búsqueda en curso...</p>
   </div>
 
   <div *ngIf="error" class="error-message">
@@ -14,14 +14,14 @@
 
   <div *ngIf="!loading && !error" class="results-container">
     <p class="results-count" *ngIf="searchResults.length > 0">
-      {{ searchResults.length }} résultat(s) trouvé(s)
+      {{ searchResults.length }} resultado(s) encontrado(s)
     </p>
 
-    <!-- Films -->
+    <!-- Películas -->
     <div *ngIf="movies.length > 0" class="category-container">
       <div class="category-header">
         <lucide-icon [img]="Film"></lucide-icon>
-        <h2>Films ({{ movies.length }})</h2>
+        <h2>Películas ({{ movies.length }})</h2>
       </div>
 
       <div class="items-grid">
@@ -33,11 +33,11 @@
       </div>
     </div>
 
-    <!-- Séries TV -->
+    <!-- Series TV -->
     <div *ngIf="tvShows.length > 0" class="category-container">
       <div class="category-header">
         <lucide-icon [img]="Tv"></lucide-icon>
-        <h2>Séries TV ({{ tvShows.length }})</h2>
+        <h2>Series TV ({{ tvShows.length }})</h2>
       </div>
 
       <div class="items-grid">
@@ -57,11 +57,11 @@
       </div>
     </div>
 
-    <!-- Personnes -->
+    <!-- Personas -->
     <div *ngIf="people.length > 0" class="category-container">
       <div class="category-header">
         <lucide-icon [img]="Users"></lucide-icon>
-        <h2>Personnes ({{ people.length }})</h2>
+        <h2>Personas ({{ people.length }})</h2>
       </div>
 
       <div class="items-grid">
@@ -78,8 +78,8 @@
     </div>
 
     <div *ngIf="!hasResults()" class="no-results">
-      <p>Aucun résultat trouvé pour "{{ searchQuery }}".</p>
-      <p>Essayez avec d'autres termes de recherche.</p>
+      <p>No se encontraron resultados para "{{ searchQuery }}".</p>
+      <p>Intente con otros términos de búsqueda.</p>
     </div>
   </div>
 </div>
