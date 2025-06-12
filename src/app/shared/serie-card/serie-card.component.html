@@ -1,0 +1,20 @@
+<div class="serie-card" (click)="onClick()">
+  <div class="poster-container">
+    <img [src]="getImageUrl(serie.poster_path)" [alt]="serie.name" class="poster-image">
+    <div class="media-type-badge">
+      <lucide-icon [img]="Tv" size="16" title="Series"></lucide-icon>
+    </div>
+  </div>
+  <div class="card-content">
+    <h3 class="title">{{ serie.name }}</h3>
+    <p class="overview">{{ truncateOverview(serie.overview) }}</p>
+    <div class="details">
+      <span class="year" *ngIf="serie.first_air_date">{{ getYear(serie.first_air_date) }}</span>
+      <span class="production" *ngIf="!serie.first_air_date">En producción</span>
+      <span class="rating" *ngIf="serie.vote_average">
+        <span class="star">★</span>
+        {{ serie.vote_average | number:'1.1-1' }}
+      </span>
+    </div>
+  </div>
+</div>

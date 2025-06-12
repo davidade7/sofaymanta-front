@@ -7,11 +7,12 @@ import { RouterModule } from '@angular/router';
 import { LucideAngularModule, Film, Tv, Users } from 'lucide-angular';
 import { SearchInputComponent } from '../../components/search-input/search-input.component';
 import { MovieCardComponent } from '../../shared/movie-card/movie-card.component';
+import { SerieCardComponent } from '../../shared/serie-card/serie-card.component';
 
 @Component({
   selector: 'app-search-result',
   standalone: true,
-  imports: [CommonModule, RouterModule, LucideAngularModule, SearchInputComponent, MovieCardComponent],
+  imports: [CommonModule, RouterModule, LucideAngularModule, SearchInputComponent, MovieCardComponent, SerieCardComponent],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css'
 })

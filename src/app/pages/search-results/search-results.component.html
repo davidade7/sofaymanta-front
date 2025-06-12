@@ -41,19 +41,11 @@
       </div>
 
       <div class="items-grid">
-        <div *ngFor="let show of tvShows" class="result-item" (click)="navigateToDetail('tv', show.id)">
-          <div class="poster-container">
-            <img [src]="getImageUrl(show.poster_path)" [alt]="show.name" class="poster-image">
-          </div>
-          <div class="item-details">
-            <h3>{{ show.name }}</h3>
-            <p class="release-date" *ngIf="show.first_air_date">{{ show.first_air_date | date:'yyyy' }}</p>
-            <p class="rating" *ngIf="show.vote_average">
-              <span class="star">★</span>
-              {{ show.vote_average | number:'1.1-1' }}/10
-            </p>
-          </div>
-        </div>
+        <app-serie-card
+          *ngFor="let show of tvShows"
+          [serie]="show"
+          (cardClick)="navigateToDetail('tv', show.id)">
+        </app-serie-card>
       </div>
     </div>
 
