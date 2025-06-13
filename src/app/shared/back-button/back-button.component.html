@@ -1,0 +1,8 @@
+<button
+  [class]="'back-button ' + color + ' ' + size"
+  (click)="goBack()"
+  aria-label="Volver a la página anterior"
+>
+  <lucide-icon [img]="ArrowLeft" *ngIf="icon" class="back-icon" [size]="size === 'small' ? 16 : size === 'medium' ? 20 : 24"></lucide-icon>
+  <span class="button-text">{{ text }}</span>
+</button>
