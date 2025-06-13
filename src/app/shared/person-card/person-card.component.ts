@@ -15,7 +15,7 @@ export class PersonCardComponent {
   Users = Users; // Para usar el icono en la plantilla
 
   getImageUrl(path: string): string {
-    if (!path) return 'assets/images/placeholder-person.jpg';
+    if (!path) return 'https://placehold.co/500x750?text=Imagen+no+disponible&font=open-sans';
     return `https://image.tmdb.org/t/p/w300${path}`;
   }
 

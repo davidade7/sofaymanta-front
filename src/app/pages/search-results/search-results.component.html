@@ -14,7 +14,7 @@
 
   <div *ngIf="!loading && !error" class="results-container">
     <p class="results-count" *ngIf="searchResults.length > 0">
-      {{ searchResults.length }} resultado(s) encontrado(s)
+      {{ searchResults.length }} resultado{{ searchResults.length > 1 ? 's' : '' }} encontrado{{ searchResults.length > 1 ? 's' : '' }}
     </p>
 
     <!-- Películas -->
@@ -62,17 +62,6 @@
           [person]="person"
           (cardClick)="navigateToDetail('tv', person.id)">
         </app-person-card>
-
-
-        <!-- <div *ngFor="let person of people" class="result-item" [routerLink]="['/person', person.id]">
-          <div class="poster-container">
-            <img [src]="getImageUrl(person.profile_path)" [alt]="person.name" class="poster-image">
-          </div>
-          <div class="item-details">
-            <h3>{{ person.name }}</h3>
-            <p class="known-for" *ngIf="person.known_for_department">{{ person.known_for_department }}</p>
-          </div>
-        </div> -->
       </div>
     </div>
 

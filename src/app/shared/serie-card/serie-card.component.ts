@@ -15,7 +15,7 @@ export class SerieCardComponent {
   Tv = Tv; // Pour utiliser l'icône dans le template
 
   getImageUrl(path: string): string {
-    if (!path) return 'assets/images/placeholder.jpg';
+    if (!path) return 'https://placehold.co/500x750?text=Imagen+no+disponible&font=open-sans';
     return `https://image.tmdb.org/t/p/w300${path}`;
   }
 
