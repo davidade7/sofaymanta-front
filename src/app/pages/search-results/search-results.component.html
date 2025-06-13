@@ -60,7 +60,7 @@
         <app-person-card
           *ngFor="let person of people"
           [person]="person"
-          (cardClick)="navigateToDetail('tv', person.id)">
+          (cardClick)="navigateToDetail('person', person.id)">
         </app-person-card>
       </div>
     </div>

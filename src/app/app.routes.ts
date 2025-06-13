@@ -10,18 +10,20 @@ import { SigninComponent } from './pages/signin/signin.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { TvSeasonDetailComponent } from './tv-show/tv-season-detail/tv-season-detail.component';
 import { SearchResultComponent } from './pages/search-results/search-results.component';
+import { PersonDetailComponent } from './person/person-detail/person-detail.component';
 
 export const routes: Routes = [
     { path: 'signin', component: SigninComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'search', component: SearchResultComponent },
     { path: '', component: HomeComponent },
-    { path: 'movies/recent', component: RecentMoviesComponent },
-    { path: 'movies/popular', component: PopularMoviesComponent },
-    { path: 'movies/detail/:id', component: MovieDetailComponent },
+    { path: 'movie/recent', component: RecentMoviesComponent },
+    { path: 'movie/popular', component: PopularMoviesComponent },
+    { path: 'movie/detail/:id', component: MovieDetailComponent },
     { path: 'tv/recent', component: RecentTvShowComponent },
     { path: 'tv/popular', component: TvShowPopularComponent },
     { path: 'tv/detail/:id', component: TvShowDetailComponent },
     { path: 'tv/:showId/season/:seasonNumber', component: TvSeasonDetailComponent },
+    { path: 'person/detail/:id', component: PersonDetailComponent },
     { path: '**', redirectTo: '/' }
 ];

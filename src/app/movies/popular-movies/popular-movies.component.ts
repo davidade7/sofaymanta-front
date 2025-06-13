@@ -47,7 +47,7 @@ export class PopularMoviesComponent implements OnInit {
   }
 
   navigateToDetail(movieId: number): void {
-    this.router.navigate(['/movies/detail', movieId]);
+    this.router.navigate(['/movie/detail', movieId]);
   }
 
   getImageUrl(path: string | null | undefined, size: string = 'w500'): string {

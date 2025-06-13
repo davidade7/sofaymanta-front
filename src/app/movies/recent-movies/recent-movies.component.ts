@@ -72,6 +72,6 @@ export class RecentMoviesComponent implements OnInit {
 
   // Navigate to movie detail page
   navigateToDetail(movieId: number): void {
-    this.router.navigate(['/movies/detail', movieId]);
+    this.router.navigate(['/movie/detail', movieId]);
   }
 }

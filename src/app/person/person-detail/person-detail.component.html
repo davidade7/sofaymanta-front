@@ -1,0 +1,177 @@
+<div class="person-detail-container">
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner" aria-label="Cargando"></div>
+    <p>Cargando información...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message" role="alert">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && person" class="person-content">
+    <!-- Sección de cabecera -->
+    <div class="person-header">
+      <div class="profile-image-container">
+        <img [src]="getImageUrl(person.profile_path)" [alt]="'Foto de ' + person.name" class="profile-image">
+      </div>
+
+      <div class="person-info">
+        <h1>{{ person.name }}</h1>
+
+        <div class="info-item" *ngIf="person.birthday">
+          <span class="label">Nacimiento:</span>
+          <span class="value">{{ getFormattedDate(person.birthday) }} ({{ getAge(person.birthday, person.deathday) }})</span>
+        </div>
+
+        <div class="info-item" *ngIf="person.deathday">
+          <span class="label">Fallecimiento:</span>
+          <span class="value">{{ getFormattedDate(person.deathday) }}</span>
+        </div>
+
+        <div class="info-item" *ngIf="person.place_of_birth">
+          <span class="label">Lugar de nacimiento:</span>
+          <span class="value">{{ person.place_of_birth }}</span>
+        </div>
+
+        <div class="info-item" *ngIf="person.gender !== undefined && person.gender !== null">
+          <span class="label">Género:</span>
+          <span class="value">{{ getGender(person.gender) }}</span>
+        </div>
+
+        <div class="info-item" *ngIf="person.known_for_department">
+          <span class="label">Conocido por:</span>
+          <span class="value">{{ translateDepartment(person.known_for_department) }}</span>
+        </div>
+
+        <div class="info-item" *ngIf="person.popularity">
+          <span class="label">Popularidad:</span>
+          <span class="value popularity-value">{{ person.popularity | number:'1.1-1' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pestañas de navegación -->
+    <div class="tabs" role="tablist">
+      <button
+        class="tab-button"
+        [class.active]="activeTab === 'biography'"
+        (click)="changeTab('biography')"
+        role="tab"
+        [attr.aria-selected]="activeTab === 'biography'"
+        id="tab-biography">
+        Biografía
+      </button>
+      <button
+        class="tab-button"
+        [class.active]="activeTab === 'movies'"
+        (click)="changeTab('movies')"
+        role="tab"
+        [attr.aria-selected]="activeTab === 'movies'"
+        id="tab-movies">
+        Películas
+      </button>
+      <button
+        class="tab-button"
+        [class.active]="activeTab === 'series'"
+        (click)="changeTab('series')"
+        role="tab"
+        [attr.aria-selected]="activeTab === 'series'"
+        id="tab-series">
+        Series
+      </button>
+    </div>
+
+    <!-- Contenido de biografía -->
+    <div
+      *ngIf="activeTab === 'biography'"
+      class="biography-content"
+      role="tabpanel"
+      aria-labelledby="tab-biography">
+      <h2>Biografía</h2>
+      <div class="biography-text" [innerHTML]="person.biography || 'No hay información biográfica disponible.'"></div>
+
+      <div class="also-known-as" *ngIf="person.also_known_as && person.also_known_as.length > 0">
+        <h3>También conocido como:</h3>
+        <ul>
+          <li *ngFor="let name of person.also_known_as">{{ name }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Contenido de películas -->
+    <div
+      *ngIf="activeTab === 'movies'"
+      class="movies-content"
+      role="tabpanel"
+      aria-labelledby="tab-movies">
+      <h2>Películas</h2>
+
+      <!-- Verificamos si hay películas en el cast -->
+      <ng-container *ngIf="getMoviesFromCast().length > 0">
+        <h3>Como actor/actriz</h3>
+        <div class="media-grid">
+          <app-movie-card
+            *ngFor="let movie of getMoviesFromCast()"
+            [movie]="movie"
+            (cardClick)="navigateToDetail('movie', $event)">
+          </app-movie-card>
+        </div>
+      </ng-container>
+
+      <!-- Verificamos si hay películas en el crew -->
+      <ng-container *ngIf="getMoviesFromCrew().length > 0">
+        <h3>Como equipo técnico</h3>
+        <div class="media-grid">
+          <app-movie-card
+            *ngFor="let movie of getMoviesFromCrew()"
+            [movie]="movie"
+            (cardClick)="navigateToDetail('movie', $event)">
+          </app-movie-card>
+        </div>
+      </ng-container>
+
+      <!-- Mensaje si no hay películas disponibles -->
+      <div *ngIf="!credits || (getMoviesFromCast().length === 0 && getMoviesFromCrew().length === 0)" class="no-content">
+        No hay películas disponibles.
+      </div>
+    </div>
+
+    <!-- Contenido de series -->
+    <div
+      *ngIf="activeTab === 'series'"
+      class="series-content"
+      role="tabpanel"
+      aria-labelledby="tab-series">
+      <h2>Series</h2>
+
+      <!-- Verificamos si hay series en el cast -->
+      <ng-container *ngIf="getSeriesFromCast().length > 0">
+        <h3>Como actor/actriz</h3>
+        <div class="media-grid">
+          <app-serie-card
+            *ngFor="let serie of getSeriesFromCast()"
+            [serie]="serie"
+            (cardClick)="navigateToDetail('tv', $event)">
+          </app-serie-card>
+        </div>
+      </ng-container>
+
+      <!-- Verificamos si hay series en el crew -->
+      <ng-container *ngIf="getSeriesFromCrew().length > 0">
+        <h3>Como equipo técnico</h3>
+        <div class="media-grid">
+          <app-serie-card
+            *ngFor="let serie of getSeriesFromCrew()"
+            [serie]="serie"
+            (cardClick)="navigateToDetail('tv', $event)">
+          </app-serie-card>
+        </div>
+      </ng-container>
+
+      <!-- Mensaje si no hay series disponibles -->
+      <div *ngIf="!credits || (getSeriesFromCast().length === 0 && getSeriesFromCrew().length === 0)" class="no-content">
+        No hay series disponibles.
+      </div>
+    </div>
+  </div>
+</div>

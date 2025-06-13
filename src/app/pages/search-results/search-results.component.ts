@@ -81,13 +81,13 @@ export class SearchResultComponent implements OnInit {
 
     switch(type) {
       case 'movie':
-        this.router.navigate(['/movies/detail', id]);
+        this.router.navigate(['/movie/detail', id]);
         break;
       case 'tv':
         this.router.navigate(['/tv/detail', id]);
         break;
       case 'person':
-        this.router.navigate(['/person', id]);
+        this.router.navigate(['/person/detail', id]);
         break;
       default:
         console.error(`Type non reconnu: ${type}`);
