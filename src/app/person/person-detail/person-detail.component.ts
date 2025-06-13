@@ -99,13 +99,15 @@ export class PersonDetailComponent implements OnInit {
   }
 
   getImageUrl(path: string | null): string {
-    if (!path) return 'assets/images/placeholder-person.jpg';
+    if (!path) return 'https://placehold.co/500x750?text=Imagen+no+disponible&font=open-sans';
     return `https://image.tmdb.org/t/p/w500${path}`;
   }
 
   getGender(genderCode: number): string {
+    if (genderCode === 0) return 'No especificado';
     if (genderCode === 1) return 'Femenino';
     if (genderCode === 2) return 'Masculino';
+    if (genderCode === 3) return 'No binario';
     return 'No especificado';
   }
 
