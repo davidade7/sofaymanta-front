@@ -10,6 +10,8 @@
 
   <div *ngIf="!loading && !error && person" class="person-content">
     <!-- Sección de cabecera -->
+    <app-back-button></app-back-button>
+    <app-top-button></app-top-button>
     <div class="person-header">
       <div class="profile-image-container">
         <img [src]="getImageUrl(person.profile_path)" [alt]="'Foto de ' + person.name" class="profile-image">
@@ -20,12 +22,12 @@
 
         <div class="info-item" *ngIf="person.birthday">
           <span class="label">Nacimiento:</span>
-          <span class="value">{{ getFormattedDate(person.birthday) }} ({{ getAge(person.birthday, person.deathday) }})</span>
+          <span class="value">{{ getFormattedDate(person.birthday) }}</span>
         </div>
 
         <div class="info-item" *ngIf="person.deathday">
           <span class="label">Fallecimiento:</span>
-          <span class="value">{{ getFormattedDate(person.deathday) }}</span>
+          <span class="value">{{ getFormattedDate(person.deathday) }} ({{ getAge(person.birthday, person.deathday) }})</span>
         </div>
 
         <div class="info-item" *ngIf="person.place_of_birth">
@@ -173,5 +175,6 @@
         No hay series disponibles.
       </div>
     </div>
+
   </div>
 </div>

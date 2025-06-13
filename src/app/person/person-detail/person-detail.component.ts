@@ -4,6 +4,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PersonService } from '../../services/person.service';
 import { MovieCardComponent } from '../../shared/movie-card/movie-card.component';
 import { SerieCardComponent } from '../../shared/serie-card/serie-card.component';
+import { BackButtonComponent } from '../../shared/back-button/back-button.component';
+import { TopButtonComponent } from '../../shared/top-button/top-button.component';
 import { LucideAngularModule } from 'lucide-angular';
 import { catchError, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -11,7 +13,7 @@ import { of } from 'rxjs';
 @Component({
   selector: 'app-person-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, LucideAngularModule, MovieCardComponent, SerieCardComponent],
+  imports: [CommonModule, RouterModule, LucideAngularModule, MovieCardComponent, SerieCardComponent, BackButtonComponent, TopButtonComponent],
   templateUrl: './person-detail.component.html',
   styleUrls: ['./person-detail.component.css']
 })
