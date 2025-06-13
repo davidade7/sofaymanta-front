@@ -1,0 +1,15 @@
+<div class="person-card" (click)="onClick()">
+  <div class="poster-container">
+    <img [src]="getImageUrl(person.profile_path)" [alt]="person.name" class="poster-image">
+    <div class="media-type-badge">
+      <lucide-icon [img]="Users" size="16" title="Persona"></lucide-icon>
+    </div>
+  </div>
+  <div class="card-content">
+    <h3 class="title">{{ truncateName(person.name) }}</h3>
+
+    <div class="person-details">
+      <p class="known-for" *ngIf="person.known_for_department">{{ getKnownFor() }}</p>
+    </div>
+  </div>
+</div>
