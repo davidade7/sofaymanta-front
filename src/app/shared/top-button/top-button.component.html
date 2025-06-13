@@ -1,0 +1,9 @@
+<button
+  *ngIf="visible"
+  [class]="'top-button ' + color + ' ' + size"
+  (click)="scrollToTop()"
+  aria-label="Volver al inicio de la página"
+>
+  <lucide-icon [img]="ArrowUp" class="top-icon" [size]="size === 'small' ? 16 : size === 'medium' ? 20 : 24"></lucide-icon>
+  <span class="button-text" *ngIf="text">{{ text }}</span>
+</button>

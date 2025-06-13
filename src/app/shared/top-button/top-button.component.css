@@ -1,0 +1,125 @@
+:host {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+}
+
+.top-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Añadir texto hace que el botón sea más oval que circular */
+.top-button:has(.button-text) {
+  border-radius: 20px;
+  padding: 0 16px;
+}
+
+/* Styles de couleur */
+.primary {
+  background-color: #3498db;
+  color: #ffffff;
+}
+
+.primary:hover {
+  background-color: #2980b9;
+}
+
+.secondary {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #dee2e6;
+}
+
+.secondary:hover {
+  background-color: #e9ecef;
+}
+
+.light {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #555;
+  backdrop-filter: blur(4px);
+}
+
+.light:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.dark {
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+.dark:hover {
+  background-color: #212529;
+}
+
+/* Styles de taille */
+.small {
+  width: 32px;
+  height: 32px;
+  font-size: 12px;
+}
+
+.medium {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+}
+
+.large {
+  width: 48px;
+  height: 48px;
+  font-size: 16px;
+}
+
+/* Animation de l'icône */
+.top-button:hover .top-icon {
+  transform: translateY(-3px);
+}
+
+.top-icon {
+  transition: transform 0.2s ease;
+}
+
+.button-text {
+  line-height: 1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Media query pour les dispositifs mobiles */
+@media (max-width: 768px) {
+  :host {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .top-button {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .button-text {
+    display: none;
+  }
+}
