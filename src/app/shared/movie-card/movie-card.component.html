@@ -7,6 +7,12 @@
   </div>
   <div class="card-content">
     <h3 class="title">{{ movie.title }}</h3>
+    <div class="genre-badges">
+      <span class="genre-badge" *ngFor="let genre of getDisplayGenres()" [attr.data-genre]="genre.name.toLowerCase()">
+        {{ genre.name }}
+      </span>
+    </div>
+
     <p class="overview">{{ truncateOverview(movie.overview) }}</p>
     <div class="details">
       <span class="year" *ngIf="movie.release_date">{{ getYear(movie.release_date) }}</span>

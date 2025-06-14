@@ -114,8 +114,7 @@
         <div class="media-grid">
           <app-movie-card
             *ngFor="let movie of getMoviesFromCast()"
-            [movie]="movie"
-            (cardClick)="navigateToDetail('movie', $event)">
+            [movie]="movie">
           </app-movie-card>
         </div>
       </ng-container>
@@ -126,8 +125,7 @@
         <div class="media-grid">
           <app-movie-card
             *ngFor="let movie of getMoviesFromCrew()"
-            [movie]="movie"
-            (cardClick)="navigateToDetail('movie', $event)">
+            [movie]="movie">
           </app-movie-card>
         </div>
       </ng-container>

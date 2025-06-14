@@ -9,8 +9,14 @@
     </ng-container>
   </app-carousel>
 
-  <app-recent-movies></app-recent-movies>
-  <app-popular-movies></app-popular-movies>
+  <app-carousel title="Películas Populares">
+    <div *ngIf="loading.popularMovies" class="loading-spinner">Cargando... </div>
+    <ng-container *ngIf="!loading.popularMovies">
+      <app-movie-card *ngFor="let movie of popularMovies" [movie]="movie"></app-movie-card>
+      <div *ngIf="popularMovies.length === 0" class="no-results">No películas populares encontradas.</div>
+    </ng-container>
+  </app-carousel>
+
   <app-recent-tv-show></app-recent-tv-show>
   <app-tv-show-popular></app-tv-show-popular>
 </div>

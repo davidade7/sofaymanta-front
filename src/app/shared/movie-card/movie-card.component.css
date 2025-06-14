@@ -61,12 +61,30 @@
 }
 
 .title {
-  margin: 0 0 8px;
   font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.genre-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 5px 0;
+}
+
+.genre-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 500;
+  color: white;
+  background-color: rgba(0, 123, 255, 0.8);
+  text-transform: capitalize;
+  white-space: nowrap;
 }
 
 .overview {

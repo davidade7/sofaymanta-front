@@ -8,14 +8,19 @@ export interface Movie {
   releaseDate?: string;
   voteAverage?: number;
   voteCount?: number;
-  runtime?: number;
-  genres?: Genre[];
+  genre_ids?: number[];
   adult?: boolean;
   originalLanguage?: string;
   popularity?: number;
 }
 
-export interface Genre {
-  id: number;
-  name: string;
+export interface MovieCard {
+  id: string | number;
+  title: string;
+  overview?: string;
+  posterPath?: string;
+  releaseDate?: string;
+  voteAverage?: number;
+  genre_ids?: number[];
+  adult?: boolean;
 }
