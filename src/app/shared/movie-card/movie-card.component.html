@@ -8,8 +8,29 @@
   <div class="card-content">
     <h3 class="title">{{ movie.title }}</h3>
     <div class="genre-badges">
+      <!-- First 2 genres -->
       <span class="genre-badge" *ngFor="let genre of getDisplayGenres()" [attr.data-genre]="genre.name.toLowerCase()">
         {{ genre.name }}
+      </span>
+
+      <!-- Next genres -->
+      <span
+        *ngIf="getAdditionalGenresCount() > 0"
+        #moreBadge
+        class="genre-badge more-genres"
+        [attr.data-count]="getAdditionalGenresCount()"
+        (mouseenter)="showTooltip()"
+        (mouseleave)="hideTooltip()"
+        (click)="$event.stopPropagation()">
+        +{{ getAdditionalGenresCount() }}
+
+        <!-- Tooltip placé à l'intérieur du badge -->
+        <div #tooltipRef *ngIf="showMoreGenres" class="genres-tooltip">
+          <div class="tooltip-content">
+            <span *ngFor="let genre of getAdditionalGenres()">{{ genre.name }}</span>
+          </div>
+          <div class="tooltip-arrow"></div>
+        </div>
       </span>
     </div>
 

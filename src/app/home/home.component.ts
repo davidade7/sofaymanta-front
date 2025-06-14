@@ -37,7 +37,6 @@ export class HomeComponent implements OnInit {
     this.loading.recentMovies = true;
     this.movieService.getRecentMovies().subscribe({
       next: (data) => {
-        console.log('Recent Movies:', data);
         this.recentMovies = data;
         this.loading.recentMovies = false;
       },

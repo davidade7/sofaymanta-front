@@ -1,7 +1,7 @@
 <div class="home-container">
   <app-search-input></app-search-input>
 
-  <app-carousel title="Películas recientes">
+  <app-carousel>
     <div *ngIf="loading.recentMovies" class="loading-spinner">Cargando... </div>
     <ng-container *ngIf="!loading.recentMovies">
       <app-movie-card *ngFor="let movie of recentMovies" [movie]="movie"></app-movie-card>

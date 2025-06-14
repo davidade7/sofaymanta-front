@@ -9,6 +9,7 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .movie-card:hover {
@@ -69,10 +70,11 @@
 }
 
 .genre-badges {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin: 5px 0;
+  margin-bottom: 8px;
 }
 
 .genre-badge {
@@ -85,6 +87,77 @@
   background-color: rgba(0, 123, 255, 0.8);
   text-transform: capitalize;
   white-space: nowrap;
+  position: relative;
+}
+
+.more-genres {
+  background-color: #6c757d;
+  font-weight: 600;
+  cursor: help;
+  position: relative; /* Important pour positionner le tooltip */
+}
+
+.genres-tooltip {
+  position: absolute;
+  z-index: 100;
+  bottom: 100%; /* Position au-dessus du badge */
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
+  width: max-content;
+  max-width: 180px;
+  pointer-events: none;
+  opacity: 0;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.tooltip-content {
+  background-color: #333;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  top: 100%; /* Place la flèche en bas */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #333;
+}
+
+.tooltip-content span {
+  display: block;
+  text-align: left;
+  padding: 3px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tooltip-content span:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .overview {
