@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TvShowService } from '../../services/tv-show.service';
+import { SerieService } from '../../services/serie.service';
 import { CommonModule, Location } from '@angular/common';
 
 @Component({
@@ -16,7 +16,7 @@ export class TvSeasonDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private tvShowService: TvShowService,
+    private tvShowService: SerieService,
     private location: Location
   ) {}
 

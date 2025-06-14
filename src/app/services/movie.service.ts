@@ -1,23 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Movie {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-}
+import { MovieCard } from '../models/movie.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,12 +11,12 @@ export class MovieService {
 
   constructor(private http: HttpClient) { }
 
-  getRecentMovies(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(`${this.apiUrl}/media/movies/recent`);
+  getRecentMovies(): Observable<MovieCard[]> {
+    return this.http.get<MovieCard[]>(`${this.apiUrl}/media/movies/recent`);
   }
 
-  getPopularMovies(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(`${this.apiUrl}/media/movies/popular`);
+  getPopularMovies(): Observable<MovieCard[]> {
+    return this.http.get<MovieCard[]>(`${this.apiUrl}/media/movies/popular`);
   }
 
   getMovieDetail(id: string, lang: string = 'es-ES'): Observable<any> {

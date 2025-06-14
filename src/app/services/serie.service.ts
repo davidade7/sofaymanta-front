@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { SerieCard } from '../models/serie.model';
 
 export interface TvShow {
   adult: boolean;
@@ -22,17 +23,17 @@ export interface TvShow {
 @Injectable({
   providedIn: 'root'
 })
-export class TvShowService {
+export class SerieService {
   private apiUrl = 'https://sofaymanta-back-production.up.railway.app';
 
   constructor(private http: HttpClient) { }
 
-  getRecentTvShows(): Observable<TvShow[]> {
-    return this.http.get<TvShow[]>(`${this.apiUrl}/media/tv/recent`);
+  getRecentTvShows(): Observable<SerieCard[]> {
+    return this.http.get<SerieCard[]>(`${this.apiUrl}/media/tv/recent`);
   }
 
-  getPopularTvShows(): Observable<TvShow[]> {
-    return this.http.get<TvShow[]>(`${this.apiUrl}/media/tv/popular`);
+  getPopularTvShows(): Observable<SerieCard[]> {
+    return this.http.get<SerieCard[]>(`${this.apiUrl}/media/tv/popular`);
   }
 
   getTvShowDetail(id: string, lang: string = 'es-ES'): Observable<any> {

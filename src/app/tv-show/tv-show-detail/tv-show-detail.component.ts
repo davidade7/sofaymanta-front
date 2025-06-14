@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TvShowService } from '../../services/tv-show.service';
+import { SerieService } from '../../services/serie.service';
 import { ArrowLeft, Star, ChevronRight } from 'lucide-angular';
 import { LucideAngularModule } from 'lucide-angular';
 
@@ -79,7 +79,7 @@ export class TvShowDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private tvShowService: TvShowService
+    private tvShowService: SerieService
   ) {}
 
   ngOnInit(): void {

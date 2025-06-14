@@ -17,6 +17,19 @@
     </ng-container>
   </app-carousel>
 
-  <app-recent-tv-show></app-recent-tv-show>
-  <app-tv-show-popular></app-tv-show-popular>
+  <app-carousel [carousel-title]="'Series recientes'">
+    <div *ngIf="loading.recentSeries" class="loading-spinner">Cargando... </div>
+    <ng-container *ngIf="!loading.recentSeries">
+      <app-serie-card *ngFor="let serie of recentSeries" [serie]="serie"></app-serie-card>
+      <div *ngIf="recentSeries.length === 0" class="no-results">No series recientes encontradas.</div>
+    </ng-container>
+  </app-carousel>
+
+  <app-carousel [carousel-title]="'Series Populares'">
+    <div *ngIf="loading.popularSeries" class="loading-spinner">Cargando... </div>
+    <ng-container *ngIf="!loading.popularSeries">
+      <app-serie-card *ngFor="let serie of popularSeries" [serie]="serie"></app-serie-card>
+      <div *ngIf="popularSeries.length === 0" class="no-results">No series populares encontradas.</div>
+    </ng-container>
+  </app-carousel>
 </div>
