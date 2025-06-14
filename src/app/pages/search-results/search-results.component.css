@@ -135,7 +135,7 @@
   .search-results-grid app-movie-card,
   .search-results-grid app-serie-card,
   .search-results-grid app-person-card {
-    width: 175px;
+    width: 185px;
   }
 
   .search-header h1 {
@@ -147,7 +147,7 @@
   .search-results-grid app-movie-card,
   .search-results-grid app-serie-card,
   .search-results-grid app-person-card {
-    width: 150px;
+    width: 170px;
   }
 
   .filters {

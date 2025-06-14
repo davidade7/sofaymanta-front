@@ -11,19 +11,19 @@
 
   <!-- Filtres (optionnel) -->
   <div class="filters">
-  <button [class.active]="activeFilter === 'all'" (click)="setFilter('all')">
-    Todos <span class="count">({{ getTotalResults() }})</span>
-  </button>
-  <button [class.active]="activeFilter === 'movies'" (click)="setFilter('movies')">
-    Películas <span class="count">({{ results.movies.length || 0 }})</span>
-  </button>
-  <button [class.active]="activeFilter === 'series'" (click)="setFilter('series')">
-    Series <span class="count">({{ results.series.length || 0 }})</span>
-  </button>
-  <button [class.active]="activeFilter === 'persons'" (click)="setFilter('persons')">
-    Personas <span class="count">({{ results.persons.length || 0 }})</span>
-  </button>
-</div>
+    <button [class.active]="activeFilter === 'all'" (click)="setFilter('all')">
+      Todos <span class="count">({{ getTotalResults() }})</span>
+    </button>
+    <button [class.active]="activeFilter === 'movies'" (click)="setFilter('movies')">
+      Películas <span class="count">({{ results.movies.length || 0 }})</span>
+    </button>
+    <button [class.active]="activeFilter === 'series'" (click)="setFilter('series')">
+      Series <span class="count">({{ results.series.length || 0 }})</span>
+    </button>
+    <button [class.active]="activeFilter === 'persons'" (click)="setFilter('persons')">
+      Personas <span class="count">({{ results.persons.length || 0 }})</span>
+    </button>
+  </div>
 
   <!-- Message de chargement -->
   <div *ngIf="loading" class="loading-spinner">

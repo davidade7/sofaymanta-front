@@ -14,7 +14,7 @@
 
 .person-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(19, 91, 185, 0.5); /* Utilisation de la même couleur que movie-card */
+  box-shadow: 0 8px 16px rgba(19, 91, 185, 0.5);
 }
 
 .poster-container {

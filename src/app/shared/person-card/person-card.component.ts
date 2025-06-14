@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Users } from 'lucide-angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-person-card',
@@ -9,18 +10,32 @@ import { LucideAngularModule, Users } from 'lucide-angular';
   templateUrl: './person-card.component.html',
   styleUrl: './person-card.component.css'
 })
-export class PersonCardComponent {
+export class PersonCardComponent implements OnInit {
   @Input() person: any;
-  @Output() cardClick = new EventEmitter<number>();
-  Users = Users; // Para usar el icono en la plantilla
+  Users = Users;
+
+  constructor(
+    private router: Router,
+    private el: ElementRef
+  ) {}
+
+  ngOnInit() {
+    // Initialisation si nécessaire
+  }
 
   getImageUrl(path: string): string {
     if (!path) return 'https://placehold.co/500x750?text=Imagen+no+disponible&font=open-sans';
     return `https://image.tmdb.org/t/p/w300${path}`;
   }
 
-  onClick(): void {
-    this.cardClick.emit(this.person.id);
+  navigateToDetails() {
+    console.log('Navigating to person details:', this.person);
+    if (this.person && this.person.id) {
+      // Utilisez la même structure de route que dans app.routes.ts
+      this.router.navigate(['/person/detail', this.person.id]);
+    } else {
+      console.error('Cannot navigate: person ID is missing');
+    }
   }
 
   getKnownFor(): string {
