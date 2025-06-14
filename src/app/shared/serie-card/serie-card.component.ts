@@ -34,7 +34,7 @@ export class SerieCardComponent implements OnInit {
 
   loadGenres() {
     if (this.serie && this.serie.genre_ids) {
-      this.genres = this.genreService.getGenresFromIds(this.serie.genre_ids);
+      this.genres = this.genreService.getGenresFromIds(this.serie.genre_ids, false);
     }
   }
 
