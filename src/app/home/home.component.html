@@ -1,7 +1,7 @@
 <div class="home-container">
   <app-search-input></app-search-input>
 
-  <app-carousel>
+  <app-carousel [carousel-title]="'Películas recientes'">
     <div *ngIf="loading.recentMovies" class="loading-spinner">Cargando... </div>
     <ng-container *ngIf="!loading.recentMovies">
       <app-movie-card *ngFor="let movie of recentMovies" [movie]="movie"></app-movie-card>
@@ -9,7 +9,7 @@
     </ng-container>
   </app-carousel>
 
-  <app-carousel title="Películas Populares">
+  <app-carousel [carousel-title]="'Películas Populares'">
     <div *ngIf="loading.popularMovies" class="loading-spinner">Cargando... </div>
     <ng-container *ngIf="!loading.popularMovies">
       <app-movie-card *ngFor="let movie of popularMovies" [movie]="movie"></app-movie-card>

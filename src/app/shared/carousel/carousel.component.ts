@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './carousel.component.css'
 })
 export class CarouselComponent implements AfterViewInit, OnDestroy {
-  @Input() title: string = '';
+  @Input('carousel-title') title: string = '';
   @Input() items: any[] = [];
   @ViewChild('carouselTrack') carouselTrack!: ElementRef;
 
