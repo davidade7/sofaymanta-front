@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,19 +8,33 @@ import { Observable } from 'rxjs';
 export class SearchService {
   private apiUrl = 'https://sofaymanta-back-production.up.railway.app';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  /**
-   * Search for multimedia based on the provided query and language
-   * @param query The search query
-   * @param lang The language code (defaults to 'es-ES')
-   * @returns Observable of the search results
-   */
-  searchMultimedia(query: string, lang: string = 'es-ES'): Observable<any> {
-    const params = new HttpParams()
+  searchMedia(query: string, page: number = 1): Observable<any> {
+    let params = new HttpParams()
       .set('query', query)
-      .set('lang', lang);
+      .set('page', page.toString());
 
-    return this.http.get<any>(`${this.apiUrl}/media/search`, { params });
+    return this.http.get<any[]>(`${this.apiUrl}/media/search`, { params })
+      .pipe(
+        map(results => this.processSearchResults(results))
+      );
+  }
+
+  private processSearchResults(results: any[]) {
+    // Séparer les résultats en films et séries
+    const movies = results.filter(item => item.media_type === 'movie');
+    const series = results.filter(item => item.media_type === 'tv');
+    const persons = results.filter(item => item.media_type === 'person');
+
+    return {
+      movies,
+      series,
+      persons,
+      totalMovies: movies.length,
+      totalSeries: series.length,
+      totalPersons: persons.length,
+      total: results.length
+    };
   }
 }

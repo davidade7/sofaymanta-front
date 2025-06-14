@@ -1,73 +1,80 @@
 <div class="search-results-container">
   <app-search-input></app-search-input>
+  <app-top-button></app-top-button>
 
-  <h1>Resultados para "{{ searchQuery }}"</h1>
-
-  <div *ngIf="loading" class="loading-container">
-    <div class="loading-spinner"></div>
-    <p>Búsqueda en curso...</p>
+  <div class="search-header">
+    <h1>Resultados para "{{ searchQuery }}"</h1>
+    <div class="result-count">
+      {{ totalResults }} resultados encontrados
+    </div>
   </div>
 
+  <!-- Filtres (optionnel) -->
+  <div class="filters">
+  <button [class.active]="activeFilter === 'all'" (click)="setFilter('all')">
+    Todos <span class="count">({{ getTotalResults() }})</span>
+  </button>
+  <button [class.active]="activeFilter === 'movies'" (click)="setFilter('movies')">
+    Películas <span class="count">({{ results.movies?.length || 0 }})</span>
+  </button>
+  <button [class.active]="activeFilter === 'series'" (click)="setFilter('series')">
+    Series <span class="count">({{ results.series?.length || 0 }})</span>
+  </button>
+  <button [class.active]="activeFilter === 'persons'" (click)="setFilter('persons')">
+    Personas <span class="count">({{ results.persons?.length || 0 }})</span>
+  </button>
+</div>
+
+  <!-- Message de chargement -->
+  <div *ngIf="loading" class="loading-spinner">
+    <span>Cargando resultados...</span>
+  </div>
+
+  <!-- Message d'erreur -->
   <div *ngIf="error" class="error-message">
-    {{ error }}
+    <p>Error al cargar los resultados. Por favor, inténtalo de nuevo.</p>
   </div>
 
-  <div *ngIf="!loading && !error" class="results-container">
-    <p class="results-count" *ngIf="searchResults.length > 0">
-      {{ searchResults.length }} resultado{{ searchResults.length > 1 ? 's' : '' }} encontrado{{ searchResults.length > 1 ? 's' : '' }}
-    </p>
+  <!-- Grille de résultats -->
+  <div *ngIf="!loading && !error" class="search-results-grid">
+    <!-- Films -->
+    <ng-container *ngFor="let movie of filteredResults.movies">
+      <app-movie-card [movie]="movie"></app-movie-card>
+    </ng-container>
 
-    <!-- Películas -->
-    <div *ngIf="movies.length > 0" class="category-container">
-      <div class="category-header">
-        <lucide-icon [img]="Film"></lucide-icon>
-        <h2>Películas ({{ movies.length }})</h2>
-      </div>
+    <!-- Séries -->
+    <ng-container *ngFor="let serie of filteredResults.series">
+      <app-serie-card [serie]="serie"></app-serie-card>
+    </ng-container>
 
-      <div class="items-grid">
-        <app-movie-card
-          *ngFor="let movie of movies"
-          [movie]="movie"
-          (cardClick)="navigateToDetail('movie', movie.id)">
-        </app-movie-card>
-      </div>
+    <!-- Personnes -->
+    <ng-container *ngFor="let person of filteredResults.persons">
+      <app-person-card [person]="person"></app-person-card>
+    </ng-container>
+
+    <!-- Message si aucun résultat -->
+    <div *ngIf="noResults" class="no-results">
+      <p>No se encontraron resultados para "{{ searchQuery }}"</p>
+      <p>Intenta con otra búsqueda o verifica la ortografía.</p>
     </div>
+  </div>
 
-    <!-- Series TV -->
-    <div *ngIf="tvShows.length > 0" class="category-container">
-      <div class="category-header">
-        <lucide-icon [img]="Tv"></lucide-icon>
-        <h2>Series TV ({{ tvShows.length }})</h2>
-      </div>
+  <!-- Pagination (optionnel) -->
+  <div *ngIf="totalResults > itemsPerPage" class="pagination">
+    <button
+      [disabled]="currentPage === 1"
+      (click)="goToPage(currentPage - 1)"
+      class="pagination-button">
+      Anterior
+    </button>
 
-      <div class="items-grid">
-        <app-serie-card
-          *ngFor="let show of tvShows"
-          [serie]="show"
-          (cardClick)="navigateToDetail('tv', show.id)">
-        </app-serie-card>
-      </div>
-    </div>
+    <span class="page-info">Página {{ currentPage }} de {{ totalPages }}</span>
 
-    <!-- Personas -->
-    <div *ngIf="people.length > 0" class="category-container">
-      <div class="category-header">
-        <lucide-icon [img]="Users"></lucide-icon>
-        <h2>Personas ({{ people.length }})</h2>
-      </div>
-
-      <div class="items-grid">
-        <app-person-card
-          *ngFor="let person of people"
-          [person]="person"
-          (cardClick)="navigateToDetail('person', person.id)">
-        </app-person-card>
-      </div>
-    </div>
-
-    <div *ngIf="!hasResults()" class="no-results">
-      <p>No se encontraron resultados para "{{ searchQuery }}".</p>
-      <p>Intente con otros términos de búsqueda.</p>
-    </div>
+    <button
+      [disabled]="currentPage === totalPages"
+      (click)="goToPage(currentPage + 1)"
+      class="pagination-button">
+      Siguiente
+    </button>
   </div>
 </div>

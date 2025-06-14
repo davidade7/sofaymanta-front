@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SearchInputComponent } from '../components/search-input/search-input.component';
+import { SearchInputComponent } from '../shared/search-input/search-input.component';
 import { CarouselComponent } from '../shared/carousel/carousel.component';
 import { MovieCardComponent } from '../shared/movie-card/movie-card.component';
 import { SerieCardComponent } from '../shared/serie-card/serie-card.component';
+import { TopButtonComponent } from '../shared/top-button/top-button.component';
 import { MovieService } from '../services/movie.service';
 import { SerieService } from '../services/serie.service';
 import { MovieCard } from '../models/movie.model';
@@ -12,7 +13,7 @@ import { SerieCard } from '../models/serie.model';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, SearchInputComponent, CarouselComponent, MovieCardComponent, SerieCardComponent],
+  imports: [CommonModule, SearchInputComponent, CarouselComponent, MovieCardComponent, SerieCardComponent, TopButtonComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

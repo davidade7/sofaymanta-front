@@ -1,144 +1,162 @@
 .search-results-container {
+  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
 }
 
-h1 {
-  margin-bottom: 10px;
-  font-size: 28px;
-  color: #333;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-}
-
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-}
-
-.loading-spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-  border-top: 4px solid #007bff;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.error-message {
-  padding: 15px;
-  background-color: #f8d7da;
-  color: #721c24;
-  border-radius: 4px;
+.search-header {
   margin-bottom: 20px;
 }
 
-.category-container {
-  margin-bottom: 40px;
+.search-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
-.category-header {
+.result-count {
+  color: #666;
+  font-size: 14px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  gap: 5px;
 }
 
-.category-header lucide-icon {
-  margin-right: 10px;
-  color: #007bff;
+.filters button.active {
+  background-color: #0f172a;
+  color: white;
+  border-color: #0f172a;
 }
 
-.category-header h2 {
-  font-size: 22px;
-  margin: 0;
-  color: #333;
+.filters .count {
+  font-size: 12px;
+  opacity: 0.8;
 }
 
-.items-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+/* Grille de résultats */
+.search-results-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
+  margin-bottom: 30px;
 }
 
-.result-item {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
+/* Ajuster la largeur des cards pour qu'elles prennent toute la largeur disponible */
+.search-results-grid app-movie-card,
+.search-results-grid app-serie-card,
+.search-results-grid app-person-card {
+  width: 200px;
+  margin-bottom: 10px;
 }
 
-.result-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* Modification pour que les cartes prennent toute la largeur disponible */
+.movie-card, .serie-card {
+  width: 100%;
+  min-width: auto;
+  height: 100%;
 }
 
 .poster-container {
-  height: 270px;
-  overflow: hidden;
-}
-
-.poster-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 0;
+  padding-top: 150%; /* Ratio 2:3 pour les posters */
 }
 
-.item-details {
-  padding: 12px;
-}
-
-.item-details h3 {
-  margin: 0 0 5px;
-  font-size: 16px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.release-date, .rating, .known-for {
-  font-size: 14px;
-  color: #666;
-  margin: 5px 0 0;
-}
-
-.star {
-  color: #ffc107;
-  margin-right: 3px;
-}
-
+/* Messages d'état */
+.loading-spinner,
+.error-message,
 .no-results {
   text-align: center;
   padding: 40px 0;
   color: #666;
 }
 
-.no-results p {
-  margin: 10px 0;
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
 }
 
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 15px;
+}
+
+.pagination-button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-button:not(:disabled):hover {
+  background-color: #f5f5f5;
+}
+
+.page-info {
+  color: #666;
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
-  .items-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 15px;
+  .search-results-grid app-movie-card,
+  .search-results-grid app-serie-card,
+  .search-results-grid app-person-card {
+    width: 175px;
   }
 
-  .poster-container {
-    height: 210px;
+  .search-header h1 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-results-grid app-movie-card,
+  .search-results-grid app-serie-card,
+  .search-results-grid app-person-card {
+    width: 150px;
   }
 
-  .item-details h3 {
-    font-size: 14px;
+  .filters {
+    overflow-x: auto;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+  }
+
+  .search-header h1 {
+    font-size: 18px;
   }
 }

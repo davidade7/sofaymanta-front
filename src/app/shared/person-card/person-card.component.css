@@ -1,4 +1,6 @@
 .person-card {
+  width: 200px;
+  min-width: 200px;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
@@ -7,17 +9,18 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .person-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(19, 91, 185, 0.5); /* Utilisation de la même couleur que movie-card */
 }
 
 .poster-container {
   position: relative;
   height: 0;
-  padding-top: 150%; /* Aspect ratio 2:3 para las imágenes de personas */
+  padding-top: 150%; /* Aspect ratio 2:3 identique aux movie-card */
   overflow: hidden;
 }
 
@@ -41,14 +44,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
 }
 
 .media-type-badge lucide-icon {
   width: 16px;
   height: 16px;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-content {
@@ -59,11 +62,12 @@
 }
 
 .title {
-  margin: 0 0 8px;
   font-size: 16px;
   font-weight: 600;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0 0 8px;
 }
 
 .person-details {
@@ -77,4 +81,33 @@
   color: #666;
   margin: 0;
   font-weight: 500;
+}
+
+/* Ajout de media queries pour la responsive comme dans movie-card */
+@media (max-width: 768px) {
+  .person-card {
+    width: 175px;
+    min-width: 175px;
+  }
+
+  .card-content {
+    padding: 8px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .person-card {
+    width: 150px;
+    min-width: 150px;
+  }
+}
+
+/* Pour les cartes dans un contexte de grille */
+:host {
+  display: block;
+  width: 100%;
 }
