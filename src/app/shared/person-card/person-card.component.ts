@@ -29,7 +29,6 @@ export class PersonCardComponent implements OnInit {
   }
 
   navigateToDetails() {
-    console.log('Navigating to person details:', this.person);
     if (this.person && this.person.id) {
       // Utilisez la même structure de route que dans app.routes.ts
       this.router.navigate(['/person/detail', this.person.id]);
