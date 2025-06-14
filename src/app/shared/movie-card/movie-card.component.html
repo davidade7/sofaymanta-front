@@ -1,8 +1,8 @@
-<div class="movie-card" (click)="onClick()">
+<div class="movie-card" (click)="navigateToDetails()">
   <div class="poster-container">
     <img [src]="getImageUrl(movie.poster_path)" [alt]="movie.title" class="poster-image">
     <div class="media-type-badge">
-      <lucide-icon [img]="Film" size="16" title="Películas"></lucide-icon>
+      <lucide-icon [img]="Film" size="16" title="Película"></lucide-icon>
     </div>
   </div>
   <div class="card-content">

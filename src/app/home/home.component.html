@@ -1,5 +1,14 @@
 <div class="home-container">
   <app-search-input></app-search-input>
+
+  <app-carousel title="Películas recientes">
+    <div *ngIf="loading.recentMovies" class="loading-spinner">Cargando... </div>
+    <ng-container *ngIf="!loading.recentMovies">
+      <app-movie-card *ngFor="let movie of recentMovies" [movie]="movie"></app-movie-card>
+      <div *ngIf="recentMovies.length === 0" class="no-results">No películas recientes encontradas.</div>
+    </ng-container>
+  </app-carousel>
+
   <app-recent-movies></app-recent-movies>
   <app-popular-movies></app-popular-movies>
   <app-recent-tv-show></app-recent-tv-show>

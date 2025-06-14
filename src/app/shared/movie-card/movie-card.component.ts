@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Film } from 'lucide-angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-movie-card',
@@ -11,8 +12,9 @@ import { LucideAngularModule, Film } from 'lucide-angular';
 })
 export class MovieCardComponent {
   @Input() movie: any;
-  @Output() cardClick = new EventEmitter<number>();
-  Film = Film; // Pour utiliser l'icône dans le template
+  Film = Film;
+
+  constructor(private router: Router) {}
 
   getImageUrl(path: string): string {
     if (!path) return 'https://placehold.co/500x750?text=Imagen+no+disponible&font=open-sans';
@@ -29,7 +31,9 @@ export class MovieCardComponent {
     return new Date(dateString).getFullYear().toString();
   }
 
-  onClick(): void {
-    this.cardClick.emit(this.movie.id);
+  navigateToDetails() {
+    if (this.movie && this.movie.id) {
+      this.router.navigate(['/movie/detail', this.movie.id]);
+    }
   }
 }
