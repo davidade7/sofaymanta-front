@@ -121,7 +121,7 @@ export class PersonDetailComponent implements OnInit {
     if (type === 'movie') {
       this.router.navigate(['/movie/detail', id]);
     } else if (type === 'tv') {
-      this.router.navigate(['/tv/detail', id]);
+      this.router.navigate(['/serie/detail', id]);
     }
   }
 

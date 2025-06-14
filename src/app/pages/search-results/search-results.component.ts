@@ -84,7 +84,7 @@ export class SearchResultComponent implements OnInit {
         this.router.navigate(['/movie/detail', id]);
         break;
       case 'tv':
-        this.router.navigate(['/tv/detail', id]);
+        this.router.navigate(['/serie/detail', id]);
         break;
       case 'person':
         this.router.navigate(['/person/detail', id]);

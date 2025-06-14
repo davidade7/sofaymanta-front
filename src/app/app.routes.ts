@@ -14,7 +14,7 @@ export const routes: Routes = [
     { path: 'search', component: SearchResultComponent },
     { path: '', component: HomeComponent },
     { path: 'movie/detail/:id', component: MovieDetailComponent },
-    { path: 'tv/detail/:id', component: TvShowDetailComponent },
+    { path: 'serie/detail/:id', component: TvShowDetailComponent },
     { path: 'tv/:showId/season/:seasonNumber', component: TvSeasonDetailComponent },
     { path: 'person/detail/:id', component: PersonDetailComponent },
     { path: '**', redirectTo: '/' }
