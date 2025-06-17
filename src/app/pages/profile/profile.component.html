@@ -1,0 +1,58 @@
+<div class="profile-container">
+  <h1 class="profile-title">Perfil de Usuario</h1>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <lucide-icon [img]="Loader2" size="48"></lucide-icon>
+    <p>Cargando perfil...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="profile-content">
+    <!-- Profile Information Section -->
+    <section class="profile-section">
+      <h2>{{ userProfile ? 'Información del Perfil' : 'Crear Perfil' }}</h2>
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+        <div class="form-group">
+          <label for="username">Nombre de usuario</label>
+          <input
+            type="text"
+            id="username"
+            formControlName="username"
+            placeholder="Nombre de usuario"
+            [class.is-invalid]="profileForm.get('username')?.invalid && profileForm.get('username')?.touched"
+          >
+          <div class="error-message" *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched">
+            <span *ngIf="profileForm.get('username')?.errors?.['required']">El nombre de usuario es obligatorio.</span>
+            <span *ngIf="profileForm.get('username')?.errors?.['minlength']">El nombre de usuario debe tener al menos 3 caracteres.</span>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="profileForm.invalid || isCreatingProfile || isUpdatingProfile" class="btn-primary">
+            <lucide-icon *ngIf="isCreatingProfile || isUpdatingProfile" [img]="Loader2" size="16"></lucide-icon>
+            <lucide-icon *ngIf="!isCreatingProfile && !isUpdatingProfile" [img]="Save" size="16"></lucide-icon>
+            {{ userProfile ? 'Guardar cambios' : 'Crear perfil' }}
+          </button>
+        </div>
+
+        <div *ngIf="profileUpdateSuccess" class="success-message">
+          {{ userProfile ? '¡Perfil actualizado correctamente!' : '¡Perfil creado correctamente!' }}
+        </div>
+
+        <div *ngIf="profileUpdateError" class="error-message">
+          {{ profileUpdateError }}
+        </div>
+      </form>
+    </section>
+
+    <!-- Display existing user profile information if available -->
+    <section class="profile-section" *ngIf="userProfile">
+      <h2>Detalles del perfil</h2>
+      <div class="profile-details">
+        <p><strong>Nombre de usuario:</strong> {{ userProfile.username }}</p>
+        <p><strong>ID:</strong> {{ userProfile.id }}</p>
+        <p><strong>Fecha de creación:</strong> {{ userProfile.created_at | date:'medium' }}</p>
+        <p><strong>Última actualización:</strong> {{ userProfile.updated_at | date:'medium' }}</p>
+      </div>
+    </section>
+  </div>
+</div>
