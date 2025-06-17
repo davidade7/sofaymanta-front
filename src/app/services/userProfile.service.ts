@@ -18,6 +18,13 @@ export class UserProfileService {
   private apiUrl = `${environment.apiUrl}/user-profiles`;
 
   constructor(private http: HttpClient) {}
+  /**
+   * Récupère le profil d'un utilisateur
+   * @param id L'ID du profil utilisateur
+   */
+  getUserProfile(id: string): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiUrl}/${id}`);
+  }
 
   /**
    * Crée un profil utilisateur pour un utilisateur spécifique
@@ -29,10 +36,11 @@ export class UserProfileService {
   }
 
   /**
-   * Récupère le profil d'un utilisateur
+   * Met à jour le profil utilisateur
    * @param id L'ID du profil utilisateur
+   * @param profile Les données du profil à mettre à jour
    */
-  getUserProfile(id: string): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`${this.apiUrl}/${id}`);
+  updateUserProfile(id: string, profile: Partial<UserProfile>): Observable<UserProfile> {
+    return this.http.patch<UserProfile>(`${this.apiUrl}/${id}`, profile);
   }
 }

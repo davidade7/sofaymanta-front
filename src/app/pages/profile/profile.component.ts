@@ -127,12 +127,32 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(profileData: any) {
+    if (!this.userProfile?.id) {
+      this.profileUpdateError = 'Impossible de mettre à jour le profil: ID introuvable';
+      return;
+    }
+
     this.isUpdatingProfile = true;
     this.profileUpdateSuccess = false;
     this.profileUpdateError = '';
 
-    // Pour l'instant, nous simulons juste la fin de la mise à jour
-    this.isUpdatingProfile = false;
-    console.warn('Fonction de mise à jour du profil pas encore implémentée');
+    // Créer un objet qui respecte l'interface UserProfile pour la mise à jour
+    const updatedProfile: Partial<UserProfile> = {
+      username: profileData.username
+    };
+
+    this.userProfileService.updateUserProfile(this.userId, updatedProfile as UserProfile).pipe(
+      finalize(() => this.isUpdatingProfile = false)
+    ).subscribe({
+      next: profile => {
+        this.userProfile = profile;
+        this.profileUpdateSuccess = true;
+        console.log('Profil mis à jour avec succès:', profile);
+      },
+      error: error => {
+        console.error('Erreur lors de la mise à jour du profil:', error);
+        this.profileUpdateError = error.message || 'Erreur lors de la mise à jour du profil';
+      }
+    });
   }
 }
