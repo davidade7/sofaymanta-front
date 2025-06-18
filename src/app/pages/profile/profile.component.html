@@ -44,6 +44,54 @@
       </form>
     </section>
 
+    <!-- Genres favoris pour les films - uniquement si le profil existe -->
+    <section class="profile-section" *ngIf="userProfile">
+      <h2>Géneros Favoritos - Películas</h2>
+      <div class="genres-container">
+        <div
+          *ngFor="let genre of availableMovieGenres"
+          class="genre-chip"
+          [class.selected]="isMovieGenreFavorite(genre.id)"
+          (click)="isMovieGenreFavorite(genre.id) ? removeFavoriteGenre(genre.id, 'movie') : addFavoriteGenre(genre.id, 'movie')"
+        >
+          {{ genre.name }}
+        </div>
+      </div>
+    </section>
+
+    <!-- Genres favoris pour les séries TV - uniquement si le profil existe -->
+    <section class="profile-section" *ngIf="userProfile">
+      <h2>Géneros Favoritos - Series TV</h2>
+      <div class="genres-container">
+        <div
+          *ngFor="let genre of availableTvGenres"
+          class="genre-chip"
+          [class.selected]="isTvGenreFavorite(genre.id)"
+          (click)="isTvGenreFavorite(genre.id) ? removeFavoriteGenre(genre.id, 'tv') : addFavoriteGenre(genre.id, 'tv')"
+        >
+          {{ genre.name }}
+        </div>
+      </div>
+    </section>
+
+    <!-- Plateformes de streaming section - uniquement si le profil existe -->
+    <section class="profile-section" *ngIf="userProfile">
+      <h2>Plataformas de Streaming</h2>
+      <div class="platforms-container">
+        <div
+          *ngFor="let label of getPlatformLabels()"
+          class="platform-card"
+          [class.selected]="isPlatformSelected(getPlatformValue(label))"
+          (click)="isPlatformSelected(getPlatformValue(label)) ? removeStreamingPlatform(getPlatformValue(label)) : addStreamingPlatform(getPlatformValue(label))"
+        >
+          <div class="platform-name">{{ label }}</div>
+          <div class="platform-checkbox">
+            <div class="checkbox" [class.checked]="isPlatformSelected(getPlatformValue(label))"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Display existing user profile information if available -->
     <section class="profile-section" *ngIf="userProfile">
       <h2>Detalles del perfil</h2>
@@ -52,6 +100,27 @@
         <p><strong>ID:</strong> {{ userProfile.id }}</p>
         <p><strong>Fecha de creación:</strong> {{ userProfile.created_at | date:'medium' }}</p>
         <p><strong>Última actualización:</strong> {{ userProfile.updated_at | date:'medium' }}</p>
+
+        <div *ngIf="getFavoriteMovieGenres().length > 0">
+          <p><strong>Géneros de películas favoritos:</strong></p>
+          <ul>
+            <li *ngFor="let genre of getFavoriteMovieGenres()">{{ genre.name }}</li>
+          </ul>
+        </div>
+
+        <div *ngIf="getFavoriteTvGenres().length > 0">
+          <p><strong>Géneros de series favoritos:</strong></p>
+          <ul>
+            <li *ngFor="let genre of getFavoriteTvGenres()">{{ genre.name }}</li>
+          </ul>
+        </div>
+
+        <div *ngIf="getSelectedPlatformLabels().length > 0">
+          <p><strong>Plataformas:</strong></p>
+          <ul>
+            <li *ngFor="let platformLabel of getSelectedPlatformLabels()">{{ platformLabel }}</li>
+          </ul>
+        </div>
       </div>
     </section>
   </div>

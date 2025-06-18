@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserProfileService, UserProfile } from '../../services/userProfile.service';
+import { GenreService } from '../../services/genre.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { LucideAngularModule, Save, Loader2 } from 'lucide-angular';
+import { LucideAngularModule, Save, Loader2, Plus, X } from 'lucide-angular';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -27,19 +28,42 @@ export class ProfileComponent implements OnInit {
 
   Save = Save;
   Loader2 = Loader2;
+  Plus = Plus;
+  X = X;
 
   // Stockage temporaire de l'ID utilisateur
   userId: string = '';
 
+  // Genres disponibles (récupérés du GenreService)
+  availableMovieGenres: any[] = [];
+  availableTvGenres: any[] = [];
+
+  // Plateformes disponibles avec label : valeur
+  availablePlatforms = {
+    'Netflix': 'netflix',
+    'Prime Video': 'prime_video',
+    'Disney+': 'disney_plus',
+    'HBO Max': 'hbo_max',
+    'Apple TV+': 'apple_tv',
+    'Paramount+': 'paramount_plus',
+    'Hulu': 'hulu',
+    'Peacock': 'peacock',
+    'Crunchyroll': 'crunchyroll',
+    'Filmin': 'filmin',
+    'Movistar+': 'movistar_plus'
+  };
+
   constructor(
     private fb: FormBuilder,
     private userProfileService: UserProfileService,
+    private genreService: GenreService,
     private authService: AuthService,
     private router: Router
   ) { }
 
   ngOnInit() {
     this.initForm();
+    this.loadGenres();
     this.loadUserProfile();
   }
 
@@ -49,11 +73,19 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  loadGenres() {
+    // Charger tous les genres disponibles depuis le GenreService
+    const movieGenreIds = [28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878, 10770, 53, 10752, 37];
+    const tvGenreIds = [10759, 16, 35, 80, 99, 18, 10751, 10762, 9648, 10763, 10764, 10765, 10766, 10767, 10768, 37];
+
+    this.availableMovieGenres = movieGenreIds.map(id => this.genreService.getGenreObject(id, true));
+    this.availableTvGenres = tvGenreIds.map(id => this.genreService.getGenreObject(id, false));
+  }
+
   async loadUserProfile() {
     this.isLoading = true;
 
     try {
-      // Utiliser la méthode getUser existante pour obtenir les données de l'utilisateur
       const { data, error } = await this.authService.getUser();
 
       if (error) {
@@ -66,7 +98,6 @@ export class ProfileComponent implements OnInit {
 
       this.userId = data.user.id;
 
-      // Une fois l'ID utilisateur obtenu, on charge le profil
       this.userProfileService.getUserProfile(this.userId).pipe(
         finalize(() => this.isLoading = false)
       ).subscribe({
@@ -79,15 +110,13 @@ export class ProfileComponent implements OnInit {
         error: error => {
           console.log('Aucun profil trouvé ou erreur:', error);
           this.isLoading = false;
-          // Pas de profil trouvé, l'utilisateur pourra en créer un
         }
       });
     } catch (error) {
       console.error('Erreur lors de la récupération de l\'ID utilisateur:', error);
       this.isLoading = false;
       this.profileUpdateError = 'Impossible de charger les données utilisateur. Veuillez vous connecter.';
-      // Rediriger vers la page de connexion si l'utilisateur n'est pas authentifié
-      this.router.navigate(['/login']);
+      this.router.navigate(['/signin']);
     }
   }
 
@@ -99,10 +128,8 @@ export class ProfileComponent implements OnInit {
     };
 
     if (this.userProfile) {
-      // Mise à jour du profil existant (à implémenter quand le backend aura cette route)
       this.updateProfile(profileData);
     } else {
-      // Création d'un nouveau profil
       this.createProfile(profileData);
     }
   }
@@ -136,12 +163,11 @@ export class ProfileComponent implements OnInit {
     this.profileUpdateSuccess = false;
     this.profileUpdateError = '';
 
-    // Créer un objet qui respecte l'interface UserProfile pour la mise à jour
     const updatedProfile: Partial<UserProfile> = {
       username: profileData.username
     };
 
-    this.userProfileService.updateUserProfile(this.userId, updatedProfile as UserProfile).pipe(
+    this.userProfileService.updateUserProfile(this.userProfile.id, updatedProfile).pipe(
       finalize(() => this.isUpdatingProfile = false)
     ).subscribe({
       next: profile => {
@@ -154,5 +180,109 @@ export class ProfileComponent implements OnInit {
         this.profileUpdateError = error.message || 'Erreur lors de la mise à jour du profil';
       }
     });
+  }
+
+  // === Méthodes pour les genres favoris ===
+
+  addFavoriteGenre(genreId: number, mediaType: 'movie' | 'tv') {
+    if (!this.userProfile?.id) return;
+
+    this.userProfileService.addFavoriteGenre(this.userProfile.id, genreId, mediaType).subscribe({
+      next: () => {
+        this.loadUserProfile();
+      },
+      error: error => {
+        console.error('Erreur lors de l\'ajout du genre:', error);
+      }
+    });
+  }
+
+  removeFavoriteGenre(genreId: number, mediaType: 'movie' | 'tv') {
+    if (!this.userProfile?.id) return;
+
+    this.userProfileService.removeFavoriteGenre(this.userProfile.id, genreId, mediaType).subscribe({
+      next: () => {
+        this.loadUserProfile();
+      },
+      error: error => {
+        console.error('Erreur lors de la suppression du genre:', error);
+      }
+    });
+  }
+
+  isMovieGenreFavorite(genreId: number): boolean {
+    return this.userProfile?.favorite_movie_genres?.includes(genreId) || false;
+  }
+
+  isTvGenreFavorite(genreId: number): boolean {
+    return this.userProfile?.favorite_tv_genres?.includes(genreId) || false;
+  }
+
+  // Utiliser le GenreService pour obtenir le nom d'un genre
+  getGenreName(genreId: number, mediaType: 'movie' | 'tv'): string {
+    return this.genreService.getGenreObject(genreId, mediaType === 'movie').name;
+  }
+
+  // Obtenir les objets genres complets pour l'affichage des favoris
+  getFavoriteMovieGenres(): any[] {
+    if (!this.userProfile?.favorite_movie_genres) return [];
+    return this.genreService.getGenresFromIds(this.userProfile.favorite_movie_genres, true);
+  }
+
+  getFavoriteTvGenres(): any[] {
+    if (!this.userProfile?.favorite_tv_genres) return [];
+    return this.genreService.getGenresFromIds(this.userProfile.favorite_tv_genres, false);
+  }
+
+  // === Méthodes pour les plateformes de streaming ===
+
+  addStreamingPlatform(platformValue: string) {
+    if (!this.userProfile?.id) return;
+
+    this.userProfileService.addStreamingPlatform(this.userProfile.id, platformValue).subscribe({
+      next: () => {
+        this.loadUserProfile();
+      },
+      error: error => {
+        console.error('Erreur lors de l\'ajout de la plateforme:', error);
+      }
+    });
+  }
+
+  removeStreamingPlatform(platformValue: string) {
+    if (!this.userProfile?.id) return;
+
+    this.userProfileService.removeStreamingPlatform(this.userProfile.id, platformValue).subscribe({
+      next: () => {
+        this.loadUserProfile();
+      },
+      error: error => {
+        console.error('Erreur lors de la suppression de la plateforme:', error);
+      }
+    });
+  }
+
+  isPlatformSelected(platformValue: string): boolean {
+    return this.userProfile?.streaming_platforms?.includes(platformValue) || false;
+  }
+
+  // Méthodes utilitaires pour gérer l'objet plateformes
+  getPlatformLabels(): string[] {
+    return Object.keys(this.availablePlatforms);
+  }
+
+  getPlatformValue(label: string): string {
+    return this.availablePlatforms[label as keyof typeof this.availablePlatforms];
+  }
+
+  getPlatformLabel(value: string): string {
+    const entry = Object.entries(this.availablePlatforms).find(([_, val]) => val === value);
+    return entry ? entry[0] : value;
+  }
+
+  // Obtenir les labels des plateformes sélectionnées pour l'affichage
+  getSelectedPlatformLabels(): string[] {
+    if (!this.userProfile?.streaming_platforms) return [];
+    return this.userProfile.streaming_platforms.map(platform => this.getPlatformLabel(platform));
   }
 }
