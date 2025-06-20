@@ -344,3 +344,47 @@
   }
 
 }
+
+/* Styles pour les crédits uniquement */
+.credits-section {
+  background-color: #f8f9fa;
+  padding: 2rem 0;
+  margin: 2rem;
+}
+
+.credits-group {
+  margin-bottom: 3rem;
+}
+
+.credits-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.credits-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Responsive pour les crédits */
+@media (max-width: 768px) {
+  .credits-section {
+    padding: 1.5rem 0;
+  }
+
+  .credits-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .credits-title {
+    font-size: 1.25rem;
+  }
+}

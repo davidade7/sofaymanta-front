@@ -116,6 +116,38 @@
         </div>
       </div>
     </div>
+
+    <!-- Section des crédits -->
+    <div class="credits-section" *ngIf="credits && !loadingCredits">
+
+      <!-- Carrousel du Cast -->
+      <div class="credits-group" *ngIf="castMembers.length > 0">
+        <h2 class="credits-title">Reparto</h2>
+        <app-carousel>
+          <app-person-card
+            *ngFor="let person of castMembers; trackBy: trackByPersonId"
+            [person]="adaptPersonForCard(person, 'cast')"
+          ></app-person-card>
+        </app-carousel>
+      </div>
+
+      <!-- Carrousel du Crew -->
+      <div class="credits-group" *ngIf="crewMembers.length > 0">
+        <h2 class="credits-title">Equipo técnico</h2>
+        <app-carousel>
+          <app-person-card
+            *ngFor="let person of crewMembers; trackBy: trackByPersonId"
+            [person]="adaptPersonForCard(person, 'crew')"
+          ></app-person-card>
+        </app-carousel>
+      </div>
+
+    </div>
+
+    <!-- Loading state pour les crédits -->
+    <div class="credits-loading" *ngIf="loadingCredits">
+      <p>Cargando créditos...</p>
+    </div>
   </div>
 
   <!-- Rating Modal -->

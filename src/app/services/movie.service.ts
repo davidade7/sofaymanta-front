@@ -22,4 +22,8 @@ export class MovieService {
   getMovieDetail(id: string, lang: string = 'es-ES'): Observable<any> {
     return this.http.get(`${this.apiUrl}/media/movies/detail/${id}?lang=${lang}`);
   }
+
+  getMovieCredits(id: string, lang: string = 'es-ES'): Observable<any> {
+    return this.http.get(`${this.apiUrl}/media/movies/${id}/credits?lang=${lang}`);
+  }
 }

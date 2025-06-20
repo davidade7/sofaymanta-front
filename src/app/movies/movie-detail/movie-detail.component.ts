@@ -8,11 +8,13 @@ import { UserMediaInteractionsService, UserMediaInteraction } from '../../servic
 import { AuthService } from '../../services/auth.service';
 import { RatingModalComponent } from '../../shared/rating-modal/rating-modal.component';
 import { DeleteConfirmationModalComponent } from '../../shared/delete-confirmation-modal/delete-confirmation-modal.component';
+import { CarouselComponent } from '../../shared/carousel/carousel.component';
+import { PersonCardComponent } from '../../shared/person-card/person-card.component';
 
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, RatingModalComponent, DeleteConfirmationModalComponent],
+  imports: [CommonModule, LucideAngularModule, RatingModalComponent, DeleteConfirmationModalComponent, CarouselComponent, PersonCardComponent],
   templateUrl: './movie-detail.component.html',
   styleUrls: ['./movie-detail.component.css']
 })
@@ -24,7 +26,9 @@ export class MovieDetailComponent implements OnInit {
   readonly Trash2 = Trash2;
 
   movie: any = null;
+  credits: any = null;
   loading = true;
+  loadingCredits = false;
   error: string | null = null;
   currentUser: any = null;
   userInteraction: UserMediaInteraction | null = null;
@@ -49,6 +53,7 @@ export class MovieDetailComponent implements OnInit {
       const id = params.get('id');
       if (id) {
         this.loadMovie(id);
+        this.loadCredits(id);
       }
     });
   }
@@ -81,6 +86,20 @@ export class MovieDetailComponent implements OnInit {
         console.error('Error loading movie details', err);
         this.error = 'Error al cargar los detalles del film';
         this.loading = false;
+      }
+    });
+  }
+
+  loadCredits(id: string): void {
+    this.loadingCredits = true;
+    this.movieService.getMovieCredits(id).subscribe({
+      next: (data) => {
+        this.credits = data;
+        this.loadingCredits = false;
+      },
+      error: (err) => {
+        console.error('Error loading movie credits', err);
+        this.loadingCredits = false;
       }
     });
   }
@@ -227,5 +246,51 @@ export class MovieDetailComponent implements OnInit {
     };
 
     return languages[languageCode] || languageCode.toUpperCase();
+  }
+
+  get castMembers() {
+    return this.credits?.cast || [];
+  }
+
+  get crewMembers() {
+    return this.credits?.crew || [];
+  }
+
+  // Méthode pour obtenir les membres de l'équipe par département
+  getCrewByDepartment(department: string) {
+    return this.crewMembers.filter((member: any) => member.department === department);
+  }
+
+  // Méthodes pour les principaux départements
+  get directors() {
+    return this.getCrewByDepartment('Directing').filter((member: any) => member.job === 'Director');
+  }
+
+  get producers() {
+    return this.getCrewByDepartment('Production').filter((member: any) =>
+      member.job.includes('Producer')
+    );
+  }
+
+  get writers() {
+    return this.getCrewByDepartment('Writing').filter((member: any) =>
+      member.job.includes('Screenplay') || member.job.includes('Writer')
+    );
+  }
+
+  // Méthode pour adapter les données de personne pour PersonCard
+  adaptPersonForCard(person: any, type: 'cast' | 'crew') {
+    return {
+      ...person,
+      // Pour le cast, on utilise 'character', pour le crew, on utilise 'job'
+      role: type === 'cast' ? person.character : person.job,
+      // S'assurer que known_for_department existe
+      known_for_department: person.known_for_department || (type === 'cast' ? 'Acting' : person.department)
+    };
+  }
+
+  // TrackBy function pour optimiser le rendu
+  trackByPersonId(index: number, person: any): number {
+    return person.id;
   }
 }
