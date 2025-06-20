@@ -5,8 +5,8 @@ import { environment } from '../../environments/environment';
 
 // Interfaces pour typer les données
 export interface CreateUserMediaInteractionDto {
-  mediaId: number;
-  mediaType: 'movie' | 'tv';
+  media_id: number;
+  media_type: 'movie' | 'tv';
   rating?: number; // Note de 1 à 10
   comment?: string;
 }

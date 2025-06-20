@@ -316,6 +316,9 @@
 .no-interaction {
   text-align: center;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .no-interaction p {
@@ -335,7 +338,7 @@
     padding: 0.5rem 0.75rem;
   }
 
-  .edit-rating-btn, .rate-movie-btn {
+  .edit-rating-btn, .rate-movie-btn, .delete-rating-btn {
     padding: 0.625rem 1.25rem;
     font-size: 0.875rem;
   }

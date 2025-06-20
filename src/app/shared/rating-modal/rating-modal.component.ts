@@ -111,8 +111,8 @@ export class RatingModalComponent implements OnInit {
     } else {
       // Si on n'a pas d'interaction existante, on crée une nouvelle
       const interaction: CreateUserMediaInteractionDto = {
-        mediaId: this.mediaId,
-        mediaType: this.mediaType
+        media_id: this.mediaId,
+        media_type: this.mediaType
       };
 
       if (this.currentRating > 0) {
@@ -122,6 +122,8 @@ export class RatingModalComponent implements OnInit {
       if (this.currentComment.trim()) {
         interaction.comment = this.currentComment.trim();
       }
+
+      console.log(interaction)
 
       this.userMediaInteractionsService.createInteraction(this.userId, interaction).subscribe({
         next: (result) => {
