@@ -68,19 +68,34 @@
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0 0 8px;
+  color: #333;
 }
 
 .person-details {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  gap: 4px;
+}
+
+/* Nouveau style pour le rôle/personnage */
+.character-role {
+  font-size: 14px;
+  color: #007bff;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .known-for {
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
+  font-style: italic;
 }
 
 /* Ajout de media queries pour la responsive comme dans movie-card */
@@ -96,6 +111,15 @@
 
   .title {
     font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .character-role {
+    font-size: 12px;
+  }
+
+  .known-for {
+    font-size: 11px;
   }
 }
 
@@ -103,6 +127,18 @@
   .person-card {
     width: 150px;
     min-width: 150px;
+  }
+
+  .title {
+    font-size: 13px;
+  }
+
+  .character-role {
+    font-size: 11px;
+  }
+
+  .known-for {
+    font-size: 10px;
   }
 }
 

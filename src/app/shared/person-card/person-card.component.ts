@@ -53,6 +53,25 @@ export class PersonCardComponent implements OnInit {
     }
   }
 
+   getRole(): string {
+    // Priority order: role (from adaptPersonForCard), character, job
+    if (this.person.role) {
+      return this.person.role;
+    }
+    if (this.person.character) {
+      return this.person.character;
+    }
+    if (this.person.job) {
+      return this.person.job;
+    }
+    return '';
+  }
+
+  truncateRole(role: string): string {
+    if (!role) return '';
+    return role.length > 30 ? role.substring(0, 28) + '...' : role;
+  }
+
   truncateName(name: string): string {
     if (!name) return '';
     return name.length > 24 ? name.substring(0, 22) + '...' : name;

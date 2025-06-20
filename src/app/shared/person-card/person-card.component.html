@@ -6,9 +6,15 @@
     </div>
   </div>
   <div class="card-content">
-    <h3 class="title">{{ truncateName(person.name) }}</h3>
+    <h3 class="title" [title]="person.name">{{ truncateName(person.name) }}</h3>
 
     <div class="person-details">
+      <!-- Affichage du rôle/personnage si disponible -->
+      <p class="character-role" *ngIf="getRole()" [title]="getRole()">
+        {{ truncateRole(getRole()) }}
+      </p>
+
+      <!-- Affichage du département si disponible -->
       <p class="known-for" *ngIf="person.known_for_department">{{ getKnownFor() }}</p>
     </div>
   </div>
