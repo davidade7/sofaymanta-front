@@ -48,11 +48,44 @@
           </div>
         </div>
 
+        <!-- Section d'évaluation utilisateur -->
+        <div class="user-interaction-section" *ngIf="currentUser">
+          <h3>Tu evaluación</h3>
+          <div class="interaction-content">
+            <div *ngIf="userInteraction" class="existing-interaction">
+              <div class="user-rating" *ngIf="userInteraction.rating">
+                <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
+                <span>{{ userInteraction.rating }}/10</span>
+              </div>
+              <div class="user-comment" *ngIf="userInteraction.comment">
+                <lucide-icon [img]="MessageSquare" size="16"></lucide-icon>
+                <p>{{ userInteraction.comment }}</p>
+              </div>
+              <div class="interaction-actions">
+                <button class="edit-rating-btn" (click)="openRatingModal()">
+                  Editar
+                </button>
+                <button class="delete-rating-btn" (click)="openDeleteModal()">
+                  <lucide-icon [img]="Trash2" size="16"></lucide-icon>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="!userInteraction" class="no-interaction">
+              <p>¿Qué te pareció esta serie?</p>
+              <button class="rate-tv-btn" (click)="openRatingModal()">
+                <lucide-icon [img]="Star" size="16"></lucide-icon>
+                Evaluar serie
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div class="tv-show-overview">
           <h3>Synopsis</h3>
           <p>{{ tvShow.overview || 'No hay sinopsis disponible' }}</p>
         </div>
 
+        <!-- ...existing content (seasons, additional info, networks)... -->
         <div class="seasons" *ngIf="tvShow.seasons && tvShow.seasons.length">
           <h3>Temporadas ({{ tvShow.number_of_seasons || tvShow.seasons.length }})</h3>
           <div class="seasons-list">
@@ -110,4 +143,28 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal de notation -->
+  <app-rating-modal
+    *ngIf="showRatingModal && tvShow && currentUser"
+    [mediaId]="tvShow.id"
+    [mediaType]="'tv'"
+    [mediaTitle]="tvShow.name"
+    [userId]="currentUser.id"
+    [existingInteraction]="userInteraction"
+    (closeModalEvent)="closeRatingModal()"
+    (interactionSaved)="onInteractionSaved($event)"
+  ></app-rating-modal>
+
+  <!-- Modal de confirmation de suppression -->
+  <app-delete-confirmation-modal
+    *ngIf="showDeleteModal"
+    [message]="
+      '¿Estás seguro de que quieres eliminar tu evaluación de &quot;' +
+      (tvShow?.name ? tvShow?.name : '') +
+      '&quot;?'"
+    [isDeleting]="isDeleting"
+    (confirmDelete)="confirmDeleteInteraction()"
+    (cancelDelete)="closeDeleteModal()"
+  ></app-delete-confirmation-modal>
 </div>

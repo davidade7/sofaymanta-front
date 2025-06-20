@@ -123,8 +123,6 @@ export class RatingModalComponent implements OnInit {
         interaction.comment = this.currentComment.trim();
       }
 
-      console.log(interaction)
-
       this.userMediaInteractionsService.createInteraction(this.userId, interaction).subscribe({
         next: (result) => {
           this.isLoading = false;
