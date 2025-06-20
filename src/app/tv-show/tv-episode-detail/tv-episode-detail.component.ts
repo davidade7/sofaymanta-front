@@ -59,9 +59,9 @@ export class TvEpisodeDetailComponent implements OnInit {
     // Load the current user
     await this.loadCurrentUser();
 
-    // Load the episode
+    // Load the episode - utiliser les bons noms de paramètres
     this.route.paramMap.subscribe(params => {
-      this.tvShowId = params.get('tvShowId') || '';
+      this.tvShowId = params.get('showId') || '';  // 'showId' selon les routes
       this.seasonNumber = Number(params.get('seasonNumber')) || 0;
       this.episodeNumber = Number(params.get('episodeNumber')) || 0;
 
@@ -201,13 +201,14 @@ export class TvEpisodeDetailComponent implements OnInit {
 
   // Navigation vers la série ou la saison
   navigateToSeries() {
-    this.router.navigate(['/tv-show/detail', this.tvShowId]);
-  }
+  // Utiliser la route correcte selon app.routes.ts
+  this.router.navigate(['/serie/detail', this.tvShowId]);
+}
 
-  navigateToSeason() {
-    this.router.navigate(['/tv-show', this.tvShowId, 'season', this.seasonNumber]);
-  }
-
+navigateToSeason() {
+  // Utiliser la route correcte selon app.routes.ts
+  this.router.navigate(['/tv', this.tvShowId, 'season', this.seasonNumber]);
+}
   // Formater la durée
   formatRuntime(minutes: number): string {
     if (!minutes) return 'N/A';

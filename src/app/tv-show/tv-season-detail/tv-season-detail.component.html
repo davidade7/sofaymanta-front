@@ -1,52 +1,102 @@
-<div class="season-detail-container" *ngIf="!loading && !error">
+<div class="season-detail-container">
   <div class="back-button-container">
     <button class="back-button" (click)="goBack()">
-      ← Volver
+      <lucide-icon [img]="ArrowLeft"></lucide-icon> Volver
     </button>
   </div>
 
-  <div class="season-header">
-    <img [src]="getImageUrl(seasonDetail?.poster_path)" [alt]="seasonDetail?.name" class="season-poster">
-    <div class="season-info">
-      <h1>{{ seasonDetail?.name }}</h1>
-      <p class="season-overview" *ngIf="seasonDetail?.overview">{{ seasonDetail?.overview }}</p>
-      <p class="season-overview" *ngIf="!seasonDetail?.overview">No hay descripción disponible para esta temporada.</p>
-      <div class="season-meta">
-        <span *ngIf="seasonDetail?.air_date">{{ seasonDetail?.air_date | date:'yyyy' }}</span>
-        <span>{{ seasonDetail?.episodes?.length || seasonDetail?.episode_count || 0 }} episodios</span>
-        <span *ngIf="seasonDetail?.vote_average">★ {{ seasonDetail?.vote_average.toFixed(1) }}</span>
-      </div>
-    </div>
+  <div *ngIf="loading" class="loading-container">
+    <p>Cargando temporada...</p>
   </div>
 
-  <div class="episodes-section" *ngIf="seasonDetail?.episodes && seasonDetail.episodes.length > 0">
-    <div class="episodes-list">
-      <div class="episode-item" *ngFor="let episode of seasonDetail.episodes">
-        <div class="episode-number">{{ episode.episode_number }}</div>
-        <div class="episode-content">
-          <h3 class="episode-title">{{ episode.name }}</h3>
-          <p class="episode-overview" *ngIf="episode.overview">{{ episode.overview }}</p>
-          <p class="episode-overview no-overview" *ngIf="!episode.overview">No hay descripción disponible para este episodio.</p>
-          <div class="episode-meta">
-            <span class="episode-date" *ngIf="episode.air_date">{{ episode.air_date | date:'dd/MM/yyyy' }}</span>
-            <span class="episode-runtime" *ngIf="episode.runtime">{{ episode.runtime }} min</span>
-            <span class="episode-rating" *ngIf="episode.vote_average > 0">★ {{ episode.vote_average.toFixed(1) }}</span>
+  <div *ngIf="error" class="error-container">
+    <p class="error-message">{{ error }}</p>
+    <button (click)="goBack()" class="back-button">Volver</button>
+  </div>
+
+  <div *ngIf="seasonDetail && !loading && !error" class="season-content">
+    <!-- Season backdrop/header -->
+    <div class="season-backdrop" [style.background-image]="seasonDetail?.poster_path ? 'url(https://image.tmdb.org/t/p/w1280' + seasonDetail.poster_path + ')' : 'none'">
+      <div class="backdrop-overlay"></div>
+    </div>
+
+    <div class="season-header">
+      <!-- Navigation breadcrumb -->
+      <nav class="breadcrumb">
+        <button (click)="navigateToSeries()" class="breadcrumb-link">Serie</button>
+        <span class="breadcrumb-separator">></span>
+        <span class="breadcrumb-current">{{ seasonDetail?.name }}</span>
+      </nav>
+
+      <div class="season-info-container">
+        <img [src]="getImageUrl(seasonDetail?.poster_path)" [alt]="seasonDetail?.name" class="season-poster">
+        <div class="season-info">
+          <h1 class="season-title">{{ seasonDetail?.name }}</h1>
+          <div class="season-meta">
+            <div class="season-stats">
+              <div class="season-year" *ngIf="seasonDetail?.air_date">
+                <lucide-icon [img]="Calendar" size="16"></lucide-icon>
+                {{ seasonDetail?.air_date | date:'yyyy' }}
+              </div>
+              <div class="episode-count">
+                {{ seasonDetail?.episodes?.length || seasonDetail?.episode_count || 0 }} episodios
+              </div>
+              <div class="season-rating" *ngIf="seasonDetail?.vote_average">
+                <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
+                {{ seasonDetail?.vote_average.toFixed(1) }}
+              </div>
+            </div>
+          </div>
+          <div class="season-overview">
+            <p *ngIf="seasonDetail?.overview">{{ seasonDetail?.overview }}</p>
+            <p *ngIf="!seasonDetail?.overview" class="no-overview">No hay descripción disponible para esta temporada.</p>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Episodes section -->
+    <div class="episodes-section" *ngIf="seasonDetail?.episodes && seasonDetail.episodes.length > 0">
+      <h2 class="episodes-title">Episodios</h2>
+      <div class="episodes-list">
+        <div class="episode-item"
+             *ngFor="let episode of seasonDetail.episodes"
+             (click)="navigateToEpisode(episode.episode_number)"
+             [class.clickable]="true">
+
+          <div class="episode-image">
+            <img [src]="getStillImageUrl(episode.still_path)" [alt]="episode.name">
+            <div class="episode-number-badge">
+              {{ episode.episode_number }}
+            </div>
+          </div>
+
+          <div class="episode-content">
+            <h3 class="episode-title">{{ episode.name }}</h3>
+            <div class="episode-meta">
+              <div class="episode-air-date" *ngIf="episode.air_date">
+                <lucide-icon [img]="Calendar" size="14"></lucide-icon>
+                {{ formatAirDate(episode.air_date) }}
+              </div>
+              <div class="episode-runtime" *ngIf="episode.runtime">
+                <lucide-icon [img]="Clock" size="14"></lucide-icon>
+                {{ formatRuntime(episode.runtime) }}
+              </div>
+              <div class="episode-rating" *ngIf="episode.vote_average > 0">
+                <lucide-icon [img]="Star" class="text-yellow-500" size="14"></lucide-icon>
+                {{ episode.vote_average.toFixed(1) }}
+              </div>
+            </div>
+            <p class="episode-overview" *ngIf="episode.overview">{{ episode.overview }}</p>
+            <p class="episode-overview no-overview" *ngIf="!episode.overview">No hay descripción disponible para este episodio.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-episodes" *ngIf="seasonDetail && (!seasonDetail.episodes || seasonDetail.episodes.length === 0)">
+      <h2>No hay episodios disponibles</h2>
+      <p>Los episodios de esta temporada no están disponibles actualmente.</p>
+    </div>
   </div>
-
-  <div class="no-episodes" *ngIf="seasonDetail && (!seasonDetail.episodes || seasonDetail.episodes.length === 0)">
-    <h2>No hay episodios disponibles</h2>
-    <p>Los episodios de esta temporada no están disponibles actualmente.</p>
-  </div>
-</div>
-
-<div *ngIf="loading" class="loading">
-  Cargando...
-</div>
-
-<div *ngIf="error" class="error">
-  {{ error }}
 </div>
