@@ -5,8 +5,8 @@ import { environment } from '../../environments/environment';
 
 // Interfaces pour typer les données
 export interface CreateUserMediaInteractionDto {
-  media_id: number;
-  media_type: 'movie' | 'tv';
+  mediaId: number;
+  mediaType: 'movie' | 'tv';
   rating?: number; // Note de 1 à 10
   comment?: string;
 }
@@ -55,12 +55,12 @@ export class UserMediaInteractionsService {
   /**
    * Récupère l'interaction d'un utilisateur pour un média spécifique
    * @param userId L'ID de l'utilisateur
-   * @param media_id L'ID du média
-   * @param media_type Le type de média (movie ou tv)
+   * @param mediaId L'ID du média
+   * @param mediaType Le type de média (movie ou tv)
    */
-  getUserMediaInteraction(userId: string, media_id: number, media_type: 'movie' | 'tv'): Observable<UserMediaInteraction> {
-    const params = new HttpParams().set('mediaType', media_type);
-    return this.http.get<UserMediaInteraction>(`${this.apiUrl}/user/${userId}/media/${media_id}`, { params });
+  getUserMediaInteraction(userId: string, mediaId: number, mediaType: 'movie' | 'tv'): Observable<UserMediaInteraction> {
+    const params = new HttpParams().set('mediaType', mediaType);
+    return this.http.get<UserMediaInteraction>(`${this.apiUrl}/user/${userId}/media/${mediaId}`, { params });
   }
 
   /**
