@@ -1,0 +1,72 @@
+<div class="modal-overlay" (click)="onOverlayClick($event)">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Evaluar "{{ mediaTitle }}"</h2>
+          <button class="close-button" (click)="closeModal()">
+            <lucide-icon [img]="X"></lucide-icon>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Section de notation -->
+          <div class="rating-section">
+            <h3>
+              <lucide-icon [img]="Star" size="20"></lucide-icon>
+              Tu puntuación
+            </h3>
+            <div class="stars-container">
+              <button
+                *ngFor="let star of [1,2,3,4,5,6,7,8,9,10]"
+                class="star-button"
+                [class.active]="star <= currentRating"
+                [class.hover]="star <= hoverRating"
+                (click)="setRating(star)"
+                (mouseenter)="hoverRating = star"
+                (mouseleave)="hoverRating = 0"
+              >
+                <lucide-icon [img]="Star" size="24"></lucide-icon>
+                <span class="star-number">{{ star }}</span>
+              </button>
+            </div>
+            <p class="rating-description" *ngIf="currentRating > 0">
+              {{ getRatingDescription(currentRating) }}
+            </p>
+          </div>
+
+          <!-- Section de commentaire -->
+          <div class="comment-section">
+            <h3>
+              <lucide-icon [img]="MessageCircle" size="20"></lucide-icon>
+              Tu comentario (opcional)
+            </h3>
+            <textarea
+              [(ngModel)]="currentComment"
+              placeholder="Comparte tu opinión sobre esta película..."
+              rows="4"
+              maxlength="500"
+              class="comment-textarea"
+            ></textarea>
+            <div class="character-count">
+              {{ currentComment.length }}/500
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="cancel-button" (click)="closeModal()">
+            Cancelar
+          </button>
+          <button
+            class="save-button"
+            (click)="saveInteraction()"
+            [disabled]="currentRating === 0 && currentComment.trim() === ''"
+          >
+            {{ isLoading ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </div>
