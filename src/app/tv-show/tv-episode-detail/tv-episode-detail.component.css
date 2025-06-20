@@ -1,0 +1,405 @@
+.episode-detail-container {
+  min-height: 100vh;
+  position: relative;
+}
+
+.back-button-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.back-button {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.loading-container, .error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  text-align: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.episode-content {
+  position: relative;
+}
+
+.episode-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60vh;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.backdrop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.episode-info-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 2rem 2rem;
+  gap: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.episode-image {
+  flex: 0 0 400px;
+  position: relative;
+}
+
+.episode-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.episode-type-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.episode-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 8px;
+}
+
+.breadcrumb-link {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.breadcrumb-link:hover {
+  color: #0056b3;
+}
+
+.breadcrumb-separator {
+  color: #6c757d;
+}
+
+.breadcrumb-current {
+  color: #495057;
+  font-weight: 500;
+}
+
+.episode-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.episode-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.episode-numbers {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.season-episode {
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.episode-stats {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.episode-rating, .episode-runtime, .episode-air-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.episode-rating {
+  color: #333;
+  font-weight: 500;
+}
+
+.vote-count {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.text-yellow-500 {
+  color: #fbbf24;
+}
+
+.user-interaction-section {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.user-interaction-section h3 {
+  margin: 0 0 1rem;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.existing-interaction {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.user-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.user-comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.user-comment p {
+  margin: 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.interaction-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.edit-rating-btn, .delete-rating-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.edit-rating-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-rating-btn:hover {
+  background-color: #0056b3;
+}
+
+.delete-rating-btn {
+  background-color: #dc3545;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.delete-rating-btn:hover {
+  background-color: #c82333;
+}
+
+.no-interaction {
+  text-align: center;
+}
+
+.no-interaction p {
+  margin: 0 0 1rem;
+  color: #6c757d;
+}
+
+.rate-episode-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+  transition: background-color 0.3s ease;
+}
+
+.rate-episode-btn:hover {
+  background-color: #218838;
+}
+
+.episode-overview, .production-info {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.episode-overview h3, .production-info h3 {
+  margin: 0 0 1rem;
+  color: #333;
+  font-size: 1.3rem;
+}
+
+.episode-overview p, .production-info p {
+  margin: 0;
+  color: #555;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* Credits section */
+.credits-section {
+  background-color: #f8f9fa;
+  padding: 3rem 0;
+  margin-top: 3rem;
+}
+
+.credits-group {
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  padding: 0 2rem;
+}
+
+.credits-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .episode-info-container {
+    flex-direction: column;
+    padding: 6rem 1rem 2rem;
+    gap: 2rem;
+  }
+
+  .episode-image {
+    flex: none;
+    max-width: 100%;
+  }
+
+  .episode-title {
+    font-size: 1.8rem;
+  }
+
+  .episode-stats {
+    gap: 1rem;
+  }
+
+  .breadcrumb {
+    flex-wrap: wrap;
+  }
+
+  .credits-group {
+    padding: 0 1rem;
+  }
+
+  .credits-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .back-button-container {
+    top: 10px;
+    left: 10px;
+  }
+
+  .episode-info-container {
+    padding: 5rem 0.5rem 1rem;
+  }
+
+  .episode-title {
+    font-size: 1.5rem;
+  }
+
+  .episode-stats {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .credits-title {
+    font-size: 1.25rem;
+  }
+}

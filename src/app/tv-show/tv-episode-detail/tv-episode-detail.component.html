@@ -1,0 +1,168 @@
+<div class="episode-detail-container">
+  <div class="back-button-container">
+    <button (click)="goBack()" class="back-button">
+      <lucide-icon [img]="ArrowLeft"></lucide-icon> Volver
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <p>Cargando episodio...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p class="error-message">{{ error }}</p>
+    <button (click)="goBack()" class="back-button">Volver</button>
+  </div>
+
+  <div *ngIf="episode && !loading && !error" class="episode-content">
+    <!-- Episode backdrop -->
+    <div class="episode-backdrop" [style.background-image]="episode.still_path ? 'url(https://image.tmdb.org/t/p/w1280' + episode.still_path + ')' : 'none'">
+      <div class="backdrop-overlay"></div>
+    </div>
+
+    <div class="episode-info-container">
+      <!-- Episode image -->
+      <div class="episode-image">
+        <img
+          [src]="episode.still_path ? 'https://image.tmdb.org/t/p/w500' + episode.still_path : 'https://placehold.co/500x280?text=Sin+imagen&font=open-sans'"
+          [alt]="episode.name"
+        >
+        <div class="episode-type-badge" *ngIf="episode.episode_type !== 'standard'">
+          {{ episode.episode_type }}
+        </div>
+      </div>
+
+      <div class="episode-info">
+        <!-- Navigation breadcrumb -->
+        <nav class="breadcrumb">
+          <button (click)="navigateToSeries()" class="breadcrumb-link">Serie</button>
+          <span class="breadcrumb-separator">></span>
+          <button (click)="navigateToSeason()" class="breadcrumb-link">Temporada {{ seasonNumber }}</button>
+          <span class="breadcrumb-separator">></span>
+          <span class="breadcrumb-current">Episodio {{ episodeNumber }}</span>
+        </nav>
+
+        <h1 class="episode-title">{{ episode.name }}</h1>
+
+        <div class="episode-meta">
+          <div class="episode-numbers">
+            <span class="season-episode">T{{ seasonNumber }}E{{ episodeNumber }}</span>
+          </div>
+
+          <div class="episode-stats">
+            <div class="episode-rating" *ngIf="episode.vote_average">
+              <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
+              {{ episode.vote_average.toFixed(1) }}
+              <span class="vote-count">({{ episode.vote_count || 0 }} votos)</span>
+            </div>
+
+            <div class="episode-runtime" *ngIf="episode.runtime">
+              <lucide-icon [img]="Clock" size="16"></lucide-icon>
+              {{ formatRuntime(episode.runtime) }}
+            </div>
+
+            <div class="episode-air-date" *ngIf="episode.air_date">
+              <lucide-icon [img]="Calendar" size="16"></lucide-icon>
+              {{ formatAirDate(episode.air_date) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- User interaction section -->
+        <div class="user-interaction-section" *ngIf="currentUser">
+          <h3>Tu evaluación</h3>
+          <div class="interaction-content">
+            <div *ngIf="userInteraction" class="existing-interaction">
+              <div class="user-rating" *ngIf="userInteraction.rating">
+                <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
+                <span>{{ userInteraction.rating }}/10</span>
+              </div>
+              <div class="user-comment" *ngIf="userInteraction.comment">
+                <lucide-icon [img]="MessageSquare" size="16"></lucide-icon>
+                <p>{{ userInteraction.comment }}</p>
+              </div>
+              <div class="interaction-actions">
+                <button class="edit-rating-btn" (click)="openRatingModal()">
+                  Editar
+                </button>
+                <button class="delete-rating-btn" (click)="openDeleteModal()">
+                  <lucide-icon [img]="Trash2" size="16"></lucide-icon>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="!userInteraction" class="no-interaction">
+              <p>¿Qué te pareció este episodio?</p>
+              <button class="rate-episode-btn" (click)="openRatingModal()">
+                <lucide-icon [img]="Star" size="16"></lucide-icon>
+                Evaluar episodio
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Episode overview -->
+        <div class="episode-overview" *ngIf="episode.overview">
+          <h3>Sinopsis</h3>
+          <p>{{ episode.overview }}</p>
+        </div>
+
+        <!-- Production code if available -->
+        <div class="production-info" *ngIf="episode.production_code">
+          <h3>Código de producción</h3>
+          <p>{{ episode.production_code }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Credits section -->
+    <div class="credits-section" *ngIf="(guestStars.length > 0 || crewMembers.length > 0)">
+
+      <!-- Guest Stars carousel -->
+      <div class="credits-group" *ngIf="guestStars.length > 0">
+        <h2 class="credits-title">Actores invitados</h2>
+        <app-carousel>
+          <app-person-card
+            *ngFor="let person of guestStars; trackBy: trackByPersonId"
+            [person]="adaptPersonForCard(person, 'guest_stars')"
+          ></app-person-card>
+        </app-carousel>
+      </div>
+
+      <!-- Crew carousel -->
+      <div class="credits-group" *ngIf="crewMembers.length > 0">
+        <h2 class="credits-title">Equipo técnico</h2>
+        <app-carousel>
+          <app-person-card
+            *ngFor="let person of crewMembers; trackBy: trackByPersonId"
+            [person]="adaptPersonForCard(person, 'crew')"
+          ></app-person-card>
+        </app-carousel>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Rating Modal -->
+  <app-rating-modal
+    *ngIf="showRatingModal && episode && currentUser"
+    [mediaId]="episode.id"
+    [mediaType]="'tv'"
+    [mediaTitle]="episode.name"
+    [userId]="currentUser.id"
+    [existingInteraction]="userInteraction"
+    (closeModalEvent)="closeRatingModal()"
+    (interactionSaved)="onInteractionSaved($event)"
+  ></app-rating-modal>
+
+  <!-- Delete confirmation modal -->
+  <app-delete-confirmation-modal
+    *ngIf="showDeleteModal"
+    [message]="
+      '¿Estás seguro de que quieres eliminar tu evaluación de &quot;' +
+      (episode?.name ? episode.name : '') +
+      '&quot;?'"
+    [isDeleting]="isDeleting"
+    (confirmDelete)="confirmDeleteInteraction()"
+    (cancelDelete)="closeDeleteModal()"
+  ></app-delete-confirmation-modal>
+</div>
