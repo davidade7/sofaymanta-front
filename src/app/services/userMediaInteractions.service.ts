@@ -25,6 +25,7 @@ export interface UserMediaInteraction {
   comment?: string;
   createdAt: Date | string;
   updatedAt: Date | string;
+  isDeleting?: boolean;
 }
 
 @Injectable({

@@ -46,7 +46,7 @@
           </div>
         </div>
 
-         <div class="user-interaction-section" *ngIf="currentUser">
+        <div class="user-interaction-section" *ngIf="currentUser">
           <h3>Tu evaluación</h3>
           <div class="interaction-content">
             <div *ngIf="userInteraction" class="existing-interaction">
@@ -58,9 +58,14 @@
                 <lucide-icon [img]="MessageSquare" size="16"></lucide-icon>
                 <p>{{ userInteraction.comment }}</p>
               </div>
-              <button class="edit-rating-btn" (click)="openRatingModal()">
-                Editar evaluación
-              </button>
+              <div class="interaction-actions">
+                <button class="edit-rating-btn" (click)="openRatingModal()">
+                  Editar
+                </button>
+                <button class="delete-rating-btn" (click)="openDeleteModal()">
+                  <lucide-icon [img]="Trash2" size="16"></lucide-icon>
+                </button>
+              </div>
             </div>
             <div *ngIf="!userInteraction" class="no-interaction">
               <p>¿Qué te pareció esta película?</p>
@@ -124,4 +129,16 @@
     (closeModalEvent)="closeRatingModal()"
     (interactionSaved)="onInteractionSaved($event)"
   ></app-rating-modal>
+
+  <!-- Modal de confirmation de suppression -->
+  <app-delete-confirmation-modal
+    *ngIf="showDeleteModal"
+    [message]="
+      '¿Estás seguro de que quieres eliminar tu evaluación de &quot;' +
+      (movie?.title ? movie.title : '') +
+      '&quot;?'"
+    [isDeleting]="isDeleting"
+    (confirmDelete)="confirmDeleteInteraction()"
+    (cancelDelete)="closeDeleteModal()"
+  ></app-delete-confirmation-modal>
 </div>

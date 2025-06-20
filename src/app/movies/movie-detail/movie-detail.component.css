@@ -225,6 +225,13 @@
   gap: 1rem;
 }
 
+.interaction-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
 .existing-interaction {
   display: flex;
   flex-direction: column;
@@ -279,7 +286,6 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin: auto;
   gap: 0.5rem;
   font-size: 0.9rem;
   font-weight: 500;
@@ -288,6 +294,23 @@
 
 .edit-rating-btn:hover, .rate-movie-btn:hover {
   background-color: #5a6fd8;
+}
+
+.delete-rating-btn {
+  padding: 0.5rem 0.70rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.delete-rating-btn:hover {
+  background-color: #c82333;
 }
 
 .no-interaction {
@@ -316,4 +339,5 @@
     padding: 0.625rem 1.25rem;
     font-size: 0.875rem;
   }
+
 }

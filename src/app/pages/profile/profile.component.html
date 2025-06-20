@@ -204,10 +204,27 @@
                   <lucide-icon [img]="ExternalLink" size="16"></lucide-icon>
                   Ver detalles
                 </a>
+
+                <button
+                  class="delete-interaction-btn"
+                  (click)="prepareDeleteInteraction(interaction)"
+                  title="Eliminar evaluación"
+                >
+                  <lucide-icon [img]="Trash2" size="16"></lucide-icon>
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
+
+  <!-- Modal de confirmation de suppression -->
+  <app-delete-confirmation-modal
+    *ngIf="showDeleteModal"
+    [message]="getDeleteMessage()"
+    [isDeleting]="isDeletingInteraction"
+    (confirmDelete)="confirmDeleteInteraction()"
+    (cancelDelete)="cancelDeleteInteraction()"
+  ></app-delete-confirmation-modal>
 </div>

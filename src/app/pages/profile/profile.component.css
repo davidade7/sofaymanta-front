@@ -390,6 +390,7 @@
 .interaction-actions {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .view-details-btn {
@@ -411,6 +412,57 @@
   color: white;
 }
 
+.delete-interaction-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 40px; /* Taille fixe pour un bouton carré */
+  height: 40px;
+}
+
+.delete-interaction-btn:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.delete-interaction-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+/* ...existing styles... */
+
+.delete-interaction-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 40px; /* Taille fixe pour un bouton carré */
+  height: 40px;
+}
+
+.delete-interaction-btn:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.delete-interaction-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .interactions-stats {
@@ -428,14 +480,27 @@
   }
 
   .interaction-actions {
+    flex-direction: row; /* Garder en ligne sur mobile */
     justify-content: center;
-    margin-top: 0.5rem;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 1rem;
   }
 
   .interaction-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+
+  .view-details-btn {
+    flex: 1; /* Le bouton "Ver detalles" prend plus de place */
+  }
+
+  .delete-interaction-btn {
+    width: 40px; /* Garder la taille fixe même sur mobile */
+    height: 40px;
+    flex-shrink: 0;
   }
 }
 

@@ -2,16 +2,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { LucideAngularModule, ArrowLeft, Star, MessageSquare } from 'lucide-angular';
+import { LucideAngularModule, ArrowLeft, Star, MessageSquare, Trash2 } from 'lucide-angular';
 import { MovieService } from '../../services/movie.service';
 import { UserMediaInteractionsService, UserMediaInteraction } from '../../services/userMediaInteractions.service';
 import { AuthService } from '../../services/auth.service';
 import { RatingModalComponent } from '../../shared/rating-modal/rating-modal.component';
+import { DeleteConfirmationModalComponent } from '../../shared/delete-confirmation-modal/delete-confirmation-modal.component';
 
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, RatingModalComponent],
+  imports: [CommonModule, LucideAngularModule, RatingModalComponent, DeleteConfirmationModalComponent],
   templateUrl: './movie-detail.component.html',
   styleUrls: ['./movie-detail.component.css']
 })
@@ -20,6 +21,7 @@ export class MovieDetailComponent implements OnInit {
   readonly ArrowLeft = ArrowLeft;
   readonly Star = Star;
   readonly MessageSquare = MessageSquare;
+  readonly Trash2 = Trash2;
 
   movie: any = null;
   loading = true;
@@ -27,6 +29,8 @@ export class MovieDetailComponent implements OnInit {
   currentUser: any = null;
   userInteraction: UserMediaInteraction | null = null;
   showRatingModal = false;
+  showDeleteModal = false;
+  isDeleting = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -113,6 +117,37 @@ export class MovieDetailComponent implements OnInit {
   onInteractionSaved(interaction: UserMediaInteraction) {
     this.userInteraction = interaction;
     this.showRatingModal = false;
+  }
+
+  // Méthodes pour la suppression
+  openDeleteModal() {
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+  }
+
+  confirmDeleteInteraction() {
+    if (!this.userInteraction || !this.currentUser) return;
+
+    this.isDeleting = true;
+
+    this.userMediaInteractionsService.deleteInteraction(
+      this.userInteraction.id,
+      this.currentUser.id
+    ).subscribe({
+      next: (response) => {
+        this.userInteraction = null;
+        this.isDeleting = false;
+        this.showDeleteModal = false;
+      },
+      error: (error) => {
+        this.isDeleting = false;
+        console.error('Error deleting interaction:', error);
+        alert('Error al eliminar la evaluación. Intenta de nuevo.');
+      }
+    });
   }
 
   goBack(): void {

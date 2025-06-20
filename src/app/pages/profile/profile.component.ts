@@ -6,13 +6,14 @@ import { UserMediaInteractionsService, UserMediaInteraction } from '../../servic
 import { GenreService } from '../../services/genre.service';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { LucideAngularModule, Save, Loader2, Plus, X, Star, MessageCircle, ExternalLink } from 'lucide-angular';
+import { LucideAngularModule, Save, Loader2, Plus, X, Star, MessageCircle, ExternalLink, Trash2 } from 'lucide-angular';
+import { DeleteConfirmationModalComponent } from '../../shared/delete-confirmation-modal/delete-confirmation-modal.component';
 import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, RouterModule, DeleteConfirmationModalComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -35,6 +36,7 @@ export class ProfileComponent implements OnInit {
   Star = Star;
   MessageCircle = MessageCircle;
   ExternalLink = ExternalLink;
+  Trash2 = Trash2;
 
   // Stockage temporaire de l'ID utilisateur
   userId: string = '';
@@ -60,6 +62,10 @@ export class ProfileComponent implements OnInit {
     'Filmin': 'filmin',
     'Movistar+': 'movistar_plus'
   };
+
+  showDeleteModal = false;
+  interactionToDelete: UserMediaInteraction | null = null;
+  isDeletingInteraction = false;
 
   constructor(
   private fb: FormBuilder,
@@ -348,5 +354,50 @@ export class ProfileComponent implements OnInit {
   // Obtenir les interactions avec commentaire seulement
   getCommentedInteractions(): UserMediaInteraction[] {
     return this.userInteractions.filter(interaction => interaction.comment && interaction.comment.trim() !== '');
+  }
+
+  // Supprimer une interaction
+  prepareDeleteInteraction(interaction: UserMediaInteraction) {
+    this.interactionToDelete = interaction;
+    this.showDeleteModal = true;
+  }
+
+  confirmDeleteInteraction() {
+    if (!this.interactionToDelete) return;
+
+    this.isDeletingInteraction = true;
+
+    this.userMediaInteractionsService.deleteInteraction(
+      this.interactionToDelete.id,
+      this.userId
+    ).subscribe({
+      next: (response) => {
+        console.log('Interaction supprimée:', response);
+        // Retirer l'interaction de la liste locale
+        this.userInteractions = this.userInteractions.filter(
+          i => i.id !== this.interactionToDelete!.id
+        );
+        this.cancelDeleteInteraction();
+      },
+      error: (error) => {
+        console.error('Erreur lors de la suppression:', error);
+        this.isDeletingInteraction = false;
+        alert('Error al eliminar la evaluación. Intenta de nuevo.');
+      }
+    });
+  }
+
+  // Annuler la suppression
+  cancelDeleteInteraction() {
+    this.showDeleteModal = false;
+    this.interactionToDelete = null;
+    this.isDeletingInteraction = false;
+  }
+
+  // Générer le message de confirmation
+  getDeleteMessage(): string {
+    if (!this.interactionToDelete) return '';
+    const mediaType = this.getMediaTypeName(this.interactionToDelete.media_type).toLowerCase();
+    return `¿Estás seguro de que quieres eliminar tu evaluación de esta ${mediaType} (ID: ${this.interactionToDelete.media_id})?`;
   }
 }
