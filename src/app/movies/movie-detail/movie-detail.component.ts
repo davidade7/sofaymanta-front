@@ -2,13 +2,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { LucideAngularModule, ArrowLeft, Star } from 'lucide-angular';
+import { LucideAngularModule, ArrowLeft, Star, MessageSquare } from 'lucide-angular';
 import { MovieService } from '../../services/movie.service';
+import { UserMediaInteractionsService, UserMediaInteraction } from '../../services/userMediaInteractions.service';
+import { AuthService } from '../../services/auth.service';
+import { RatingModalComponent } from '../../shared/rating-modal/rating-modal.component';
 
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, RatingModalComponent],
   templateUrl: './movie-detail.component.html',
   styleUrls: ['./movie-detail.component.css']
 })
@@ -16,18 +19,28 @@ export class MovieDetailComponent implements OnInit {
   // Icônes disponibles pour le template
   readonly ArrowLeft = ArrowLeft;
   readonly Star = Star;
+  readonly MessageSquare = MessageSquare;
 
   movie: any = null;
   loading = true;
   error: string | null = null;
+  currentUser: any = null;
+  userInteraction: UserMediaInteraction | null = null;
+  showRatingModal = false;
 
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
+    private userMediaInteractionsService: UserMediaInteractionsService,
+    private authService: AuthService,
     private location: Location
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    // Load the current user
+    await this.loadCurrentUser();
+
+    // Load the movie
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -36,12 +49,29 @@ export class MovieDetailComponent implements OnInit {
     });
   }
 
+  async loadCurrentUser() {
+    try {
+      const { data, error } = await this.authService.getUser();
+      if (!error && data.user) {
+        this.currentUser = data.user;
+      }
+    } catch (error) {
+      console.log('Utilisador no autenticado o error al cargar el usuario', error);
+    }
+  }
+
+
   loadMovie(id: string): void {
     this.loading = true;
     this.movieService.getMovieDetail(id).subscribe({
       next: (data) => {
         this.movie = data;
         this.loading = false;
+
+        // Load user interaction if the user is authenticated
+        if (this.currentUser) {
+          this.loadUserInteraction();
+        }
       },
       error: (err) => {
         console.error('Error loading movie details', err);
@@ -49,6 +79,40 @@ export class MovieDetailComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  loadUserInteraction() {
+    if (!this.currentUser || !this.movie) return;
+
+    this.userMediaInteractionsService.getUserMediaInteraction(
+      this.currentUser.id,
+      this.movie.id,
+      'movie'
+    ).subscribe({
+      next: (interaction) => {
+        this.userInteraction = interaction;
+      },
+      error: (error) => {
+        this.userInteraction = null;
+      }
+    });
+  }
+
+  openRatingModal() {
+    if (!this.currentUser) {
+      alert('Debes iniciar sesión para evaluar esta película');
+      return;
+    }
+    this.showRatingModal = true;
+  }
+
+  closeRatingModal() {
+    this.showRatingModal = false;
+  }
+
+  onInteractionSaved(interaction: UserMediaInteraction) {
+    this.userInteraction = interaction;
+    this.showRatingModal = false;
   }
 
   goBack(): void {

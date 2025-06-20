@@ -46,6 +46,32 @@
           </div>
         </div>
 
+         <div class="user-interaction-section" *ngIf="currentUser">
+          <h3>Tu evaluación</h3>
+          <div class="interaction-content">
+            <div *ngIf="userInteraction" class="existing-interaction">
+              <div class="user-rating" *ngIf="userInteraction.rating">
+                <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
+                <span>{{ userInteraction.rating }}/10</span>
+              </div>
+              <div class="user-comment" *ngIf="userInteraction.comment">
+                <lucide-icon [img]="MessageSquare" size="16"></lucide-icon>
+                <p>{{ userInteraction.comment }}</p>
+              </div>
+              <button class="edit-rating-btn" (click)="openRatingModal()">
+                Editar evaluación
+              </button>
+            </div>
+            <div *ngIf="!userInteraction" class="no-interaction">
+              <p>¿Qué te pareció esta película?</p>
+              <button class="rate-movie-btn" (click)="openRatingModal()">
+                <lucide-icon [img]="Star" size="16"></lucide-icon>
+                Evaluar película
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div class="movie-overview">
           <h3>Synopsis</h3>
           <p>{{ movie.overview }}</p>
@@ -86,4 +112,16 @@
       </div>
     </div>
   </div>
+
+  <!-- Rating Modal -->
+  <app-rating-modal
+    *ngIf="showRatingModal && movie && currentUser"
+    [mediaId]="movie.id"
+    [mediaType]="'movie'"
+    [mediaTitle]="movie.title"
+    [userId]="currentUser.id"
+    [existingInteraction]="userInteraction"
+    (closeModalEvent)="closeRatingModal()"
+    (interactionSaved)="onInteractionSaved($event)"
+  ></app-rating-modal>
 </div>
