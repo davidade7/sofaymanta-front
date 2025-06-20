@@ -59,7 +59,7 @@ export class UserMediaInteractionsService {
    * @param media_type Le type de média (movie ou tv)
    */
   getUserMediaInteraction(userId: string, media_id: number, media_type: 'movie' | 'tv'): Observable<UserMediaInteraction> {
-    const params = new HttpParams().set('media_type', media_type);
+    const params = new HttpParams().set('mediaType', media_type);
     return this.http.get<UserMediaInteraction>(`${this.apiUrl}/user/${userId}/media/${media_id}`, { params });
   }
 
