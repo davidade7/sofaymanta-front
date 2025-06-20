@@ -124,4 +124,90 @@
       </div>
     </section>
   </div>
+
+      <!-- Évaluations de l'utilisateur - uniquement si le profil existe -->
+    <section class="profile-section" *ngIf="userProfile">
+      <h2>Mis Evaluaciones</h2>
+
+      <div *ngIf="isLoadingInteractions" class="loading-spinner">
+        <lucide-icon [img]="Loader2" size="24"></lucide-icon>
+        <p>Cargando evaluaciones...</p>
+      </div>
+
+      <div *ngIf="!isLoadingInteractions && userInteractions.length === 0" class="no-interactions">
+        <p>No has evaluado ningún contenido aún.</p>
+        <p>¡Explora películas y series para comenzar a evaluar!</p>
+      </div>
+
+      <div *ngIf="!isLoadingInteractions && userInteractions.length > 0" class="interactions-content">
+        <!-- Estadísticas rápidas -->
+        <div class="interactions-stats">
+          <div class="stat-item">
+            <span class="stat-number">{{ userInteractions.length }}</span>
+            <span class="stat-label">Total</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ getMovieInteractions().length }}</span>
+            <span class="stat-label">Películas</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ getTvInteractions().length }}</span>
+            <span class="stat-label">Series</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ getRatedInteractions().length }}</span>
+            <span class="stat-label">Calificadas</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">{{ getCommentedInteractions().length }}</span>
+            <span class="stat-label">Comentadas</span>
+          </div>
+        </div>
+
+        <!-- Liste des évaluations -->
+        <div class="interactions-list">
+          <div
+            *ngFor="let interaction of userInteractions"
+            class="interaction-card"
+          >
+            <div class="interaction-header">
+              <div class="media-info">
+                <span class="media-type-badge" [class.movie]="interaction.media_type === 'movie'" [class.tv]="interaction.media_type === 'tv'">
+                  {{ getMediaTypeName(interaction.media_type) }}
+                </span>
+                <span class="media-id">ID: {{ interaction.media_id }}</span>
+              </div>
+              <div class="interaction-date">
+                {{ interaction.createdAt | date:'short' }}
+              </div>
+            </div>
+
+            <div class="interaction-content-details">
+              <div class="rating-and-comment">
+                <div *ngIf="interaction.rating" class="interaction-rating">
+                  <lucide-icon [img]="Star" size="16"></lucide-icon>
+                  <span class="rating-value">{{ interaction.rating }}/10</span>
+                </div>
+
+                <div *ngIf="interaction.comment" class="interaction-comment">
+                  <lucide-icon [img]="MessageCircle" size="16"></lucide-icon>
+                  <p class="comment-text">{{ interaction.comment }}</p>
+                </div>
+              </div>
+
+              <div class="interaction-actions">
+                <a
+                  [routerLink]="getMediaDetailLink(interaction)"
+                  class="view-details-btn"
+                  title="Ver detalles"
+                >
+                  <lucide-icon [img]="ExternalLink" size="16"></lucide-icon>
+                  Ver detalles
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 </div>

@@ -2,16 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserProfileService, UserProfile } from '../../services/userProfile.service';
+import { UserMediaInteractionsService, UserMediaInteraction } from '../../services/userMediaInteractions.service';
 import { GenreService } from '../../services/genre.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { LucideAngularModule, Save, Loader2, Plus, X } from 'lucide-angular';
+import { LucideAngularModule, Save, Loader2, Plus, X, Star, MessageCircle, ExternalLink } from 'lucide-angular';
 import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, RouterModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -22,6 +23,7 @@ export class ProfileComponent implements OnInit {
   isLoading = true;
   isCreatingProfile = false;
   isUpdatingProfile = false;
+  isLoadingInteractions = false;
 
   profileUpdateSuccess = false;
   profileUpdateError = '';
@@ -30,6 +32,9 @@ export class ProfileComponent implements OnInit {
   Loader2 = Loader2;
   Plus = Plus;
   X = X;
+  Star = Star;
+  MessageCircle = MessageCircle;
+  ExternalLink = ExternalLink;
 
   // Stockage temporaire de l'ID utilisateur
   userId: string = '';
@@ -37,6 +42,9 @@ export class ProfileComponent implements OnInit {
   // Genres disponibles (récupérés du GenreService)
   availableMovieGenres: any[] = [];
   availableTvGenres: any[] = [];
+
+  // Évaluations de l'utilisateur
+  userInteractions: UserMediaInteraction[] = [];
 
   // Plateformes disponibles avec label : valeur
   availablePlatforms = {
@@ -54,11 +62,12 @@ export class ProfileComponent implements OnInit {
   };
 
   constructor(
-    private fb: FormBuilder,
-    private userProfileService: UserProfileService,
-    private genreService: GenreService,
-    private authService: AuthService,
-    private router: Router
+  private fb: FormBuilder,
+  private userProfileService: UserProfileService,
+  private genreService: GenreService,
+  private userMediaInteractionsService: UserMediaInteractionsService, // <- Ajout de cette ligne
+  private authService: AuthService,
+  private router: Router
   ) { }
 
   ngOnInit() {
@@ -106,6 +115,8 @@ export class ProfileComponent implements OnInit {
           this.profileForm.patchValue({
             username: profile.username
           });
+          // Charger les interactions après avoir chargé le profil
+          this.loadUserInteractions();
         },
         error: error => {
           console.log('Aucun profil trouvé ou erreur:', error);
@@ -118,6 +129,24 @@ export class ProfileComponent implements OnInit {
       this.profileUpdateError = 'Impossible de charger les données utilisateur. Veuillez vous connecter.';
       this.router.navigate(['/signin']);
     }
+  }
+
+  loadUserInteractions() {
+    if (!this.userId) return;
+
+    this.isLoadingInteractions = true;
+    this.userMediaInteractionsService.getUserInteractions(this.userId).pipe(
+      finalize(() => this.isLoadingInteractions = false)
+    ).subscribe({
+      next: interactions => {
+        this.userInteractions = interactions.sort((a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      },
+      error: error => {
+        console.error('Erreur lors du chargement des interactions:', error);
+      }
+    });
   }
 
   saveProfile() {
@@ -284,5 +313,40 @@ export class ProfileComponent implements OnInit {
   getSelectedPlatformLabels(): string[] {
     if (!this.userProfile?.streaming_platforms) return [];
     return this.userProfile.streaming_platforms.map(platform => this.getPlatformLabel(platform));
+  }
+
+  // === Méthodes pour les interactions utilisateur ===
+
+  // Obtenir le lien vers le détail du média
+  getMediaDetailLink(interaction: UserMediaInteraction): string {
+    if (interaction.media_type === 'movie') {
+      return `/movie/detail/${interaction.media_id}`;
+    } else {
+      return `/serie/detail/${interaction.media_id}`;
+    }
+  }
+
+  // Obtenir le nom du type de média pour l'affichage
+  getMediaTypeName(mediaType: 'movie' | 'tv'): string {
+    return mediaType === 'movie' ? 'Película' : 'Serie';
+  }
+
+  // Filtrer les interactions par type
+  getMovieInteractions(): UserMediaInteraction[] {
+    return this.userInteractions.filter(interaction => interaction.media_type === 'movie');
+  }
+
+  getTvInteractions(): UserMediaInteraction[] {
+    return this.userInteractions.filter(interaction => interaction.media_type === 'tv');
+  }
+
+  // Obtenir les interactions avec rating seulement
+  getRatedInteractions(): UserMediaInteraction[] {
+    return this.userInteractions.filter(interaction => interaction.rating !== undefined && interaction.rating > 0);
+  }
+
+  // Obtenir les interactions avec commentaire seulement
+  getCommentedInteractions(): UserMediaInteraction[] {
+    return this.userInteractions.filter(interaction => interaction.comment && interaction.comment.trim() !== '');
   }
 }
