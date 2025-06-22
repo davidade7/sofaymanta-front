@@ -13,8 +13,10 @@ import { UserMediaInteractionsService, CreateUserMediaInteractionDto, UpdateUser
 })
 export class RatingModalComponent implements OnInit {
   @Input() mediaId!: number;
-  @Input() mediaType: 'movie' | 'tv' = 'movie';
+  @Input() mediaType!: 'movie' | 'tv' | 'tv_episode';
   @Input() mediaTitle!: string;
+  @Input() seasonNumber?: number;
+  @Input() episodeNumber?: number;
   @Input() userId!: string;
   @Input() existingInteraction: UserMediaInteraction | null = null;
   @Output() closeModalEvent = new EventEmitter<void>();
@@ -72,72 +74,60 @@ export class RatingModalComponent implements OnInit {
     this.closeModalEvent.emit();
   }
 
+  isValid(): boolean {
+    return this.currentRating > 0 || this.currentComment.trim().length > 0;
+  }
+
   saveInteraction() {
-    if (this.currentRating === 0 && this.currentComment.trim() === '') {
-      return;
-    }
+    if (!this.isValid()) return;
 
     this.isLoading = true;
     this.errorMessage = '';
 
-    // Si on a une interaction existante, on fait toujours un UPDATE
+    const interactionData: CreateUserMediaInteractionDto = {
+      media_id: this.mediaId,
+      media_type: this.mediaType,
+      rating: this.currentRating || undefined,
+      comment: this.currentComment.trim() || undefined,
+    };
+
+    // Ajouter les numéros de saison et épisode si c'est un épisode
+    if (this.mediaType === 'tv_episode') {
+      interactionData.season_number = this.seasonNumber;
+      interactionData.episode_number = this.episodeNumber;
+    }
+
     if (this.existingInteraction) {
-      const updates: UpdateUserMediaInteractionDto = {};
-
-      if (this.currentRating > 0) {
-        updates.rating = this.currentRating;
-      }
-
-      if (this.currentComment.trim()) {
-        updates.comment = this.currentComment.trim();
-      }
-
+      // Mise à jour
       this.userMediaInteractionsService.updateInteraction(
         this.existingInteraction.id,
         this.userId,
-        updates
+        {
+          rating: this.currentRating || undefined,
+          comment: this.currentComment.trim() || undefined
+        }
       ).subscribe({
-        next: (result) => {
+        next: (interaction) => {
+          this.interactionSaved.emit(interaction);
           this.isLoading = false;
-          this.interactionSaved.emit(result);
-          this.closeModal();
         },
         error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = 'Error al actualizar tu evaluación. Intenta de nuevo.';
           console.error('Error updating interaction:', error);
+          this.errorMessage = 'Error al actualizar la evaluación. Intenta de nuevo.';
+          this.isLoading = false;
         }
       });
     } else {
-      // Si on n'a pas d'interaction existante, on crée une nouvelle
-      const interaction: CreateUserMediaInteractionDto = {
-        media_id: this.mediaId,
-        media_type: this.mediaType
-      };
-
-      if (this.currentRating > 0) {
-        interaction.rating = this.currentRating;
-      }
-
-      if (this.currentComment.trim()) {
-        interaction.comment = this.currentComment.trim();
-      }
-
-      this.userMediaInteractionsService.createInteraction(this.userId, interaction).subscribe({
-        next: (result) => {
+      // Création
+      this.userMediaInteractionsService.createInteraction(this.userId, interactionData).subscribe({
+        next: (interaction) => {
+          this.interactionSaved.emit(interaction);
           this.isLoading = false;
-          this.interactionSaved.emit(result);
-          this.closeModal();
         },
         error: (error) => {
-          this.isLoading = false;
-          // Si on a une erreur 409, cela signifie qu'une interaction a été créée entre temps
-          if (error.status === 409) {
-            this.errorMessage = 'Une évaluation existe déjà pour ce contenu. Veuillez recharger la page.';
-          } else {
-            this.errorMessage = 'Error al guardar tu evaluación. Intenta de nuevo.';
-          }
           console.error('Error creating interaction:', error);
+          this.errorMessage = 'Error al guardar la evaluación. Intenta de nuevo.';
+          this.isLoading = false;
         }
       });
     }

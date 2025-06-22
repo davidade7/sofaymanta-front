@@ -328,6 +328,11 @@
   background-color: #28a745;
 }
 
+.media-type-badge.episode {
+  background-color: #17a2b8;
+  color: white;
+}
+
 .media-id {
   font-size: 0.875rem;
   color: #6c757d;
@@ -516,5 +521,42 @@
 
   .interaction-card {
     padding: 0.75rem;
+  }
+}
+
+.media-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.episode-info {
+  background-color: #007bff;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.media-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .media-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .media-details {
+    gap: 4px;
   }
 }

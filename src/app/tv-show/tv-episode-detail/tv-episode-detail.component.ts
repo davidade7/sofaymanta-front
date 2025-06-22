@@ -136,7 +136,9 @@ export class TvEpisodeDetailComponent implements OnInit {
     this.userMediaInteractionsService.getUserMediaInteraction(
       this.currentUser.id,
       this.episode.id,
-      'tv'
+      'tv_episode',
+      this.seasonNumber,
+      this.episodeNumber
     ).subscribe({
       next: (interaction) => {
         this.userInteraction = interaction;
@@ -146,6 +148,7 @@ export class TvEpisodeDetailComponent implements OnInit {
       }
     });
   }
+
 
   openRatingModal() {
     if (!this.currentUser) {
