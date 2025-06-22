@@ -27,6 +27,9 @@ export class AuthGuard implements CanActivate {
   }
 }
 
+@Injectable({
+  providedIn: 'root'
+})
 export class AdminGuard implements CanActivate {
   constructor(
     private authService: AuthService,

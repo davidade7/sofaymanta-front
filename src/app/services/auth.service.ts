@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
+import { UserProfileService } from './userProfile.service';
+import { firstValueFrom } from 'rxjs'; // Import firstValueFrom
 
 const supabaseUrl = environment.supabaseUrl;
 const supabaseKey = environment.supabaseKey;
@@ -16,6 +18,8 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 })
 export class AuthService {
   public supabase: SupabaseClient = supabase;
+
+  constructor(private userProfileService: UserProfileService) {}
 
   async signUp(email: string, password: string) {
     return await supabase.auth.signUp({ email, password });
@@ -33,29 +37,44 @@ export class AuthService {
     return supabase.auth.getUser();
   }
 
-  async getUserWithMetadata() {
+  async getUserWithMetadata(): Promise<any> {
     const { data, error } = await supabase.auth.getUser();
 
     if (error || !data.user) {
       return { data: null, error };
     }
 
+    console.log('User data:', data.user);
+
     return { data, error };
   }
 
   async isCurrentUserAdmin(): Promise<boolean> {
     try {
-      const { data, error } = await this.getUserWithMetadata();
+      const { data: user, error } = await this.getUserWithMetadata();
 
-      if (error || !data?.user) {
+      if (error || !user) {
         return false;
       }
 
-      // Vérifier dans user_metadata et app_metadata
-      const isAdmin = data.user.user_metadata?.['is_super_admin'] === true ||
-                     data.user.app_metadata?.['is_super_admin'] === true;
+      const userId = user.user.id;
 
+      // Use UserProfileService to get the user profile
+      const profile$ = this.userProfileService.getUserProfile(userId);
+      console.log(profile$);
+      const profile = await firstValueFrom(profile$);
+
+
+      if (!profile) {
+        console.error('User profile not found');
+        return false;
+      }
+
+      // Check if the user has the 'admin' role
+      const isAdmin = profile?.role === 'admin';
+      console.log(isAdmin)
       return isAdmin;
+
     } catch (error) {
       console.error('Error checking admin status:', error);
       return false;

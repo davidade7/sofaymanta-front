@@ -6,6 +6,8 @@ import { environment } from '../../environments/environment';
 export interface UserProfile {
   id: string;
   username: string;
+  email: string;
+  role: 'user' | 'admin';
   created_at: string | Date;
   updated_at: string | Date;
   favorite_movie_genres?: number[];
