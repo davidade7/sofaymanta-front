@@ -23,6 +23,9 @@
     <div class="quick-actions">
       <h3>Acciones Rápidas</h3>
       <div class="actions-grid">
+        <button class="action-btn" (click)="toggleStreamingPlatforms()">
+          🎞️ Plataformas
+        </button>
         <button class="action-btn" disabled>
           👥 Gestionar Usuarios
           <small>Próximamente</small>
@@ -35,29 +38,136 @@
           📊 Estadísticas
           <small>Próximamente</small>
         </button>
-        <button class="action-btn" disabled>
-          🎞️ Plataformas
-          <small>Próximamente</small>
-        </button>
       </div>
     </div>
 
-    <!-- <div class="test-section">
-      <h3>Estado del Sistema</h3>
-      <div class="status-grid">
-        <div class="status-item success">
-          <span class="status-dot"></span>
-          Autenticación: OK
+    <div *ngIf="showStreamingPlatforms" class="streaming-platforms-section">
+      <h3>Gestionar Plataformas de Streaming</h3>
+
+      <button (click)="isCreating = !isCreating" class="add-platform-btn">
+        <lucide-icon [img]="isCreating ? X : Plus"></lucide-icon>
+        {{ isCreating ? 'Cancelar' : 'Agregar Plataforma' }}
+      </button>
+
+      <div *ngIf="isCreating" class="platform-form">
+        <h4>
+          <lucide-icon [img]="Plus"></lucide-icon>
+          Agregar Plataforma
+        </h4>
+        <div class="form-group">
+          <label>Code:</label>
+          <input type="text" [(ngModel)]="newPlatform.code" placeholder="netflix, disney, etc." />
         </div>
-        <div class="status-item success">
-          <span class="status-dot"></span>
-          Guard Admin: OK
+
+        <div class="form-group">
+          <label>Name:</label>
+          <input type="text" [(ngModel)]="newPlatform.name" placeholder="Netflix, Disney+, etc." />
         </div>
-        <div class="status-item success">
-          <span class="status-dot"></span>
-          Acceso Autorizado: OK
+
+        <div class="form-group">
+          <label>Logo URL:</label>
+          <input type="text" [(ngModel)]="newPlatform.logo_url" placeholder="https://..." />
+        </div>
+
+        <div class="form-group">
+          <label>Website URL:</label>
+          <input type="text" [(ngModel)]="newPlatform.website_url" placeholder="https://..." />
+        </div>
+
+        <div class="form-group">
+          <label class="toggle-label">
+            <input type="checkbox" [(ngModel)]="newPlatform.is_active" class="toggle-input" />
+            <span class="toggle-slider"></span>
+            Plataforma activa
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button (click)="createPlatform()" class="btn-primary">
+            <lucide-icon [img]="Plus"></lucide-icon>
+            Crear
+          </button>
         </div>
       </div>
-    </div> -->
+
+      <!-- Lista de plataformas existentes -->
+      <div class="platforms-list">
+        <h4>Plataformas Existentes</h4>
+        <div *ngFor="let platform of streamingPlatforms" class="platform-item" [class.inactive]="!platform.is_active">
+          <div class="platform-info">
+            <img [src]="platform.logo_url" [alt]="platform.name" class="platform-logo" />
+            <div class="platform-details">
+              <h5>
+                {{ platform.name }}
+                <span class="status-badge" [class.active]="platform.is_active" [class.inactive]="!platform.is_active">
+                  {{ platform.is_active ? 'Activa' : 'Inactiva' }}
+                </span>
+              </h5>
+              <p><strong>Code:</strong> {{ platform.code }}</p>
+              <a [href]="platform.website_url" target="_blank">{{ platform.website_url }}</a>
+            </div>
+          </div>
+          <div class="platform-actions">
+            <button (click)="togglePlatformStatus(platform)" class="btn-toggle" [class.active]="platform.is_active">
+              <lucide-icon [img]="Power"></lucide-icon>
+              {{ platform.is_active ? 'Desactivar' : 'Activar' }}
+            </button>
+            <button (click)="openEditForm(platform)" class="btn-edit">
+              <lucide-icon [img]="Pencil"></lucide-icon>
+              Editar
+            </button>
+            <button (click)="deletePlatform(platform.id)" class="btn-delete">
+              <lucide-icon [img]="Trash2"></lucide-icon>
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario de edición -->
+      <div *ngIf="selectedPlatform" class="platform-form edit-form">
+        <h4>
+          <lucide-icon [img]="Pencil"></lucide-icon>
+          Editar Plataforma
+        </h4>
+        <div class="form-group">
+          <label>Code:</label>
+          <input type="text" [(ngModel)]="selectedPlatform.code" />
+        </div>
+
+        <div class="form-group">
+          <label>Name:</label>
+          <input type="text" [(ngModel)]="selectedPlatform.name" />
+        </div>
+
+        <div class="form-group">
+          <label>Logo URL:</label>
+          <input type="text" [(ngModel)]="selectedPlatform.logo_url" />
+        </div>
+
+        <div class="form-group">
+          <label>Website URL:</label>
+          <input type="text" [(ngModel)]="selectedPlatform.website_url" />
+        </div>
+
+        <div class="form-group">
+          <label class="toggle-label">
+            <input type="checkbox" [(ngModel)]="selectedPlatform.is_active" class="toggle-input" />
+            <span class="toggle-slider"></span>
+            Plataforma activa
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button (click)="updatePlatform()" class="btn-primary">
+            <lucide-icon [img]="Pencil"></lucide-icon>
+            Actualizar
+          </button>
+          <button (click)="closeEditForm()" class="btn-secondary">
+            <lucide-icon [img]="X"></lucide-icon>
+            Cancelar
+          </button>
+        </div>
+      </div>
   </div>
 </div>

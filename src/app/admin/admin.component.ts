@@ -1,19 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { UserProfileService } from '../services/userProfile.service';
+import { StreamingPlatformService } from '../services/streamingPlatform.service';
+import { StreamingPlatform } from '../models/streaming-platform.model';
+import { LucideAngularModule, Pencil, Trash2, Plus, X, Power } from 'lucide-angular';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule],
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
-  currentUser: any = null;
   isLoading = true;
+  currentUser: any = null;
+  showStreamingPlatforms = false;
+  streamingPlatforms: any[] = [];
+  isCreating = false;
+  newPlatform: any = {
+    code: '',
+    name: '',
+    logo_url: '',
+    website_url: '',
+    is_active: true,
+  };
+  selectedPlatform: any = null;
 
-  constructor(private authService: AuthService) {}
+  // Icônes Lucide
+  Pencil = Pencil;
+  Trash2 = Trash2;
+  Plus = Plus;
+  X = X;
+  Power = Power;
+
+  constructor(
+    private authService: AuthService,
+    private userProfileService: UserProfileService,
+    private streamingPlatformService: StreamingPlatformService
+  ) {}
 
   async ngOnInit() {
     await this.loadCurrentUser();
@@ -21,12 +48,106 @@ export class AdminComponent implements OnInit {
 
   async loadCurrentUser() {
     try {
-      const { data } = await this.authService.getUser();
-      this.currentUser = data.user;
+      const { data: authData, error: authError } = await this.authService.getUserWithMetadata();
+
+      if (authError || !authData?.data?.user) {
+        console.error('Error loading user:', authError);
+        return;
+      }
+
+      const userId = authData.data.user.id;
+
+      // Fetch the user profile using the UserProfileService
+      this.userProfileService.getUserProfile(userId).subscribe(
+        (profile) => {
+          this.currentUser = profile;
+        },
+        (error) => {
+          console.error('Error loading user profile:', error);
+        }
+      );
     } catch (error) {
       console.error('Error loading user:', error);
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  toggleStreamingPlatforms() {
+    this.showStreamingPlatforms = !this.showStreamingPlatforms;
+    if (this.showStreamingPlatforms) {
+      this.loadStreamingPlatforms();
+    }
+  }
+
+  loadStreamingPlatforms() {
+    this.streamingPlatformService.findAll().subscribe(
+      (platforms) => {
+        this.streamingPlatforms = platforms;
+      },
+      (error) => {
+        console.error('Error loading streaming platforms:', error);
+      }
+    );
+  }
+
+  createPlatform() {
+    this.streamingPlatformService.create(this.newPlatform).subscribe(
+      () => {
+        this.loadStreamingPlatforms();
+        this.newPlatform = { code: '', name: '', logo_url: '', website_url: '', is_active: true }; // Reset form
+        this.isCreating = false;
+      },
+      (error) => {
+        console.error('Error creating platform:', error);
+      }
+    );
+  }
+
+  openEditForm(platform: StreamingPlatform) {
+    this.selectedPlatform = { ...platform };
+  }
+
+  updatePlatform() {
+    if (this.selectedPlatform) {
+      this.streamingPlatformService.update(this.selectedPlatform.id, this.selectedPlatform).subscribe(
+        () => {
+          this.loadStreamingPlatforms();
+          this.selectedPlatform = null;
+        },
+        (error) => {
+          console.error('Error updating platform:', error);
+        }
+      );
+    }
+  }
+
+  togglePlatformStatus(platform: any) {
+    const updatedPlatform = { ...platform, is_active: !platform.is_active };
+    this.streamingPlatformService.update(platform.id, updatedPlatform).subscribe(
+      () => {
+        this.loadStreamingPlatforms();
+      },
+      (error) => {
+        console.error('Error updating platform status:', error);
+      }
+    );
+  }
+
+  closeEditForm() {
+    this.selectedPlatform = null;
+  }
+
+  deletePlatform(id: string) {
+    if (confirm('Are you sure you want to delete this platform?')) {
+      this.streamingPlatformService.remove(id).subscribe(
+        () => {
+          this.loadStreamingPlatforms();
+        },
+        (error) => {
+          console.error('Error deleting platform:', error);
+        }
+      );
     }
   }
 }
