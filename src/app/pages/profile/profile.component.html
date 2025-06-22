@@ -77,17 +77,27 @@
     <!-- Plateformes de streaming section - uniquement si le profil existe -->
     <section class="profile-section" *ngIf="userProfile">
       <h2>Plataformas de Streaming</h2>
-      <div class="platforms-container">
+
+      <div *ngIf="isLoadingPlatforms" class="loading-spinner">
+        <lucide-icon [img]="Loader2" size="24"></lucide-icon>
+        <p>Cargando plataformas...</p>
+      </div>
+
+      <div *ngIf="!isLoadingPlatforms && availablePlatforms.length === 0" class="no-platforms">
+        <p>No hay plataformas disponibles.</p>
+      </div>
+
+      <div *ngIf="!isLoadingPlatforms && availablePlatforms.length > 0" class="platforms-container">
         <div
-          *ngFor="let label of getPlatformLabels()"
+          *ngFor="let platform of availablePlatforms"
           class="platform-card"
-          [class.selected]="isPlatformSelected(getPlatformValue(label))"
-          (click)="isPlatformSelected(getPlatformValue(label)) ? removeStreamingPlatform(getPlatformValue(label)) : addStreamingPlatform(getPlatformValue(label))"
+          [class.selected]="isPlatformSelected(platform.code)"
+          (click)="isPlatformSelected(platform.code) ? removeStreamingPlatform(platform.code) : addStreamingPlatform(platform.code)"
         >
-          <div class="platform-name">{{ label }}</div>
-          <div class="platform-checkbox">
-            <div class="checkbox" [class.checked]="isPlatformSelected(getPlatformValue(label))"></div>
+          <div class="platform-logo" *ngIf="platform.logo_url">
+            <img [src]="platform.logo_url" [alt]="platform.name" />
           </div>
+          <div class="platform-name">{{ platform.name }}</div>
         </div>
       </div>
     </section>
@@ -115,115 +125,115 @@
           </ul>
         </div>
 
-        <div *ngIf="getSelectedPlatformLabels().length > 0">
+        <div *ngIf="getSelectedPlatforms().length > 0">
           <p><strong>Plataformas:</strong></p>
           <ul>
-            <li *ngFor="let platformLabel of getSelectedPlatformLabels()">{{ platformLabel }}</li>
+            <li *ngFor="let platform of getSelectedPlatforms()">{{ platform.name }}</li>
           </ul>
         </div>
       </div>
     </section>
   </div>
 
-      <!-- Évaluations de l'utilisateur - uniquement si le profil existe -->
-    <section class="profile-section" *ngIf="userProfile">
-  <h2>Mis Evaluaciones</h2>
+  <!-- Évaluations de l'utilisateur - uniquement si le profil existe -->
+  <section class="profile-section" *ngIf="userProfile">
+    <h2>Mis Evaluaciones</h2>
 
-  <div *ngIf="isLoadingInteractions" class="loading-spinner">
-    <lucide-icon [img]="Loader2" size="24"></lucide-icon>
-    <p>Cargando evaluaciones...</p>
-  </div>
-
-  <div *ngIf="!isLoadingInteractions && userInteractions.length === 0" class="no-interactions">
-    <p>No has evaluado ningún contenido aún.</p>
-    <p>¡Explora películas y series para comenzar a evaluar!</p>
-  </div>
-
-  <div *ngIf="!isLoadingInteractions && userInteractions.length > 0" class="interactions-content">
-    <!-- Estadísticas rápidas -->
-    <div class="interactions-stats">
-      <div class="stat-item">
-        <span class="stat-number">{{ userInteractions.length }}</span>
-        <span class="stat-label">Total</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">{{ getMovieInteractions().length }}</span>
-        <span class="stat-label">Películas</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">{{ getTvInteractions().length }}</span>
-        <span class="stat-label">Series</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">{{ getEpisodeInteractions().length }}</span>
-        <span class="stat-label">Episodios</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">{{ getRatedInteractions().length }}</span>
-        <span class="stat-label">Calificadas</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">{{ getCommentedInteractions().length }}</span>
-        <span class="stat-label">Comentadas</span>
-      </div>
+    <div *ngIf="isLoadingInteractions" class="loading-spinner">
+      <lucide-icon [img]="Loader2" size="24"></lucide-icon>
+      <p>Cargando evaluaciones...</p>
     </div>
 
-    <!-- Liste des évaluations -->
-    <div class="interactions-list">
-      <div
-        *ngFor="let interaction of userInteractions"
-        class="interaction-card"
-      >
-        <div class="interaction-header">
-          <div class="media-info">
-            <span class="media-type-badge"
-              [class.movie]="interaction.media_type === 'movie'"
-              [class.tv]="interaction.media_type === 'tv' && !isEpisodeInteraction(interaction)"
-              [class.episode]="isEpisodeInteraction(interaction)">
-              {{ getMediaTypeName(interaction) }}
-            </span>
-          </div>
-          <div class="interaction-date">
-            {{ interaction.createdAt | date:'short' }}
-          </div>
+    <div *ngIf="!isLoadingInteractions && userInteractions.length === 0" class="no-interactions">
+      <p>No has evaluado ningún contenido aún.</p>
+      <p>¡Explora películas y series para comenzar a evaluar!</p>
+    </div>
+
+    <div *ngIf="!isLoadingInteractions && userInteractions.length > 0" class="interactions-content">
+      <!-- Estadísticas rápidas -->
+      <div class="interactions-stats">
+        <div class="stat-item">
+          <span class="stat-number">{{ userInteractions.length }}</span>
+          <span class="stat-label">Total</span>
         </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ getMovieInteractions().length }}</span>
+          <span class="stat-label">Películas</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ getTvInteractions().length }}</span>
+          <span class="stat-label">Series</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ getEpisodeInteractions().length }}</span>
+          <span class="stat-label">Episodios</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ getRatedInteractions().length }}</span>
+          <span class="stat-label">Calificadas</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ getCommentedInteractions().length }}</span>
+          <span class="stat-label">Comentadas</span>
+        </div>
+      </div>
 
-        <div class="interaction-content-details">
-          <div class="rating-and-comment">
-            <div *ngIf="interaction.rating" class="interaction-rating">
-              <lucide-icon [img]="Star" size="16"></lucide-icon>
-              <span class="rating-value">{{ interaction.rating }}/10</span>
+      <!-- Liste des évaluations -->
+      <div class="interactions-list">
+        <div
+          *ngFor="let interaction of userInteractions"
+          class="interaction-card"
+        >
+          <div class="interaction-header">
+            <div class="media-info">
+              <span class="media-type-badge"
+                [class.movie]="interaction.media_type === 'movie'"
+                [class.tv]="interaction.media_type === 'tv' && !isEpisodeInteraction(interaction)"
+                [class.episode]="isEpisodeInteraction(interaction)">
+                {{ getMediaTypeName(interaction) }}
+              </span>
             </div>
-
-            <div *ngIf="interaction.comment" class="interaction-comment">
-              <lucide-icon [img]="MessageCircle" size="16"></lucide-icon>
-              <p class="comment-text">{{ interaction.comment }}</p>
+            <div class="interaction-date">
+              {{ interaction.createdAt | date:'short' }}
             </div>
           </div>
 
-          <div class="interaction-actions">
-            <a
-              [routerLink]="getMediaDetailLink(interaction)"
-              class="view-details-btn"
-              title="Ver detalles"
-            >
-              <lucide-icon [img]="ExternalLink" size="16"></lucide-icon>
-              Ver detalles
-            </a>
+          <div class="interaction-content-details">
+            <div class="rating-and-comment">
+              <div *ngIf="interaction.rating" class="interaction-rating">
+                <lucide-icon [img]="Star" size="16"></lucide-icon>
+                <span class="rating-value">{{ interaction.rating }}/10</span>
+              </div>
 
-            <button
-              class="delete-interaction-btn"
-              (click)="prepareDeleteInteraction(interaction)"
-              title="Eliminar evaluación"
-            >
-              <lucide-icon [img]="Trash2" size="16"></lucide-icon>
-            </button>
+              <div *ngIf="interaction.comment" class="interaction-comment">
+                <lucide-icon [img]="MessageCircle" size="16"></lucide-icon>
+                <p class="comment-text">{{ interaction.comment }}</p>
+              </div>
+            </div>
+
+            <div class="interaction-actions">
+              <a
+                [routerLink]="getMediaDetailLink(interaction)"
+                class="view-details-btn"
+                title="Ver detalles"
+              >
+                <lucide-icon [img]="ExternalLink" size="16"></lucide-icon>
+                Ver detalles
+              </a>
+
+              <button
+                class="delete-interaction-btn"
+                (click)="prepareDeleteInteraction(interaction)"
+                title="Eliminar evaluación"
+              >
+                <lucide-icon [img]="Trash2" size="16"></lucide-icon>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- Modal de confirmation de suppression -->
   <app-delete-confirmation-modal

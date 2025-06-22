@@ -9,6 +9,8 @@ import { AuthService } from '../../services/auth.service';
 import { LucideAngularModule, Save, Loader2, Plus, X, Star, MessageCircle, ExternalLink, Trash2 } from 'lucide-angular';
 import { DeleteConfirmationModalComponent } from '../../shared/delete-confirmation-modal/delete-confirmation-modal.component';
 import { finalize } from 'rxjs/operators';
+import { StreamingPlatformService } from '../../services/streamingPlatform.service';
+import { StreamingPlatform } from '../../models/streaming-platform.model';
 
 @Component({
   selector: 'app-profile',
@@ -25,6 +27,7 @@ export class ProfileComponent implements OnInit {
   isCreatingProfile = false;
   isUpdatingProfile = false;
   isLoadingInteractions = false;
+  isLoadingPlatforms = false;
 
   profileUpdateSuccess = false;
   profileUpdateError = '';
@@ -48,38 +51,28 @@ export class ProfileComponent implements OnInit {
   // Évaluations de l'utilisateur
   userInteractions: UserMediaInteraction[] = [];
 
-  // Plateformes disponibles avec label : valeur
-  availablePlatforms = {
-    'Netflix': 'netflix',
-    'Prime Video': 'prime_video',
-    'Disney+': 'disney_plus',
-    'HBO Max': 'hbo_max',
-    'Apple TV+': 'apple_tv',
-    'Paramount+': 'paramount_plus',
-    'Hulu': 'hulu',
-    'Peacock': 'peacock',
-    'Crunchyroll': 'crunchyroll',
-    'Filmin': 'filmin',
-    'Movistar+': 'movistar_plus'
-  };
+  // Plateformes disponibles (récupérées du service)
+  availablePlatforms: StreamingPlatform[] = [];
 
   showDeleteModal = false;
   interactionToDelete: UserMediaInteraction | null = null;
   isDeletingInteraction = false;
 
   constructor(
-  private fb: FormBuilder,
-  private userProfileService: UserProfileService,
-  private genreService: GenreService,
-  private userMediaInteractionsService: UserMediaInteractionsService, // <- Ajout de cette ligne
-  private authService: AuthService,
-  private router: Router
+    private fb: FormBuilder,
+    private userProfileService: UserProfileService,
+    private genreService: GenreService,
+    private userMediaInteractionsService: UserMediaInteractionsService,
+    private streamingPlatformService: StreamingPlatformService,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.initForm();
     this.loadGenres();
     this.loadUserProfile();
+    this.loadStreamingPlatforms();
   }
 
   initForm() {
@@ -95,6 +88,20 @@ export class ProfileComponent implements OnInit {
 
     this.availableMovieGenres = movieGenreIds.map(id => this.genreService.getGenreObject(id, true));
     this.availableTvGenres = tvGenreIds.map(id => this.genreService.getGenreObject(id, false));
+  }
+
+  loadStreamingPlatforms() {
+    this.isLoadingPlatforms = true;
+    this.streamingPlatformService.findAll(true).pipe(
+      finalize(() => this.isLoadingPlatforms = false)
+    ).subscribe({
+      next: platforms => {
+        this.availablePlatforms = platforms;
+      },
+      error: error => {
+        console.error('Erreur lors du chargement des plateformes:', error);
+      }
+    });
   }
 
   async loadUserProfile() {
@@ -270,10 +277,10 @@ export class ProfileComponent implements OnInit {
   }
 
   // === Méthodes pour les plateformes de streaming ===
-  addStreamingPlatform(platformValue: string) {
+  addStreamingPlatform(platformCode: string) {
     if (!this.userProfile?.id) return;
 
-    this.userProfileService.addStreamingPlatform(this.userProfile.id, platformValue).subscribe({
+    this.userProfileService.addStreamingPlatform(this.userProfile.id, platformCode).subscribe({
       next: () => {
         this.loadUserProfile();
       },
@@ -283,10 +290,10 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  removeStreamingPlatform(platformValue: string) {
+  removeStreamingPlatform(platformCode: string) {
     if (!this.userProfile?.id) return;
 
-    this.userProfileService.removeStreamingPlatform(this.userProfile.id, platformValue).subscribe({
+    this.userProfileService.removeStreamingPlatform(this.userProfile.id, platformCode).subscribe({
       next: () => {
         this.loadUserProfile();
       },
@@ -296,28 +303,22 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  isPlatformSelected(platformValue: string): boolean {
-    return this.userProfile?.streaming_platforms?.includes(platformValue) || false;
+  isPlatformSelected(platformCode: string): boolean {
+    return this.userProfile?.streaming_platforms?.includes(platformCode) || false;
   }
 
-  // Méthodes utilitaires pour gérer l'objet plateformes
-  getPlatformLabels(): string[] {
-    return Object.keys(this.availablePlatforms);
-  }
-
-  getPlatformValue(label: string): string {
-    return this.availablePlatforms[label as keyof typeof this.availablePlatforms];
-  }
-
-  getPlatformLabel(value: string): string {
-    const entry = Object.entries(this.availablePlatforms).find(([_, val]) => val === value);
-    return entry ? entry[0] : value;
-  }
-
-  // Obtenir les labels des plateformes sélectionnées pour l'affichage
-  getSelectedPlatformLabels(): string[] {
+  // Obtenir les plateformes sélectionnées pour l'affichage
+  getSelectedPlatforms(): StreamingPlatform[] {
     if (!this.userProfile?.streaming_platforms) return [];
-    return this.userProfile.streaming_platforms.map(platform => this.getPlatformLabel(platform));
+    return this.availablePlatforms.filter(platform =>
+      this.userProfile!.streaming_platforms!.includes(platform.code)
+    );
+  }
+
+  // Obtenir le nom d'une plateforme par son code
+  getPlatformName(code: string): string {
+    const platform = this.availablePlatforms.find(p => p.code === code);
+    return platform ? platform.name : code;
   }
 
   // === Méthodes pour les interactions utilisateur ===
