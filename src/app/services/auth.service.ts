@@ -44,8 +44,6 @@ export class AuthService {
       return { data: null, error };
     }
 
-    console.log('User data:', data.user);
-
     return { data, error };
   }
 
@@ -61,7 +59,6 @@ export class AuthService {
 
       // Use UserProfileService to get the user profile
       const profile$ = this.userProfileService.getUserProfile(userId);
-      console.log(profile$);
       const profile = await firstValueFrom(profile$);
 
 
@@ -72,7 +69,6 @@ export class AuthService {
 
       // Check if the user has the 'admin' role
       const isAdmin = profile?.role === 'admin';
-      console.log(isAdmin)
       return isAdmin;
 
     } catch (error) {
