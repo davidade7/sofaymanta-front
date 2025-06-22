@@ -72,12 +72,6 @@
         <div class="user-interaction-section" *ngIf="currentUser">
           <h3>Tu evaluación</h3>
 
-          <!-- Debug: afficher la valeur brute -->
-          <div style="background: yellow; padding: 5px; margin: 5px;">
-            <p>Debug - userInteraction: {{ userInteraction | json }}</p>
-            <p>Debug - currentUser: {{ !!currentUser }}</p>
-          </div>
-
           <div class="interaction-content">
             <!-- Condition EXISTANTE pour interaction trouvée -->
             <div *ngIf="userInteraction" class="existing-interaction">

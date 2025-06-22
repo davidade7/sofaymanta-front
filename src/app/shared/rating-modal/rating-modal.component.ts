@@ -98,7 +98,6 @@ export class RatingModalComponent implements OnInit {
       comment: this.currentComment.trim() || undefined,
     };
 
-    // Ajouter les numéros de saison et épisode si c'est un épisode
     if (this.seasonNumber !== undefined) {
       interactionData.season_number = this.seasonNumber;
     }

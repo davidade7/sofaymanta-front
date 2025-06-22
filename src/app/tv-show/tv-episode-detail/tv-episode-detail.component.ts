@@ -136,16 +136,8 @@ export class TvEpisodeDetailComponent implements OnInit {
 
   loadUserInteraction() {
     if (!this.currentUser || !this.seriesId || !this.seasonNumber || !this.episodeNumber) {
-      console.log('Missing data for loading user interaction');
       return;
     }
-
-    console.log('Loading user interaction for:', {
-      userId: this.currentUser.id,
-      seriesId: this.seriesId,
-      season: this.seasonNumber,
-      episode: this.episodeNumber
-    });
 
     this.userMediaInteractionsService.getUserMediaInteraction(
       this.currentUser.id,
@@ -155,9 +147,7 @@ export class TvEpisodeDetailComponent implements OnInit {
       this.episodeNumber
     ).subscribe({
       next: (interaction) => {
-        console.log('Raw response from API:', interaction);
         this.userInteraction = interaction;
-        console.log('userInteraction set to:', this.userInteraction);
       },
       error: (error) => {
         console.log('Error or no interaction found:', error);

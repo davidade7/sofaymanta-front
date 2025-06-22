@@ -90,11 +90,6 @@ export class UserMediaInteractionsService {
       params = params.set('episodeNumber', episodeNumber.toString());
     }
 
-    console.log('API Request:', {
-      url: `${this.apiUrl}/user/${userId}/media/${mediaId}`,
-      params: params.toString()
-    });
-
     return this.http.get<UserMediaInteraction>(`${this.apiUrl}/user/${userId}/media/${mediaId}/details`, { params });
   }
 
