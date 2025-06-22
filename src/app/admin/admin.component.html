@@ -1,0 +1,63 @@
+<div class="admin-container">
+  <h1>🛠️ Panel de Administración</h1>
+
+  <div *ngIf="isLoading" class="loading">
+    <p>Cargando...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="admin-content">
+    <div class="welcome-section">
+      <h2>¡Bienvenido, Admin!</h2>
+      <p>Has accedido exitosamente al panel de administración.</p>
+    </div>
+
+    <div class="user-info">
+      <h3>Información del Usuario</h3>
+      <div class="info-card">
+        <p><strong>Email:</strong> {{ currentUser?.email }}</p>
+        <p><strong>ID:</strong> {{ currentUser?.id }}</p>
+        <p><strong>Fecha de creación:</strong> {{ currentUser?.created_at | date:'short' }}</p>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <h3>Acciones Rápidas</h3>
+      <div class="actions-grid">
+        <button class="action-btn" disabled>
+          👥 Gestionar Usuarios
+          <small>Próximamente</small>
+        </button>
+        <button class="action-btn" disabled>
+          ⭐ Ver Evaluaciones
+          <small>Próximamente</small>
+        </button>
+        <button class="action-btn" disabled>
+          📊 Estadísticas
+          <small>Próximamente</small>
+        </button>
+        <button class="action-btn" disabled>
+          ⚙️ Configuración
+          <small>Próximamente</small>
+        </button>
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h3>Estado del Sistema</h3>
+      <div class="status-grid">
+        <div class="status-item success">
+          <span class="status-dot"></span>
+          Autenticación: OK
+        </div>
+        <div class="status-item success">
+          <span class="status-dot"></span>
+          Guard Admin: OK
+        </div>
+        <div class="status-item success">
+          <span class="status-dot"></span>
+          Acceso Autorizado: OK
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
