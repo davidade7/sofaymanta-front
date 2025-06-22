@@ -324,29 +324,32 @@ export class ProfileComponent implements OnInit {
 
   // Obtenir le lien vers le détail du média
   getMediaDetailLink(interaction: UserMediaInteraction): string {
-  if (interaction.media_type === 'movie') {
-    return `/movie/detail/${interaction.media_id}`;
-  } else if (interaction.media_type === 'tv') {
-    return `/serie/detail/${interaction.media_id}`;
-  } else if (interaction.media_type === 'tv_episode') {
-    return `/tv/${interaction.media_id}/season/${interaction.season_number}/episode/${interaction.episode_number}`;
+    if (interaction.media_type === 'movie') {
+      return `/movie/detail/${interaction.media_id}`;
+    } else if (interaction.media_type === 'tv') {
+      // Si c'est un épisode (avec season/episode)
+      if (interaction.season_number && interaction.episode_number) {
+        return `/tv/${interaction.media_id}/season/${interaction.season_number}/episode/${interaction.episode_number}`;
+      }
+      // Sinon c'est une série
+      return `/serie/detail/${interaction.media_id}`;
+    }
+    return `/`;
   }
-  return `/`;
-}
 
   // Obtenir le nom du type de média pour l'affichage
-  getMediaTypeName(mediaType: 'movie' | 'tv' | 'tv_episode'): string {
-  switch (mediaType) {
-    case 'movie':
+  getMediaTypeName(interaction: UserMediaInteraction): string {
+    if (interaction.media_type === 'movie') {
       return 'Película';
-    case 'tv':
+    } else if (interaction.media_type === 'tv') {
+      // Si c'est une série avec season/episode, c'est un épisode
+      if (interaction.season_number && interaction.episode_number) {
+        return 'Episodio';
+      }
       return 'Serie';
-    case 'tv_episode':
-      return 'Episodio';
-    default:
-      return 'Desconocido';
+    }
+    return 'Desconocido';
   }
-}
 
   // Filtrer les interactions par type
   getMovieInteractions(): UserMediaInteraction[] {
@@ -354,12 +357,16 @@ export class ProfileComponent implements OnInit {
   }
 
   getTvInteractions(): UserMediaInteraction[] {
-    return this.userInteractions.filter(interaction => interaction.media_type === 'tv');
+    return this.userInteractions.filter(interaction =>
+      interaction.media_type === 'tv' && (!interaction.season_number || !interaction.episode_number)
+    );
   }
 
   getEpisodeInteractions(): UserMediaInteraction[] {
-  return this.userInteractions.filter(interaction => interaction.media_type === 'tv_episode');
-}
+    return this.userInteractions.filter(interaction =>
+      interaction.media_type === 'tv' && interaction.season_number && interaction.episode_number
+    );
+  }
 
   // Obtenir les interactions avec rating seulement
   getRatedInteractions(): UserMediaInteraction[] {
@@ -371,13 +378,20 @@ export class ProfileComponent implements OnInit {
     return this.userInteractions.filter(interaction => interaction.comment && interaction.comment.trim() !== '');
   }
 
-  // Nouvelle méthode pour formater l'affichage des épisodes
+  // Méthode pour formater l'affichage des épisodes
   getEpisodeDisplayTitle(interaction: UserMediaInteraction): string {
-  if (interaction.media_type === 'tv_episode') {
-    return `T${interaction.season_number}E${interaction.episode_number}`;
+    if (interaction.media_type === 'tv' && interaction.season_number && interaction.episode_number) {
+      return `T${interaction.season_number}E${interaction.episode_number}`;
+    }
+    return '';
   }
-  return '';
-}
+
+  // Vérifier si c'est un épisode
+  isEpisodeInteraction(interaction: UserMediaInteraction): boolean {
+    return interaction.media_type === 'tv' &&
+          interaction.season_number !== undefined &&
+          interaction.episode_number !== undefined;
+  }
 
   // Supprimer une interaction
   prepareDeleteInteraction(interaction: UserMediaInteraction) {
@@ -419,17 +433,20 @@ export class ProfileComponent implements OnInit {
 
   // Générer le message de confirmation
   getDeleteMessage(): string {
-  if (!this.interactionToDelete) return '';
+    if (!this.interactionToDelete) return '';
 
-  let title = '';
-  if (this.interactionToDelete.media_type === 'tv_episode') {
-    title = `episodio T${this.interactionToDelete.season_number}E${this.interactionToDelete.episode_number}`;
-  } else {
-    const mediaType = this.getMediaTypeName(this.interactionToDelete.media_type).toLowerCase();
-    title = `${mediaType} (ID: ${this.interactionToDelete.media_id})`;
+    let title = '';
+    if (this.interactionToDelete.media_type === 'tv' &&
+        this.interactionToDelete.season_number &&
+        this.interactionToDelete.episode_number) {
+      // C'est un épisode
+      title = `episodio T${this.interactionToDelete.season_number}E${this.interactionToDelete.episode_number} de la serie (ID: ${this.interactionToDelete.media_id})`;
+    } else {
+      // C'est un film ou une série
+      const mediaTypeName = this.getMediaTypeName(this.interactionToDelete);
+      title = `${mediaTypeName.toLowerCase()} (ID: ${this.interactionToDelete.media_id})`;
+    }
+
+    return `¿Estás seguro de que quieres eliminar tu evaluación de este ${title}?`;
   }
-
-  return `¿Estás seguro de que quieres eliminar tu evaluación de este ${title}?`;
-}
-
 }

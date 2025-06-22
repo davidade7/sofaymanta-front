@@ -71,7 +71,15 @@
         <!-- User interaction section -->
         <div class="user-interaction-section" *ngIf="currentUser">
           <h3>Tu evaluación</h3>
+
+          <!-- Debug: afficher la valeur brute -->
+          <div style="background: yellow; padding: 5px; margin: 5px;">
+            <p>Debug - userInteraction: {{ userInteraction | json }}</p>
+            <p>Debug - currentUser: {{ !!currentUser }}</p>
+          </div>
+
           <div class="interaction-content">
+            <!-- Condition EXISTANTE pour interaction trouvée -->
             <div *ngIf="userInteraction" class="existing-interaction">
               <div class="user-rating" *ngIf="userInteraction.rating">
                 <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
@@ -90,6 +98,8 @@
                 </button>
               </div>
             </div>
+
+            <!-- Condition pour PAS d'interaction -->
             <div *ngIf="!userInteraction" class="no-interaction">
               <p>¿Qué te pareció este episodio?</p>
               <button class="rate-episode-btn" (click)="openRatingModal()">
@@ -144,17 +154,17 @@
 
   <!-- Rating Modal -->
   <app-rating-modal
-  *ngIf="showRatingModal && episode && currentUser"
-  [mediaId]="episode.id"
-  [mediaType]="'tv_episode'"
-  [mediaTitle]="episode.name"
-  [userId]="currentUser.id"
-  [seasonNumber]="seasonNumber"
-  [episodeNumber]="episodeNumber"
-  [existingInteraction]="userInteraction"
-  (closeModalEvent)="closeRatingModal()"
-  (interactionSaved)="onInteractionSaved($event)"
-></app-rating-modal>
+    *ngIf="showRatingModal && currentUser && seriesId"
+    [mediaId]="seriesId"
+    [mediaType]="'tv'"
+    [mediaTitle]="episode?.name || 'Episodio'"
+    [userId]="currentUser.id"
+    [seasonNumber]="seasonNumber"
+    [episodeNumber]="episodeNumber"
+    [existingInteraction]="userInteraction"
+    (closeModalEvent)="closeRatingModal()"
+    (interactionSaved)="onInteractionSaved($event)"
+  ></app-rating-modal>
 
   <!-- Delete confirmation modal -->
   <app-delete-confirmation-modal

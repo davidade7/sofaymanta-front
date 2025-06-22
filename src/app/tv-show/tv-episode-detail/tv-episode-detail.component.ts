@@ -55,17 +55,21 @@ export class TvEpisodeDetailComponent implements OnInit {
     private location: Location
   ) { }
 
+  seriesId: number = 0;
+
   async ngOnInit(): Promise<void> {
-    // Load the current user
+    // Load the current user first
     await this.loadCurrentUser();
 
     // Load the episode - utiliser les bons noms de paramètres
     this.route.paramMap.subscribe(params => {
-      this.tvShowId = params.get('showId') || '';  // 'showId' selon les routes
+      this.tvShowId = params.get('showId') || '';
       this.seasonNumber = Number(params.get('seasonNumber')) || 0;
       this.episodeNumber = Number(params.get('episodeNumber')) || 0;
 
       if (this.tvShowId && this.seasonNumber && this.episodeNumber) {
+        // Convertir l'ID de la série en nombre AVANT de charger l'épisode
+        this.seriesId = parseInt(this.tvShowId);
         this.loadEpisode();
       }
     });
@@ -89,8 +93,8 @@ export class TvEpisodeDetailComponent implements OnInit {
         this.episode = data;
         this.loading = false;
 
-        // Load user interaction if the user is authenticated
-        if (this.currentUser) {
+        // Load user interaction APRÈS que l'épisode soit chargé ET que seriesId soit défini
+        if (this.currentUser && this.seriesId) {
           this.loadUserInteraction();
         }
       },
@@ -131,19 +135,32 @@ export class TvEpisodeDetailComponent implements OnInit {
   }
 
   loadUserInteraction() {
-    if (!this.currentUser || !this.episode) return;
+    if (!this.currentUser || !this.seriesId || !this.seasonNumber || !this.episodeNumber) {
+      console.log('Missing data for loading user interaction');
+      return;
+    }
+
+    console.log('Loading user interaction for:', {
+      userId: this.currentUser.id,
+      seriesId: this.seriesId,
+      season: this.seasonNumber,
+      episode: this.episodeNumber
+    });
 
     this.userMediaInteractionsService.getUserMediaInteraction(
       this.currentUser.id,
-      this.episode.id,
-      'tv_episode',
+      this.seriesId,
+      'tv', // Utiliser 'tv' au lieu de 'tv_episode'
       this.seasonNumber,
       this.episodeNumber
     ).subscribe({
       next: (interaction) => {
+        console.log('Raw response from API:', interaction);
         this.userInteraction = interaction;
+        console.log('userInteraction set to:', this.userInteraction);
       },
       error: (error) => {
+        console.log('Error or no interaction found:', error);
         this.userInteraction = null;
       }
     });

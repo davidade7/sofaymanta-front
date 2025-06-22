@@ -13,7 +13,7 @@ import { UserMediaInteractionsService, CreateUserMediaInteractionDto, UpdateUser
 })
 export class RatingModalComponent implements OnInit {
   @Input() mediaId!: number;
-  @Input() mediaType!: 'movie' | 'tv' | 'tv_episode';
+  @Input() mediaType!: 'movie' | 'tv';
   @Input() mediaTitle!: string;
   @Input() seasonNumber?: number;
   @Input() episodeNumber?: number;
@@ -75,7 +75,14 @@ export class RatingModalComponent implements OnInit {
   }
 
   isValid(): boolean {
-    return this.currentRating > 0 || this.currentComment.trim().length > 0;
+    const hasContent = this.currentRating > 0 || this.currentComment.trim().length > 0;
+
+    // Si c'est une série avec des numéros de saison/épisode, les vérifier
+    if (this.mediaType === 'tv' && this.seasonNumber !== undefined && this.episodeNumber !== undefined) {
+      return hasContent && this.seasonNumber > 0 && this.episodeNumber > 0;
+    }
+
+    return hasContent;
   }
 
   saveInteraction() {
@@ -92,8 +99,10 @@ export class RatingModalComponent implements OnInit {
     };
 
     // Ajouter les numéros de saison et épisode si c'est un épisode
-    if (this.mediaType === 'tv_episode') {
+    if (this.seasonNumber !== undefined) {
       interactionData.season_number = this.seasonNumber;
+    }
+    if (this.episodeNumber !== undefined) {
       interactionData.episode_number = this.episodeNumber;
     }
 

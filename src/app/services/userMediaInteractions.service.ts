@@ -5,8 +5,8 @@ import { environment } from '../../environments/environment';
 
 // Interfaces pour typer les données
 export interface CreateUserMediaInteractionDto {
-  media_id: number;
-  media_type: 'movie' | 'tv' | 'tv_episode';
+  media_id: number; // Pour tv_episode, c'est l'ID de la série, pas de l'épisode
+  media_type: 'movie' | 'tv';
   season_number?: number;
   episode_number?: number;
   rating?: number;
@@ -21,8 +21,8 @@ export interface UpdateUserMediaInteractionDto {
 export interface UserMediaInteraction {
   id: string;
   userId: string;
-  media_id: number;
-  media_type: 'movie' | 'tv' | 'tv_episode';
+  media_id: number; // Pour tv_episode, c'est l'ID de la série, pas de l'épisode
+  media_type: 'movie' | 'tv';
   season_number?: number;
   episode_number?: number;
   rating?: number;
@@ -76,7 +76,7 @@ export class UserMediaInteractionsService {
   getUserMediaInteraction(
     userId: string,
     mediaId: number,
-    mediaType: 'movie' | 'tv' | 'tv_episode',
+    mediaType: 'movie' | 'tv', // Seulement movie et tv
     seasonNumber?: number,
     episodeNumber?: number
   ): Observable<UserMediaInteraction> {
@@ -90,7 +90,12 @@ export class UserMediaInteractionsService {
       params = params.set('episodeNumber', episodeNumber.toString());
     }
 
-    return this.http.get<UserMediaInteraction>(`${this.apiUrl}/user/${userId}/media/${mediaId}`, { params });
+    console.log('API Request:', {
+      url: `${this.apiUrl}/user/${userId}/media/${mediaId}`,
+      params: params.toString()
+    });
+
+    return this.http.get<UserMediaInteraction>(`${this.apiUrl}/user/${userId}/media/${mediaId}/details`, { params });
   }
 
   /**

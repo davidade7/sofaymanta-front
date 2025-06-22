@@ -177,19 +177,11 @@
         <div class="interaction-header">
           <div class="media-info">
             <span class="media-type-badge"
-                  [class.movie]="interaction.media_type === 'movie'"
-                  [class.tv]="interaction.media_type === 'tv'"
-                  [class.episode]="interaction.media_type === 'tv_episode'">
-              {{ getMediaTypeName(interaction.media_type) }}
+              [class.movie]="interaction.media_type === 'movie'"
+              [class.tv]="interaction.media_type === 'tv' && !isEpisodeInteraction(interaction)"
+              [class.episode]="isEpisodeInteraction(interaction)">
+              {{ getMediaTypeName(interaction) }}
             </span>
-
-            <!-- Affichage spécial pour les épisodes -->
-            <div class="media-details">
-              <span class="media-id">ID: {{ interaction.media_id }}</span>
-              <span *ngIf="interaction.media_type === 'tv_episode'" class="episode-info">
-                {{ getEpisodeDisplayTitle(interaction) }}
-              </span>
-            </div>
           </div>
           <div class="interaction-date">
             {{ interaction.createdAt | date:'short' }}
