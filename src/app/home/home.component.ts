@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 import { SearchInputComponent } from '../shared/search-input/search-input.component';
 import { CarouselComponent } from '../shared/carousel/carousel.component';
 import { MovieCardComponent } from '../shared/movie-card/movie-card.component';
@@ -9,19 +11,26 @@ import { MovieService } from '../services/movie.service';
 import { SerieService } from '../services/serie.service';
 import { MovieCard } from '../models/movie.model';
 import { SerieCard } from '../models/serie.model';
+import { LucideAngularModule, TrendingUp, Star, MessageSquare, Heart } from 'lucide-angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, SearchInputComponent, CarouselComponent, MovieCardComponent, SerieCardComponent, TopButtonComponent],
+  imports: [CommonModule, RouterModule, SearchInputComponent, CarouselComponent, MovieCardComponent, SerieCardComponent, TopButtonComponent, LucideAngularModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  currentUser: any = null;
   recentMovies: MovieCard[] = [];
   popularMovies: MovieCard[] = [];
   recentSeries: SerieCard[] = [];
   popularSeries: SerieCard[] = [];
+
+  readonly TrendingUp = TrendingUp;
+  readonly Star = Star;
+  readonly MessageSquare = MessageSquare;
+  readonly Heart = Heart;
 
   loading = {
     recentMovies: false,
@@ -31,15 +40,34 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(
+    private authService: AuthService,
     private movieService: MovieService,
     private serieService: SerieService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.loadCurrentUser();
     this.loadRecentMovies();
     this.loadPopularMovies();
     this.loadRecentSeries();
     this.loadPopularSeries();
+  }
+
+  async loadCurrentUser() {
+    try {
+      const { data, error } = await this.authService.getUserWithMetadata();
+
+      if (error) {
+        console.error('Error getting user:', error);
+        this.currentUser = null;
+        return;
+      }
+
+      this.currentUser = data?.user || null;
+    } catch (error) {
+      console.error('Error in loadCurrentUser:', error);
+      this.currentUser = null;
+    }
   }
 
   loadRecentMovies() {

@@ -2,6 +2,38 @@
   <app-search-input></app-search-input>
   <app-top-button></app-top-button>
 
+  <!-- Message pour les utilisateurs non connectés -->
+  <div *ngIf="!currentUser" class="guest-welcome-section">
+    <div class="welcome-content">
+      <h2>¡Bienvenido a Sofa y Manta!</h2>
+      <p class="welcome-message">
+        Descubre un mundo de películas y series. Crea tu cuenta para disfrutar de todas las funcionalidades:
+      </p>
+      <ul class="features-list">
+        <li>
+          <lucide-icon [img]="TrendingUp" class="feature-icon"></lucide-icon>
+          Recomendaciones personalizadas
+        </li>
+        <li>
+          <lucide-icon [img]="Star" class="feature-icon star"></lucide-icon>
+          Evalúa películas y series
+        </li>
+        <li>
+          <lucide-icon [img]="MessageSquare" class="feature-icon"></lucide-icon>
+          Deja comentarios y reseñas
+        </li>
+        <li>
+          <lucide-icon [img]="Heart" class="feature-icon heart"></lucide-icon>
+          Crea tu lista personal de favoritos
+        </li>
+      </ul>
+      <div class="welcome-actions">
+        <a [routerLink]="['/signup']" class="signup-btn">Crear cuenta</a>
+        <a [routerLink]="['/signin']" class="signin-btn">Iniciar sesión</a>
+      </div>
+    </div>
+  </div>
+
   <app-carousel [carousel-title]="'Películas recientes'">
     <div *ngIf="loading.recentMovies" class="loading-spinner">Cargando... </div>
     <ng-container *ngIf="!loading.recentMovies">
