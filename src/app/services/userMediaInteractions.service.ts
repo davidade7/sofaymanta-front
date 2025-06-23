@@ -114,6 +114,32 @@ export class UserMediaInteractionsService {
   }
 
   /**
+   * Récupère tous les ratings d'un média (tous utilisateurs confondus)
+   * @param mediaId L'ID du média
+   * @param mediaType Le type de média (movie ou tv)
+   * @param seasonNumber Numéro de saison (optionnel, pour les séries)
+   * @param episodeNumber Numéro d'épisode (optionnel, pour les épisodes)
+   */
+  getMediaRatings(
+    mediaId: number,
+    mediaType: 'movie' | 'tv',
+    seasonNumber?: number,
+    episodeNumber?: number
+  ): Observable<UserMediaInteraction[]> {
+    let params = new HttpParams().set('mediaType', mediaType);
+
+    if (seasonNumber !== undefined) {
+      params = params.set('seasonNumber', seasonNumber.toString());
+    }
+
+    if (episodeNumber !== undefined) {
+      params = params.set('episodeNumber', episodeNumber.toString());
+    }
+
+    return this.http.get<UserMediaInteraction[]>(`${this.apiUrl}/media/${mediaId}/ratings`, { params });
+  }
+
+  /**
    * Récupère une interaction spécifique par son ID
    * @param interactionId L'ID de l'interaction
    */

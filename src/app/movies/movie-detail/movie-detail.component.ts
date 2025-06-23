@@ -32,6 +32,9 @@ export class MovieDetailComponent implements OnInit {
   error: string | null = null;
   currentUser: any = null;
   userInteraction: UserMediaInteraction | null = null;
+  allRatings: UserMediaInteraction[] = [];
+  loadingRatings = false;
+  showAllRatings = false;
   showRatingModal = false;
   showDeleteModal = false;
   isDeleting = false;
@@ -81,6 +84,9 @@ export class MovieDetailComponent implements OnInit {
         if (this.currentUser) {
           this.loadUserInteraction();
         }
+
+        // Load all ratings for this movie
+        this.loadAllRatings();
       },
       error: (err) => {
         console.error('Error loading movie details', err);
@@ -121,6 +127,26 @@ export class MovieDetailComponent implements OnInit {
     });
   }
 
+  loadAllRatings() {
+    if (!this.movie) return;
+
+    this.loadingRatings = true;
+    this.userMediaInteractionsService.getMediaRatings(
+      this.movie.id,
+      'movie'
+    ).subscribe({
+      next: (ratings) => {
+        this.allRatings = ratings.filter(rating => rating.rating !== null && rating.rating !== undefined);
+        this.loadingRatings = false;
+      },
+      error: (error) => {
+        console.error('Error loading ratings:', error);
+        this.allRatings = [];
+        this.loadingRatings = false;
+      }
+    });
+  }
+
   openRatingModal() {
     if (!this.currentUser) {
       alert('Debes iniciar sesión para evaluar esta película');
@@ -136,6 +162,7 @@ export class MovieDetailComponent implements OnInit {
   onInteractionSaved(interaction: UserMediaInteraction) {
     this.userInteraction = interaction;
     this.showRatingModal = false;
+    this.loadAllRatings();
   }
 
   // Méthodes pour la suppression
@@ -160,6 +187,7 @@ export class MovieDetailComponent implements OnInit {
         this.userInteraction = null;
         this.isDeleting = false;
         this.showDeleteModal = false;
+        this.loadAllRatings();
       },
       error: (error) => {
         this.isDeleting = false;
@@ -292,5 +320,19 @@ export class MovieDetailComponent implements OnInit {
   // TrackBy function pour optimiser le rendu
   trackByPersonId(index: number, person: any): number {
     return person.id;
+  }
+
+  toggleShowAllRatings() {
+    this.showAllRatings = !this.showAllRatings;
+  }
+
+  get averageRating(): number {
+    if (this.allRatings.length === 0) return 0;
+    const sum = this.allRatings.reduce((acc, rating) => acc + (rating.rating || 0), 0);
+    return Math.round((sum / this.allRatings.length) * 10) / 10;
+  }
+
+  get totalRatings(): number {
+    return this.allRatings.length;
   }
 }

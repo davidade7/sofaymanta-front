@@ -388,3 +388,173 @@
     font-size: 1.25rem;
   }
 }
+
+
+/* Styles pour la section des ratings communautaires */
+.all-ratings-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.ratings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.ratings-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.ratings-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.average-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.average-rating lucide-icon {
+  color: #ffc107;
+}
+
+.rating-value {
+  color: #333;
+}
+
+.rating-count {
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+
+.toggle-ratings-btn {
+  padding: 0.5rem 1rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.toggle-ratings-btn:hover {
+  background-color: #5a6268;
+}
+
+.ratings-loading, .no-ratings {
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.ratings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.ratings-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ratings-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.ratings-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.ratings-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.rating-item {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: box-shadow 0.2s;
+}
+
+.rating-item:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.rating-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.user-rating-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.user-rating-display lucide-icon {
+  color: #ffc107;
+}
+
+.rating-date {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.rating-comment {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.rating-comment p {
+  margin: 0;
+  color: #495057;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Responsive pour la section des ratings */
+@media (max-width: 768px) {
+  .ratings-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ratings-summary {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .rating-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .ratings-list {
+    max-height: 300px;
+  }
+}

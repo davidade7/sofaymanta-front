@@ -114,6 +114,52 @@
             </div>
           </div>
         </div>
+
+        <!-- Section des ratings de tous les utilisateurs -->
+        <div class="all-ratings-section">
+          <div class="ratings-header">
+            <h3>Evaluaciones en Sofa y Manta</h3>
+            <div class="ratings-summary" *ngIf="!loadingRatings">
+              <div class="average-rating">
+                <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
+                <span class="rating-value">{{ averageRating }}/10</span>
+                <span class="rating-count">({{ totalRatings }} evaluaciones)</span>
+              </div>
+              <button
+                class="toggle-ratings-btn"
+                (click)="toggleShowAllRatings()"
+                *ngIf="totalRatings > 0"
+              >
+                {{ showAllRatings ? 'Ocultar evaluaciones' : 'Ver todas las evaluaciones' }}
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="loadingRatings" class="ratings-loading">
+            <p>Cargando evaluaciones...</p>
+          </div>
+
+          <div *ngIf="!loadingRatings && totalRatings === 0" class="no-ratings">
+            <p>Aún no hay evaluaciones para esta película.</p>
+          </div>
+
+          <div *ngIf="showAllRatings && !loadingRatings && totalRatings > 0" class="ratings-list">
+            <div *ngFor="let rating of allRatings" class="rating-item">
+              <div class="rating-header">
+                <div class="user-rating-display">
+                  <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
+                  <span class="rating-value">{{ rating.rating }}/10</span>
+                </div>
+                <div class="rating-date">
+                  {{ rating.createdAt | date:'dd/MM/yyyy' }}
+                </div>
+              </div>
+              <div *ngIf="rating.comment" class="rating-comment">
+                <p>{{ rating.comment }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
