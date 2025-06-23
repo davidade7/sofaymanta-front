@@ -1,0 +1,187 @@
+.guest-welcome-section {
+  margin: 1.5rem auto 2.5rem;
+  max-width: 900px;
+  background: rgba(26, 32, 44, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid #30363d;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-content {
+  text-align: center;
+}
+
+.welcome-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #e2e8f0;
+  font-weight: 700;
+  background: linear-gradient(135deg, #38bdf8, #818cf8);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-message {
+  font-size: 1.1rem;
+  color: #cbd5e1;
+  margin-bottom: 1.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.features-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.features-list li {
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.5);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  color: #e2e8f0;
+  font-weight: 500;
+  width: calc(50% - 1rem);
+  max-width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.features-list li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  margin-right: 0.75rem;
+  color: #38bdf8;
+}
+
+.feature-icon.star {
+  color: #fcd34d;
+}
+
+.feature-icon.heart {
+  color: #fb7185;
+}
+
+.welcome-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.signup-btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+  border: none;
+}
+
+.signup-btn:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+}
+
+.signin-btn {
+  background-color: transparent;
+  color: #e2e8f0;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 1px solid #3b82f6;
+  transition: all 0.2s ease;
+}
+
+.signin-btn:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .guest-welcome-section {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  .welcome-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .welcome-message {
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .features-list {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .features-list li {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .feature-icon {
+    margin-right: 0.5rem;
+    transform: scale(0.85);
+  }
+
+  .welcome-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .signup-btn,
+  .signin-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .guest-welcome-section {
+    padding: 1.25rem;
+  }
+
+  .welcome-content h2 {
+    font-size: 1.35rem;
+  }
+
+  .welcome-message {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .features-list li {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}

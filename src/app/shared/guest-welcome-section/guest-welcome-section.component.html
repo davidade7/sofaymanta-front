@@ -1,0 +1,40 @@
+<div class="guest-welcome-section">
+  <div class="welcome-content">
+    <h2>¡Bienvenido a Sofa y Manta!</h2>
+    <p class="welcome-message">
+      Descubre un mundo de películas y series. Crea tu cuenta para disfrutar de
+      todas las funcionalidades:
+    </p>
+    <ul class="features-list">
+      <li>
+        <lucide-angular
+          [img]="TrendingUp"
+          class="feature-icon"
+        ></lucide-angular>
+        Recomendaciones personalizadas
+      </li>
+      <li>
+        <lucide-angular [img]="Star" class="feature-icon star"></lucide-angular>
+        Evalúa películas y series
+      </li>
+      <li>
+        <lucide-angular
+          [img]="MessageSquare"
+          class="feature-icon"
+        ></lucide-angular>
+        Deja comentarios y reseñas
+      </li>
+      <li>
+        <lucide-angular
+          [img]="Heart"
+          class="feature-icon heart"
+        ></lucide-angular>
+        Crea tu lista personal de favoritos
+      </li>
+    </ul>
+    <div class="welcome-actions">
+      <a [routerLink]="['/signup']" class="signup-btn">Crear cuenta</a>
+      <a [routerLink]="['/signin']" class="signin-btn">Iniciar sesión</a>
+    </div>
+  </div>
+</div>
