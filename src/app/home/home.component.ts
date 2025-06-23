@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { SearchInputComponent } from '../shared/search-input/search-input.component';
+import { GuestWelcomeSectionComponent } from '../shared/guest-welcome-section/guest-welcome-section.component';
 import { CarouselComponent } from '../shared/carousel/carousel.component';
 import { MovieCardComponent } from '../shared/movie-card/movie-card.component';
 import { SerieCardComponent } from '../shared/serie-card/serie-card.component';
@@ -11,14 +12,30 @@ import { MovieService } from '../services/movie.service';
 import { SerieService } from '../services/serie.service';
 import { MovieCard } from '../models/movie.model';
 import { SerieCard } from '../models/serie.model';
-import { LucideAngularModule, TrendingUp, Star, MessageSquare, Heart } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  TrendingUp,
+  Star,
+  MessageSquare,
+  Heart,
+} from 'lucide-angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, SearchInputComponent, CarouselComponent, MovieCardComponent, SerieCardComponent, TopButtonComponent, LucideAngularModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    GuestWelcomeSectionComponent,
+    SearchInputComponent,
+    CarouselComponent,
+    MovieCardComponent,
+    SerieCardComponent,
+    TopButtonComponent,
+    LucideAngularModule,
+  ],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   currentUser: any = null;
@@ -36,14 +53,14 @@ export class HomeComponent implements OnInit {
     recentMovies: false,
     popularMovies: false,
     recentSeries: false,
-    popularSeries: false
+    popularSeries: false,
   };
 
   constructor(
     private authService: AuthService,
     private movieService: MovieService,
     private serieService: SerieService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     await this.loadCurrentUser();
@@ -80,7 +97,7 @@ export class HomeComponent implements OnInit {
       error: (error) => {
         console.error('Error fetching recent movies:', error);
         this.loading.recentMovies = false;
-      }
+      },
     });
   }
 
@@ -94,7 +111,7 @@ export class HomeComponent implements OnInit {
       error: (error) => {
         console.error('Error fetching popular movies:', error);
         this.loading.popularMovies = false;
-      }
+      },
     });
   }
 
@@ -108,7 +125,7 @@ export class HomeComponent implements OnInit {
       error: (error) => {
         console.error('Error fetching recent series:', error);
         this.loading.recentSeries = false;
-      }
+      },
     });
   }
 
@@ -122,7 +139,7 @@ export class HomeComponent implements OnInit {
       error: (error) => {
         console.error('Error fetching popular series:', error);
         this.loading.popularSeries = false;
-      }
+      },
     });
   }
 }
