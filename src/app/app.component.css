@@ -29,6 +29,24 @@ header h1 {
   letter-spacing: 0.5px;
 }
 
+header h1 a {
+  text-decoration: none;
+  color: white;
+}
+
+header h1 a:link,
+header h1 a:visited,
+header h1 a:hover,
+header h1 a:active {
+  color: white;
+  text-decoration: none;
+}
+
+header h1:hover {
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
 /* Menu toggle button (hidden by default) */
 .menu-toggle {
   display: none; /* Cache par défaut, sera affiché via media query */
