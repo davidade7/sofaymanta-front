@@ -2,14 +2,12 @@
   <input
     type="text"
     [formControl]="searchControl"
-    placeholder="Buscar películas o series o actores ..."
+    placeholder="Buscar películas, series o actores..."
     class="search-input"
-    (keyup.enter)="search()">
+    (keyup.enter)="search()"
+  />
 
-  <button
-    class="search-button"
-    (click)="search()"
-    aria-label="Rechercher">
-    <lucide-icon [img]="Search"></lucide-icon>
+  <button class="search-button" (click)="search()" aria-label="Buscar">
+    <lucide-angular [img]="Search" size="20"></lucide-angular>
   </button>
 </div>

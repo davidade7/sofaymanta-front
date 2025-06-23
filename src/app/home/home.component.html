@@ -7,7 +7,8 @@
     <div class="welcome-content">
       <h2>¡Bienvenido a Sofa y Manta!</h2>
       <p class="welcome-message">
-        Descubre un mundo de películas y series. Crea tu cuenta para disfrutar de todas las funcionalidades:
+        Descubre un mundo de películas y series. Crea tu cuenta para disfrutar
+        de todas las funcionalidades:
       </p>
       <ul class="features-list">
         <li>
@@ -35,34 +36,54 @@
   </div>
 
   <app-carousel [carousel-title]="'Películas recientes'">
-    <div *ngIf="loading.recentMovies" class="loading-spinner">Cargando... </div>
+    <div *ngIf="loading.recentMovies" class="loading-spinner">Cargando...</div>
     <ng-container *ngIf="!loading.recentMovies">
-      <app-movie-card *ngFor="let movie of recentMovies" [movie]="movie"></app-movie-card>
-      <div *ngIf="recentMovies.length === 0" class="no-results">No películas recientes encontradas.</div>
+      <app-movie-card
+        *ngFor="let movie of recentMovies"
+        [movie]="movie"
+      ></app-movie-card>
+      <div *ngIf="recentMovies.length === 0" class="no-results">
+        No películas recientes encontradas.
+      </div>
     </ng-container>
   </app-carousel>
 
   <app-carousel [carousel-title]="'Películas Populares'">
-    <div *ngIf="loading.popularMovies" class="loading-spinner">Cargando... </div>
+    <div *ngIf="loading.popularMovies" class="loading-spinner">Cargando...</div>
     <ng-container *ngIf="!loading.popularMovies">
-      <app-movie-card *ngFor="let movie of popularMovies" [movie]="movie"></app-movie-card>
-      <div *ngIf="popularMovies.length === 0" class="no-results">No películas populares encontradas.</div>
+      <app-movie-card
+        *ngFor="let movie of popularMovies"
+        [movie]="movie"
+      ></app-movie-card>
+      <div *ngIf="popularMovies.length === 0" class="no-results">
+        No películas populares encontradas.
+      </div>
     </ng-container>
   </app-carousel>
 
   <app-carousel [carousel-title]="'Series recientes'">
-    <div *ngIf="loading.recentSeries" class="loading-spinner">Cargando... </div>
+    <div *ngIf="loading.recentSeries" class="loading-spinner">Cargando...</div>
     <ng-container *ngIf="!loading.recentSeries">
-      <app-serie-card *ngFor="let serie of recentSeries" [serie]="serie"></app-serie-card>
-      <div *ngIf="recentSeries.length === 0" class="no-results">No series recientes encontradas.</div>
+      <app-serie-card
+        *ngFor="let serie of recentSeries"
+        [serie]="serie"
+      ></app-serie-card>
+      <div *ngIf="recentSeries.length === 0" class="no-results">
+        No series recientes encontradas.
+      </div>
     </ng-container>
   </app-carousel>
 
   <app-carousel [carousel-title]="'Series Populares'">
-    <div *ngIf="loading.popularSeries" class="loading-spinner">Cargando... </div>
+    <div *ngIf="loading.popularSeries" class="loading-spinner">Cargando...</div>
     <ng-container *ngIf="!loading.popularSeries">
-      <app-serie-card *ngFor="let serie of popularSeries" [serie]="serie"></app-serie-card>
-      <div *ngIf="popularSeries.length === 0" class="no-results">No series populares encontradas.</div>
+      <app-serie-card
+        *ngFor="let serie of popularSeries"
+        [serie]="serie"
+      ></app-serie-card>
+      <div *ngIf="popularSeries.length === 0" class="no-results">
+        No series populares encontradas.
+      </div>
     </ng-container>
   </app-carousel>
 </div>
