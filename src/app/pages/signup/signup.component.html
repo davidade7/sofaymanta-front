@@ -1,60 +1,87 @@
 <div class="signup-container">
-  <h2>Registro</h2>
+  <div class="signup-box">
+    <h2>Registro</h2>
 
-  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="email">Correo electrónico</label>
-      <input
-        type="email"
-        id="email"
-        formControlName="email"
-        placeholder="Su correo electrónico"
-      >
-      <div class="error" *ngIf="signupForm.controls['email'].touched && signupForm.controls['email'].errors">
-        <span *ngIf="signupForm.controls['email'].errors['required']">Correo electrónico requerido</span>
-        <span *ngIf="signupForm.controls['email'].errors['email']">Formato de correo electrónico inválido</span>
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Su correo electrónico"
+        />
+        <div
+          class="error"
+          *ngIf="
+            signupForm.controls['email'].touched &&
+            signupForm.controls['email'].errors
+          "
+        >
+          <span *ngIf="signupForm.controls['email'].errors['required']"
+            >Correo electrónico requerido</span
+          >
+          <span *ngIf="signupForm.controls['email'].errors['email']"
+            >Formato de correo electrónico inválido</span
+          >
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="password">Contraseña</label>
-      <input
-        type="password"
-        id="password"
-        formControlName="password"
-        placeholder="Elija una contraseña"
-      >
-      <div class="error" *ngIf="signupForm.controls['password'].touched && signupForm.controls['password'].errors">
-        <span *ngIf="signupForm.controls['password'].errors['required']">Contraseña requerida</span>
-        <span *ngIf="signupForm.controls['password'].errors['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="Elija una contraseña"
+        />
+        <div
+          class="error"
+          *ngIf="
+            signupForm.controls['password'].touched &&
+            signupForm.controls['password'].errors
+          "
+        >
+          <span *ngIf="signupForm.controls['password'].errors['required']"
+            >Contraseña requerida</span
+          >
+          <span *ngIf="signupForm.controls['password'].errors['minlength']"
+            >La contraseña debe tener al menos 6 caracteres</span
+          >
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="confirmPassword">Confirmar contraseña</label>
-      <input
-        type="password"
-        id="confirmPassword"
-        formControlName="confirmPassword"
-        placeholder="Confirme su contraseña"
-      >
-      <div class="error" *ngIf="signupForm.controls['confirmPassword'].touched && (signupForm.controls['confirmPassword'].errors || signupForm.errors?.['notMatching'])">
-        <span *ngIf="signupForm.controls['confirmPassword'].errors?.['required']">Confirmación de contraseña requerida</span>
-        <span *ngIf="signupForm.errors?.['notMatching']">Las contraseñas no coinciden</span>
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar contraseña</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          placeholder="Confirme su contraseña"
+        />
+        <div
+          class="error-message"
+          *ngIf="signupForm.controls['confirmPassword'].touched && (signupForm.controls['confirmPassword'].errors || signupForm.errors?.['notMatching'])"
+        >
+          <span
+            *ngIf="signupForm.controls['confirmPassword'].errors?.['required']"
+            >Confirmación de contraseña requerida</span
+          >
+          <span *ngIf="signupForm.errors?.['notMatching']"
+            >Las contraseñas no coinciden</span
+          >
+        </div>
       </div>
-    </div>
 
-    <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
 
-    <button
-      type="submit"
-      [disabled]="signupForm.invalid || isLoading"
-    >
-      {{ isLoading ? 'Registrando...' : 'Registrarse' }}
-    </button>
-  </form>
+      <button type="submit" [disabled]="signupForm.invalid || isLoading">
+        {{ isLoading ? "Registrando..." : "Registrarse" }}
+      </button>
 
-  <div class="signin-link">
-    ¿Ya tiene una cuenta? <a routerLink="/signin">Iniciar sesión</a>
+      <div class="signin-link">
+        ¿Ya tiene una cuenta? <a routerLink="/signin">Iniciar sesión</a>
+      </div>
+    </form>
   </div>
 </div>
