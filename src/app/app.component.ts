@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
     try {
       await this.authService.signOut();
       this.currentUser = null;
-      this.router.navigate(['/signin']);
+      this.router.navigate(['/']);
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
