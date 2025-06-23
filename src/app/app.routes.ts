@@ -9,20 +9,34 @@ import { TvEpisodeDetailComponent } from './tv-show/tv-episode-detail/tv-episode
 import { SearchResultsComponent } from './pages/search-results/search-results.component';
 import { PersonDetailComponent } from './person/person-detail/person-detail.component';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { AdminComponent } from './admin/admin.component'; // Attention au chemin
+import { AdminComponent } from './admin/admin.component';
 import { AuthGuard, AdminGuard } from './guards/auth.gard';
 
 export const routes: Routes = [
-    { path: 'signin', component: SigninComponent },
-    { path: 'signup', component: SignupComponent },
-    { path: 'search', component: SearchResultsComponent },
-    { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-    { path: 'admin', component: AdminComponent, canActivate: [AuthGuard, AdminGuard] },
-    { path: '', component: HomeComponent },
-    { path: 'movie/detail/:id', component: MovieDetailComponent },
-    { path: 'serie/detail/:id', component: TvShowDetailComponent },
-    { path: 'tv/:showId/season/:seasonNumber', component: TvSeasonDetailComponent },
-    { path: 'tv/:showId/season/:seasonNumber/episode/:episodeNumber', component: TvEpisodeDetailComponent },
-    { path: 'person/detail/:id', component: PersonDetailComponent },
-    { path: '**', redirectTo: '/' }
+  { path: 'signin', component: SigninComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'search', component: SearchResultsComponent },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AdminGuard],
+  },
+  { path: '', component: HomeComponent },
+  { path: 'movie/detail/:id', component: MovieDetailComponent },
+  { path: 'serie/detail/:id', component: TvShowDetailComponent },
+  {
+    path: 'tv/:showId/season/:seasonNumber',
+    component: TvSeasonDetailComponent,
+  },
+  {
+    path: 'tv/:showId/season/:seasonNumber/episode/:episodeNumber',
+    component: TvEpisodeDetailComponent,
+  },
+  { path: 'person/detail/:id', component: PersonDetailComponent },
+  { path: '**', redirectTo: '/' },
 ];

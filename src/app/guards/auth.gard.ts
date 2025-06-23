@@ -3,7 +3,7 @@ import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
@@ -20,7 +20,10 @@ export class AuthGuard implements CanActivate {
 
       return true;
     } catch (error) {
-      console.error('Erreur lors de la vérification de l\'authentification:', error);
+      console.error(
+        "Erreur lors de la vérification de l'authentification:",
+        error
+      );
       this.router.navigate(['/signin']);
       return false;
     }
@@ -28,13 +31,10 @@ export class AuthGuard implements CanActivate {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminGuard implements CanActivate {
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   async canActivate(): Promise<boolean> {
     try {

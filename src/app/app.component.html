@@ -1,51 +1,5 @@
 <div class="app-container">
-  <header>
-    <div class="header-content">
-      <h1>
-        <a [routerLink]="['/']">{{ title }}</a>
-      </h1>
-
-      <button class="menu-toggle" (click)="toggleMenu()" aria-label="Toggle menu" *ngIf="!menuOpen">
-        <lucide-icon [img]="Menu"></lucide-icon>
-      </button>
-      <button class="menu-toggle close-button" (click)="toggleMenu()" aria-label="Close menu" *ngIf="menuOpen">
-        <lucide-icon [img]="X"></lucide-icon>
-      </button>
-    </div>
-
-    <nav [class.open]="menuOpen">
-      <ng-container *ngIf="currentUser">
-        <span class="user-info">{{ currentUser.email }}</span>
-      </ng-container>
-
-      <a [routerLink]="['/']" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active-link" (click)="closeMenu()">
-        <lucide-icon [img]="House"></lucide-icon>
-        <span>Inicio</span>
-      </a>
-
-      <ng-container *ngIf="!currentUser">
-        <a [routerLink]="['/signin']" routerLinkActive="active-link" (click)="closeMenu()">
-          <lucide-icon [img]="LogIn"></lucide-icon>
-          <span>Iniciar sesión</span>
-        </a>
-        <a [routerLink]="['/signup']" routerLinkActive="active-link" (click)="closeMenu()">
-          <lucide-icon [img]="UserPlus"></lucide-icon>
-          <span>Registrarse</span>
-        </a>
-      </ng-container>
-
-      <ng-container *ngIf="currentUser">
-        <a [routerLink]="['/profile']" routerLinkActive="active-link" (click)="closeMenu()">
-          <lucide-icon [img]="User"></lucide-icon>
-          <span>Perfil</span>
-        </a>
-        <a href="#" (click)="logout($event); closeMenu()">
-          <lucide-icon [img]="LogOut"></lucide-icon>
-          <span>Cerrar sesión</span>
-        </a>
-        </ng-container>
-    </nav>
-  </header>
+  <app-header></app-header>
 
   <main>
     <router-outlet></router-outlet>
