@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.checkAuthStatus();
+    this.setupAuthListener();
   }
 
   // Check authentication status
@@ -47,6 +48,16 @@ export class AppComponent implements OnInit {
     } catch (error) {
       this.currentUser = null;
     }
+  }
+
+  setupAuthListener() {
+    this.authService.supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        this.currentUser = session?.user || null;
+      } else if (event === 'SIGNED_OUT') {
+        this.currentUser = null;
+      }
+    });
   }
 
   // Toggle menu visibility
