@@ -1,206 +1,41 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    #0d1117 0%,
+    #1a1f35 25%,
+    #2d3748 50%,
+    #1a202c 75%,
+    #0f172a 100%
+  );
+  background-attachment: fixed;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-header {
-  background: linear-gradient(135deg, #1976d2, #1565c0);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  /* Ajout crucial pour positionner la nav en dessous */
-  position: relative;
-  z-index: 1000; /* Assure que le header est au-dessus du contenu */
-}
-
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-header h1 a {
-  text-decoration: none;
-  color: white;
-}
-
-header h1 a:link,
-header h1 a:visited,
-header h1 a:hover,
-header h1 a:active {
-  color: white;
-  text-decoration: none;
-}
-
-header h1:hover {
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
-}
-
-/* Menu toggle button (hidden by default) */
-.menu-toggle {
-  display: none; /* Cache par défaut, sera affiché via media query */
-  background: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0.5rem;
-}
-
-.menu-toggle lucide-icon {
-  width: 24px;
-  height: 24px;
-}
-
-/* Navigation styles */
-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  /* align-items: center; (doublon) */
-}
-
-/* Link styles */
-nav a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  text-decoration: none;
-  color: white;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  font-weight: 500;
-  position: relative;
-}
-
-nav a:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-nav a.active-link {
-  background-color: rgba(255, 255, 255, 0.2);
-  font-weight: 600;
-}
-
-nav a lucide-icon {
-  width: 18px;
-  height: 18px;
-}
-
-.user-info {
-  margin-left: 12px;
-  background-color: rgba(255, 255, 255, 0.15);
-  padding: 6px 10px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-:host {
-  display: block;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0d1117 0%, #1a1f35 25%, #2d3748 50%, #1a202c 75%, #0f172a 100%);
-  background-attachment: fixed;
-}
-
-/* Main content and footer */
+/* Main content & footer */
 main {
   flex: 1;
 }
 
 footer {
-  background-color: #f5f5f5;
+  background-color: #1a202c;
+  color: #94a3b8;
   padding: 1rem;
   text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Responsive design for mobile */
+/* Responsive design */
 @media (max-width: 768px) {
-  /* Le titre est maintenant affiché */
-  header h1 {
-    display: block; /* Afficher le titre sur mobile */
-    font-size: 1.25rem; /* Ajuster la taille pour le mobile */
+  footer {
+    padding: 0.75rem;
+    font-size: 0.8rem;
   }
-
-  /* La barre supérieure (titre et bouton hamburger) */
-  .header-content {
-    width: 100%;
-    display: flex;
-    justify-content: space-between; /* Titre à gauche, bouton à droite */
-    align-items: center;
-    /* Le padding sera géré par le header */
-  }
-
-  /* Afficher le bouton du menu (hamburger) dans le header */
-  .header-content .menu-toggle {
-    display: flex;
-  }
-
-  /* Navigation styles pour mobile (menu déroulant) */
-  nav {
-    display: flex; /* Toujours flex pour la mise en page des éléments, mais caché par défaut */
-    flex-direction: column;
-    position: absolute; /* Positionné par rapport au header parent */
-    top: 100%; /* Commence juste en dessous du header */
-    left: 0;
-    width: 100%; /* Prend toute la largeur du parent (header) */
-    max-height: 0; /* Commence sans hauteur (caché) */
-    overflow: hidden; /* Cache le contenu qui dépasse */
-    background: linear-gradient(135deg, #1976d2, #1565c0); /* Arrière-plan du menu déroulant */
-    z-index: 990; /* En dessous du header, au-dessus du contenu principal */
-    padding: 0 1.5rem; /* Padding initial, sera ajusté à l'ouverture */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    align-items: stretch; /* Étirer les éléments horizontalement */
-    gap: 0.25rem; /* Espacement entre les éléments du menu */
-    /* Transition pour une ouverture et fermeture fluides */
-    transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
-    opacity: 0; /* Commence invisible */
-    pointer-events: none; /* Désactiver les interactions quand caché */
-  }
-
-  /* Afficher la nav quand elle a la classe .open */
-  nav.open {
-    max-height: 100vh; /* Permet d'étendre (suffisamment pour le contenu) */
-    padding: 1rem 1.5rem; /* Ajouter du padding vertical quand ouvert */
-    opacity: 1; /* Rendre visible */
-    pointer-events: all; /* Activer les interactions */
-    /* L'animation @keyframes slideDown n'est plus nécessaire si on utilise la transition */
-  }
-
-  /* Bouton de fermeture à l'intérieur de la navigation */
-  nav .menu-toggle.close-button {
-    display: flex; /* Afficher le bouton X */
-    align-self: flex-end; /* Pousser à droite à l'intérieur de la nav */
-    margin-bottom: 1rem; /* Espace sous le bouton X */
-  }
-
-  /* Informations de l'utilisateur à l'intérieur du menu déroulant */
-  .user-info {
-    margin: 0 0 0.5rem 0; /* Ajuster la marge pour l'espacement dans le menu */
-    padding: 12px;
-    text-align: center;
-    order: -1; /* Placer en haut du conteneur flex à l'intérieur de la nav */
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.15); /* Garder le style */
-  }
-
-  /* Styles des liens de navigation à l'intérieur du menu déroulant */
-  nav a {
-    padding: 12px;
-    border-radius: 4px;
-  }
-
-  /* L'animation @keyframes slideDown peut être supprimée si la transition sur max-height/opacity est utilisée */
-  /* @keyframes slideDown { ... } */
 }
