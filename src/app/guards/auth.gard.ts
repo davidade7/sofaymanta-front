@@ -10,7 +10,6 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(): Promise<boolean> {
     try {
-      // Vérifier si l'utilisateur est connecté
       const { data, error } = await this.authService.getUser();
 
       if (error || !data.user) {
@@ -38,11 +37,9 @@ export class AdminGuard implements CanActivate {
 
   async canActivate(): Promise<boolean> {
     try {
-      // Vérifier si l'utilisateur est connecté et est admin
       const isAdmin = await this.authService.isCurrentUserAdmin();
 
       if (!isAdmin) {
-        // Vérifier d'abord si l'utilisateur est connecté
         const { data } = await this.authService.getUser();
 
         if (!data.user) {
@@ -61,6 +58,37 @@ export class AdminGuard implements CanActivate {
       console.error('Error in admin guard:', error);
       this.router.navigate(['/signin']);
       return false;
+    }
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class NonAdminGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
+
+  async canActivate(): Promise<boolean> {
+    try {
+      const { data, error } = await this.authService.getUser();
+
+      if (error || !data.user) {
+        return true;
+      }
+
+      // Vérifie si l'utilisateur est admin
+      const isAdmin = await this.authService.isCurrentUserAdmin();
+
+      if (isAdmin) {
+        console.log('User is admin, redirecting to admin panel');
+        this.router.navigate(['/admin']);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error in non-admin guard:', error);
+      return true;
     }
   }
 }

@@ -10,33 +10,55 @@ import { SearchResultsComponent } from './pages/search-results/search-results.co
 import { PersonDetailComponent } from './person/person-detail/person-detail.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AdminComponent } from './admin/admin.component';
-import { AuthGuard, AdminGuard } from './guards/auth.gard';
+import { AuthGuard, AdminGuard, NonAdminGuard } from './guards/auth.gard';
 
 export const routes: Routes = [
   { path: 'signin', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'search', component: SearchResultsComponent },
+  {
+    path: 'search',
+    component: SearchResultsComponent,
+    canActivate: [NonAdminGuard],
+  },
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, NonAdminGuard],
   },
   {
     path: 'admin',
     component: AdminComponent,
     canActivate: [AdminGuard],
   },
-  { path: '', component: HomeComponent },
-  { path: 'movie/detail/:id', component: MovieDetailComponent },
-  { path: 'serie/detail/:id', component: TvShowDetailComponent },
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [NonAdminGuard],
+  },
+  {
+    path: 'movie/detail/:id',
+    component: MovieDetailComponent,
+    canActivate: [NonAdminGuard],
+  },
+  {
+    path: 'serie/detail/:id',
+    component: TvShowDetailComponent,
+    canActivate: [NonAdminGuard],
+  },
   {
     path: 'tv/:showId/season/:seasonNumber',
     component: TvSeasonDetailComponent,
+    canActivate: [NonAdminGuard],
   },
   {
     path: 'tv/:showId/season/:seasonNumber/episode/:episodeNumber',
     component: TvEpisodeDetailComponent,
+    canActivate: [NonAdminGuard],
   },
-  { path: 'person/detail/:id', component: PersonDetailComponent },
+  {
+    path: 'person/detail/:id',
+    component: PersonDetailComponent,
+    canActivate: [NonAdminGuard],
+  },
   { path: '**', redirectTo: '/' },
 ];
