@@ -15,13 +15,23 @@
   </div>
 
   <div *ngIf="movie && !loading && !error" class="movie-content">
-    <div class="movie-backdrop" [style.background-image]="movie.backdrop_path ? 'url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')' : 'none'">
+    <div
+      class="movie-backdrop"
+      [style.background-image]="
+        movie.backdrop_path
+          ? 'url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')'
+          : 'none'
+      "
+    >
       <div class="backdrop-overlay"></div>
     </div>
 
     <div class="movie-info-container">
       <div class="movie-poster">
-        <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" [alt]="movie.title">
+        <img
+          [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+          [alt]="movie.title"
+        />
       </div>
 
       <div class="movie-info">
@@ -30,11 +40,16 @@
 
         <div class="movie-stats">
           <div class="movie-rating">
-            <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon> {{ movie.vote_average?.toFixed(1) || 'N/A' }}
+            <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
+            {{ movie.vote_average?.toFixed(1) || "N/A" }}
             <span class="vote-count">({{ movie.vote_count || 0 }} votos)</span>
           </div>
           <div class="movie-runtime">{{ movie.runtime }} min</div>
-          <div class="movie-year">{{ movie.release_date ? (movie.release_date | date:'yyyy') : 'N/A' }}</div>
+          <div class="movie-year">
+            {{
+              movie.release_date ? (movie.release_date | date : "yyyy") : "N/A"
+            }}
+          </div>
         </div>
 
         <div class="movie-genres">
@@ -85,31 +100,53 @@
         <div class="additional-info">
           <div class="info-grid">
             <h3 class="label">Presupuesto:</h3>
-            <p>{{ movie.budget | currency:'USD':'symbol':'1.0-0' }}</p>
+            <p>{{ movie.budget | currency : "USD" : "symbol" : "1.0-0" }}</p>
           </div>
           <div class="info-grid">
             <h3 class="label">Ingresos:</h3>
-            <p>{{ movie.revenue | currency:'USD':'symbol':'1.0-0' }}</p>
+            <p>{{ movie.revenue | currency : "USD" : "symbol" : "1.0-0" }}</p>
           </div>
           <div class="info-grid">
             <h3 class="label">Idioma original:</h3>
             <p>{{ getLanguageName(movie.original_language) }}</p>
           </div>
           <div class="info-grid">
-            <h3 class="label">Países de producción:</h3>
-            <div class="country-tags">
-              <span *ngFor="let country of movie.production_countries" class="genre-tag">
-                {{ country.name }}
+            <h4 class="label">Países:</h4>
+            <p>
+              <span
+                *ngFor="let country of movie.production_countries"
+                class="country-badge"
+              >
+                {{ country.iso_3166_1 }} - {{ country.name }}
               </span>
-            </div>
+              <span
+                *ngIf="
+                  !movie.production_countries ||
+                  movie.production_countries.length === 0
+                "
+                >Desconocido</span
+              >
+            </p>
           </div>
         </div>
 
-        <div class="movie-companies" *ngIf="movie.production_companies && movie.production_companies.length > 0">
+        <div
+          class="movie-companies"
+          *ngIf="
+            movie.production_companies && movie.production_companies.length > 0
+          "
+        >
           <h3>Compañías de producción</h3>
           <div class="company-list">
-            <div *ngFor="let company of movie.production_companies" class="company-item">
-              <img *ngIf="company.logo_path" [src]="'https://image.tmdb.org/t/p/w92' + company.logo_path" [alt]="company.name">
+            <div
+              *ngFor="let company of movie.production_companies"
+              class="company-item"
+            >
+              <img
+                *ngIf="company.logo_path"
+                [src]="'https://image.tmdb.org/t/p/w92' + company.logo_path"
+                [alt]="company.name"
+              />
               <span>{{ company.name }}</span>
             </div>
           </div>
@@ -123,14 +160,20 @@
               <div class="average-rating">
                 <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
                 <span class="rating-value">{{ averageRating }}/10</span>
-                <span class="rating-count">({{ totalRatings }} evaluaciones)</span>
+                <span class="rating-count"
+                  >({{ totalRatings }} evaluaciones)</span
+                >
               </div>
               <button
                 class="toggle-ratings-btn"
                 (click)="toggleShowAllRatings()"
                 *ngIf="totalRatings > 0"
               >
-                {{ showAllRatings ? 'Ocultar evaluaciones' : 'Ver todas las evaluaciones' }}
+                {{
+                  showAllRatings
+                    ? "Ocultar evaluaciones"
+                    : "Ver todas las evaluaciones"
+                }}
               </button>
             </div>
           </div>
@@ -143,15 +186,21 @@
             <p>Aún no hay evaluaciones para esta película.</p>
           </div>
 
-          <div *ngIf="showAllRatings && !loadingRatings && totalRatings > 0" class="ratings-list">
+          <div
+            *ngIf="showAllRatings && !loadingRatings && totalRatings > 0"
+            class="ratings-list"
+          >
             <div *ngFor="let rating of allRatings" class="rating-item">
               <div class="rating-header">
                 <div class="user-rating-display">
-                  <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
+                  <lucide-icon
+                    [img]="Star"
+                    class="text-yellow-500"
+                  ></lucide-icon>
                   <span class="rating-value">{{ rating.rating }}/10</span>
                 </div>
                 <div class="rating-date">
-                  {{ rating.createdAt | date:'dd/MM/yyyy' }}
+                  {{ rating.createdAt | date : "dd/MM/yyyy" }}
                 </div>
               </div>
               <div *ngIf="rating.comment" class="rating-comment">
@@ -165,7 +214,6 @@
 
     <!-- Section des crédits -->
     <div class="credits-section" *ngIf="credits && !loadingCredits">
-
       <!-- Carrousel du Cast -->
       <div class="credits-group" *ngIf="castMembers.length > 0">
         <h2 class="credits-title">Reparto</h2>
@@ -187,7 +235,6 @@
           ></app-person-card>
         </app-carousel>
       </div>
-
     </div>
 
     <!-- Loading state pour les crédits -->
@@ -214,7 +261,8 @@
     [message]="
       '¿Estás seguro de que quieres eliminar tu evaluación de &quot;' +
       (movie?.title ? movie.title : '') +
-      '&quot;?'"
+      '&quot;?'
+    "
     [isDeleting]="isDeleting"
     (confirmDelete)="confirmDeleteInteraction()"
     (cancelDelete)="closeDeleteModal()"
