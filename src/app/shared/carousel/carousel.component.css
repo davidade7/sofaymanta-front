@@ -15,6 +15,7 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
+  color: #cbd5e1;
 }
 
 .carousel-track-container {
@@ -67,7 +68,8 @@
 }
 
 /* Styles pour l'état de chargement et les messages d'absence de résultats */
-.loading-spinner, .no-results {
+.loading-spinner,
+.no-results {
   width: 100%;
   padding: 2rem;
   text-align: center;

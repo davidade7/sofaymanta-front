@@ -1,6 +1,7 @@
 .serie-card {
-  width: 200px;
-  min-width: 200px;
+  width: 220px;
+  min-width: 220px;
+  height: 100%;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
@@ -85,7 +86,12 @@
   font-size: 10px;
   font-weight: 500;
   color: white;
-  background-color: rgba(99, 0, 255, 0.8); /* Couleur différente pour les séries */
+  background-color: rgba(
+    99,
+    0,
+    255,
+    0.8
+  ); /* Couleur différente pour les séries */
   text-transform: capitalize;
   white-space: nowrap;
   position: relative;
@@ -171,7 +177,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;  /* Limite à 3 lignes */
+  -webkit-line-clamp: 3; /* Limite à 3 lignes */
   line-clamp: 3; /* Standard property for compatibility */
   -webkit-box-orient: vertical;
 }
@@ -197,8 +203,8 @@
 /* Media queries pour la responsive */
 @media (max-width: 768px) {
   .serie-card {
-    width: 175px;
-    min-width: 175px;
+    width: 200px;
+    min-width: 200px;
   }
 
   .card-content {
@@ -212,7 +218,7 @@
 
 @media (max-width: 480px) {
   .serie-card {
-    width: 150px;
-    min-width: 150px;
+    width: 165px;
+    min-width: 165px;
   }
 }

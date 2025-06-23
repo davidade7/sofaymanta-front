@@ -1,6 +1,7 @@
 .movie-card {
-  width: 200px;
-  min-width: 200px;
+  width: 220px;
+  min-width: 220px;
+  height: 100%;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
@@ -168,7 +169,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;  /* Limite à 3 lignes */
+  -webkit-line-clamp: 3; /* Limite à 3 lignes */
   line-clamp: 3; /* Standard property for compatibility */
   -webkit-box-orient: vertical;
 }
@@ -188,8 +189,8 @@
 
 @media (max-width: 768px) {
   .movie-card {
-    width: 175px;
-    min-width: 175px;
+    width: 200px;
+    min-width: 200px;
   }
 
   .movie-info {
@@ -203,7 +204,7 @@
 
 @media (max-width: 480px) {
   .movie-card {
-    width: 150px;
-    min-width: 150px;
+    width: 165px;
+    min-width: 165px;
   }
 }
