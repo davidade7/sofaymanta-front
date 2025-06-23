@@ -58,8 +58,7 @@
 
 @media (max-width: 576px) {
   .search-container {
-    max-width: calc(100% - 32px);
-    margin: 15px 16px;
+    max-width: 100%;
     width: auto;
   }
 
