@@ -145,14 +145,14 @@
 .platform-card:hover {
   border-color: #007bff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
 }
 
 .platform-card.selected {
   border-color: #007bff;
   background: linear-gradient(135deg, #f8f9ff, #e7f3ff);
   border-width: 3px;
-  box-shadow: 0 4px 20px rgba(0,123,255,0.2);
+  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.2);
 }
 
 .platform-logo {
@@ -190,7 +190,6 @@
   color: #007bff;
 }
 
-/* Suppression de la checkbox */
 .platform-checkbox {
   display: none;
 }
@@ -202,38 +201,6 @@
   background: #f8f9fa;
   border-radius: 8px;
   border: 2px dashed #dee2e6;
-}
-
-/* Responsive pour mobile */
-@media (max-width: 768px) {
-  .platforms-container {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 12px;
-  }
-
-  .platform-card {
-    padding: 12px;
-    min-height: 70px;
-  }
-
-  .platform-logo {
-    width: 40px;
-    height: 40px;
-  }
-
-  .platform-name {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .platforms-container {
-    grid-template-columns: 1fr;
-  }
-
-  .platform-card {
-    justify-content: flex-start;
-  }
 }
 
 /* Genres styling */
@@ -261,19 +228,6 @@
 .genre-chip.selected {
   background-color: #135bb9;
   color: white;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .media-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
-  .media-details {
-    gap: 4px;
-  }
 }
 
 /* Styles pour les évaluations */
@@ -348,7 +302,15 @@
 .media-info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.media-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .media-type-badge {
@@ -370,6 +332,16 @@
 .media-type-badge.episode {
   background-color: #17a2b8;
   color: white;
+}
+
+.episode-info {
+  background-color: #007bff;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .media-id {
@@ -467,34 +439,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  width: 40px; /* Taille fixe pour un bouton carré */
-  height: 40px;
-}
-
-.delete-interaction-btn:hover:not(:disabled) {
-  background-color: #c82333;
-}
-
-.delete-interaction-btn:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
-
-/* Responsive */
-/* ...existing styles... */
-
-.delete-interaction-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  width: 40px; /* Taille fixe pour un bouton carré */
+  width: 40px;
   height: 40px;
 }
 
@@ -509,6 +454,25 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .platforms-container {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .platform-card {
+    padding: 12px;
+    min-height: 70px;
+  }
+
+  .platform-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .platform-name {
+    font-size: 0.9rem;
+  }
+
   .interactions-stats {
     justify-content: center;
   }
@@ -524,7 +488,7 @@
   }
 
   .interaction-actions {
-    flex-direction: row; /* Garder en ligne sur mobile */
+    flex-direction: row;
     justify-content: center;
     gap: 1rem;
     width: 100%;
@@ -538,17 +502,35 @@
   }
 
   .view-details-btn {
-    flex: 1; /* Le bouton "Ver detalles" prend plus de place */
+    flex: 1;
   }
 
   .delete-interaction-btn {
-    width: 40px; /* Garder la taille fixe même sur mobile */
+    width: 40px;
     height: 40px;
     flex-shrink: 0;
+  }
+
+  .media-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .media-details {
+    gap: 4px;
   }
 }
 
 @media (max-width: 480px) {
+  .platforms-container {
+    grid-template-columns: 1fr;
+  }
+
+  .platform-card {
+    justify-content: flex-start;
+  }
+
   .interactions-stats {
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
@@ -560,42 +542,5 @@
 
   .interaction-card {
     padding: 0.75rem;
-  }
-}
-
-.media-details {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.episode-info {
-  background-color: #007bff;
-  color: white;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.media-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .media-info {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
-  .media-details {
-    gap: 4px;
   }
 }

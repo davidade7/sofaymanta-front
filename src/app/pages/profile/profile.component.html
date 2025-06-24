@@ -9,7 +9,7 @@
   <div *ngIf="!isLoading" class="profile-content">
     <!-- Profile Information Section -->
     <section class="profile-section">
-      <h2>{{ userProfile ? 'Información del Perfil' : 'Crear Perfil' }}</h2>
+      <h2>{{ userProfile ? "Información del Perfil" : "Crear Perfil" }}</h2>
       <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
         <div class="form-group">
           <label for="username">Nombre de usuario</label>
@@ -18,24 +18,55 @@
             id="username"
             formControlName="username"
             placeholder="Nombre de usuario"
-            [class.is-invalid]="profileForm.get('username')?.invalid && profileForm.get('username')?.touched"
+            [class.is-invalid]="
+              profileForm.get('username')?.invalid &&
+              profileForm.get('username')?.touched
+            "
+          />
+          <div
+            class="error-message"
+            *ngIf="
+              profileForm.get('username')?.invalid &&
+              profileForm.get('username')?.touched
+            "
           >
-          <div class="error-message" *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched">
-            <span *ngIf="profileForm.get('username')?.errors?.['required']">El nombre de usuario es obligatorio.</span>
-            <span *ngIf="profileForm.get('username')?.errors?.['minlength']">El nombre de usuario debe tener al menos 3 caracteres.</span>
+            <span *ngIf="profileForm.get('username')?.errors?.['required']"
+              >El nombre de usuario es obligatorio.</span
+            >
+            <span *ngIf="profileForm.get('username')?.errors?.['minlength']"
+              >El nombre de usuario debe tener al menos 3 caracteres.</span
+            >
           </div>
         </div>
 
         <div class="form-actions">
-          <button type="submit" [disabled]="profileForm.invalid || isCreatingProfile || isUpdatingProfile" class="btn-primary">
-            <lucide-icon *ngIf="isCreatingProfile || isUpdatingProfile" [img]="Loader2" size="16"></lucide-icon>
-            <lucide-icon *ngIf="!isCreatingProfile && !isUpdatingProfile" [img]="Save" size="16"></lucide-icon>
-            {{ userProfile ? 'Guardar cambios' : 'Crear perfil' }}
+          <button
+            type="submit"
+            [disabled]="
+              profileForm.invalid || isCreatingProfile || isUpdatingProfile
+            "
+            class="btn-primary"
+          >
+            <lucide-icon
+              *ngIf="isCreatingProfile || isUpdatingProfile"
+              [img]="Loader2"
+              size="16"
+            ></lucide-icon>
+            <lucide-icon
+              *ngIf="!isCreatingProfile && !isUpdatingProfile"
+              [img]="Save"
+              size="16"
+            ></lucide-icon>
+            {{ userProfile ? "Guardar cambios" : "Crear perfil" }}
           </button>
         </div>
 
         <div *ngIf="profileUpdateSuccess" class="success-message">
-          {{ userProfile ? '¡Perfil actualizado correctamente!' : '¡Perfil creado correctamente!' }}
+          {{
+            userProfile
+              ? "¡Perfil actualizado correctamente!"
+              : "¡Perfil creado correctamente!"
+          }}
         </div>
 
         <div *ngIf="profileUpdateError" class="error-message">
@@ -52,7 +83,11 @@
           *ngFor="let genre of availableMovieGenres"
           class="genre-chip"
           [class.selected]="isMovieGenreFavorite(genre.id)"
-          (click)="isMovieGenreFavorite(genre.id) ? removeFavoriteGenre(genre.id, 'movie') : addFavoriteGenre(genre.id, 'movie')"
+          (click)="
+            isMovieGenreFavorite(genre.id)
+              ? removeFavoriteGenre(genre.id, 'movie')
+              : addFavoriteGenre(genre.id, 'movie')
+          "
         >
           {{ genre.name }}
         </div>
@@ -67,7 +102,11 @@
           *ngFor="let genre of availableTvGenres"
           class="genre-chip"
           [class.selected]="isTvGenreFavorite(genre.id)"
-          (click)="isTvGenreFavorite(genre.id) ? removeFavoriteGenre(genre.id, 'tv') : addFavoriteGenre(genre.id, 'tv')"
+          (click)="
+            isTvGenreFavorite(genre.id)
+              ? removeFavoriteGenre(genre.id, 'tv')
+              : addFavoriteGenre(genre.id, 'tv')
+          "
         >
           {{ genre.name }}
         </div>
@@ -83,53 +122,31 @@
         <p>Cargando plataformas...</p>
       </div>
 
-      <div *ngIf="!isLoadingPlatforms && availablePlatforms.length === 0" class="no-platforms">
+      <div
+        *ngIf="!isLoadingPlatforms && availablePlatforms.length === 0"
+        class="no-platforms"
+      >
         <p>No hay plataformas disponibles.</p>
       </div>
 
-      <div *ngIf="!isLoadingPlatforms && availablePlatforms.length > 0" class="platforms-container">
+      <div
+        *ngIf="!isLoadingPlatforms && availablePlatforms.length > 0"
+        class="platforms-container"
+      >
         <div
           *ngFor="let platform of availablePlatforms"
           class="platform-card"
           [class.selected]="isPlatformSelected(platform.code)"
-          (click)="isPlatformSelected(platform.code) ? removeStreamingPlatform(platform.code) : addStreamingPlatform(platform.code)"
+          (click)="
+            isPlatformSelected(platform.code)
+              ? removeStreamingPlatform(platform.code)
+              : addStreamingPlatform(platform.code)
+          "
         >
           <div class="platform-logo" *ngIf="platform.logo_url">
             <img [src]="platform.logo_url" [alt]="platform.name" />
           </div>
           <div class="platform-name">{{ platform.name }}</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Display existing user profile information if available -->
-    <section class="profile-section" *ngIf="userProfile">
-      <h2>Detalles del perfil</h2>
-      <div class="profile-details">
-        <p><strong>Nombre de usuario:</strong> {{ userProfile.username }}</p>
-        <p><strong>ID:</strong> {{ userProfile.id }}</p>
-        <p><strong>Fecha de creación:</strong> {{ userProfile.created_at | date:'medium' }}</p>
-        <p><strong>Última actualización:</strong> {{ userProfile.updated_at | date:'medium' }}</p>
-
-        <div *ngIf="getFavoriteMovieGenres().length > 0">
-          <p><strong>Géneros de películas favoritos:</strong></p>
-          <ul>
-            <li *ngFor="let genre of getFavoriteMovieGenres()">{{ genre.name }}</li>
-          </ul>
-        </div>
-
-        <div *ngIf="getFavoriteTvGenres().length > 0">
-          <p><strong>Géneros de series favoritos:</strong></p>
-          <ul>
-            <li *ngFor="let genre of getFavoriteTvGenres()">{{ genre.name }}</li>
-          </ul>
-        </div>
-
-        <div *ngIf="getSelectedPlatforms().length > 0">
-          <p><strong>Plataformas:</strong></p>
-          <ul>
-            <li *ngFor="let platform of getSelectedPlatforms()">{{ platform.name }}</li>
-          </ul>
         </div>
       </div>
     </section>
@@ -144,12 +161,18 @@
       <p>Cargando evaluaciones...</p>
     </div>
 
-    <div *ngIf="!isLoadingInteractions && userInteractions.length === 0" class="no-interactions">
+    <div
+      *ngIf="!isLoadingInteractions && userInteractions.length === 0"
+      class="no-interactions"
+    >
       <p>No has evaluado ningún contenido aún.</p>
       <p>¡Explora películas y series para comenzar a evaluar!</p>
     </div>
 
-    <div *ngIf="!isLoadingInteractions && userInteractions.length > 0" class="interactions-content">
+    <div
+      *ngIf="!isLoadingInteractions && userInteractions.length > 0"
+      class="interactions-content"
+    >
       <!-- Estadísticas rápidas -->
       <div class="interactions-stats">
         <div class="stat-item">
@@ -173,7 +196,9 @@
           <span class="stat-label">Calificadas</span>
         </div>
         <div class="stat-item">
-          <span class="stat-number">{{ getCommentedInteractions().length }}</span>
+          <span class="stat-number">{{
+            getCommentedInteractions().length
+          }}</span>
           <span class="stat-label">Comentadas</span>
         </div>
       </div>
@@ -186,15 +211,20 @@
         >
           <div class="interaction-header">
             <div class="media-info">
-              <span class="media-type-badge"
+              <span
+                class="media-type-badge"
                 [class.movie]="interaction.media_type === 'movie'"
-                [class.tv]="interaction.media_type === 'tv' && !isEpisodeInteraction(interaction)"
-                [class.episode]="isEpisodeInteraction(interaction)">
+                [class.tv]="
+                  interaction.media_type === 'tv' &&
+                  !isEpisodeInteraction(interaction)
+                "
+                [class.episode]="isEpisodeInteraction(interaction)"
+              >
                 {{ getMediaTypeName(interaction) }}
               </span>
             </div>
             <div class="interaction-date">
-              {{ interaction.createdAt | date:'short' }}
+              {{ interaction.createdAt | date : "short" }}
             </div>
           </div>
 
