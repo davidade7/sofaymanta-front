@@ -21,7 +21,7 @@ export interface Genre {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserProfileService {
   private apiUrl = `${environment.apiUrl}/user-profiles`;
@@ -40,7 +40,10 @@ export class UserProfileService {
    * @param userId L'ID de l'utilisateur
    * @param profile Les données du profil à créer
    */
-  createUserProfile(userId: string, profile: UserProfile): Observable<UserProfile> {
+  createUserProfile(
+    userId: string,
+    profile: UserProfile
+  ): Observable<UserProfile> {
     return this.http.post<UserProfile>(`${this.apiUrl}/${userId}`, profile);
   }
 
@@ -49,7 +52,10 @@ export class UserProfileService {
    * @param id L'ID du profil utilisateur
    * @param profile Les données du profil à mettre à jour
    */
-  updateUserProfile(id: string, profile: Partial<UserProfile>): Observable<UserProfile> {
+  updateUserProfile(
+    id: string,
+    profile: Partial<UserProfile>
+  ): Observable<UserProfile> {
     return this.http.patch<UserProfile>(`${this.apiUrl}/${id}`, profile);
   }
 
@@ -59,11 +65,18 @@ export class UserProfileService {
    * @param genreId L'ID du genre
    * @param mediaType Le type de média (movie ou tv)
    */
-  addFavoriteGenre(profileId: string, genreId: number, mediaType: 'movie' | 'tv'): Observable<{message: string}> {
-    return this.http.post<{message: string}>(`${this.apiUrl}/${profileId}/favorite-genres`, {
-      genreId,
-      mediaType
-    });
+  addFavoriteGenre(
+    profileId: string,
+    genreId: number,
+    mediaType: 'movie' | 'tv'
+  ): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/${profileId}/favorite-genres`,
+      {
+        genreId,
+        mediaType,
+      }
+    );
   }
 
   /**
@@ -72,9 +85,16 @@ export class UserProfileService {
    * @param genreId L'ID du genre
    * @param mediaType Le type de média (movie ou tv)
    */
-  removeFavoriteGenre(profileId: string, genreId: number, mediaType: 'movie' | 'tv'): Observable<{message: string}> {
+  removeFavoriteGenre(
+    profileId: string,
+    genreId: number,
+    mediaType: 'movie' | 'tv'
+  ): Observable<{ message: string }> {
     const params = new HttpParams().set('mediaType', mediaType);
-    return this.http.delete<{message: string}>(`${this.apiUrl}/${profileId}/favorite-genres/${genreId}`, { params });
+    return this.http.delete<{ message: string }>(
+      `${this.apiUrl}/${profileId}/favorite-genres/${genreId}`,
+      { params }
+    );
   }
 
   // === Méthodes pour les plateformes de streaming ===
@@ -84,10 +104,16 @@ export class UserProfileService {
    * @param profileId L'ID du profil utilisateur
    * @param platform Le nom de la plateforme
    */
-  addStreamingPlatform(profileId: string, platform: string): Observable<{message: string}> {
-    return this.http.post<{message: string}>(`${this.apiUrl}/${profileId}/streaming-platforms`, {
-      platform
-    });
+  addStreamingPlatform(
+    profileId: string,
+    platform: string
+  ): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/${profileId}/streaming-platforms`,
+      {
+        platform,
+      }
+    );
   }
 
   /**
@@ -95,7 +121,24 @@ export class UserProfileService {
    * @param profileId L'ID du profil utilisateur
    * @param platform Le nom de la plateforme
    */
-  removeStreamingPlatform(profileId: string, platform: string): Observable<{message: string}> {
-    return this.http.delete<{message: string}>(`${this.apiUrl}/${profileId}/streaming-platforms/${platform}`);
+  removeStreamingPlatform(
+    profileId: string,
+    platform: string
+  ): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(
+      `${this.apiUrl}/${profileId}/streaming-platforms/${platform}`
+    );
+  }
+
+  /**
+   * Supprime définitivement le compte utilisateur
+   * @param profileId L'ID du profil utilisateur
+   */
+  deleteUserAccount(
+    profileId: string
+  ): Observable<{ success: boolean; message: string; error?: any }> {
+    return this.http.delete<{ success: boolean; message: string; error?: any }>(
+      `${this.apiUrl}/${profileId}/delete-account`
+    );
   }
 }
