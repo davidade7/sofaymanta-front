@@ -30,6 +30,7 @@ export interface UserMediaInteraction {
   createdAt: Date | string;
   updatedAt: Date | string;
   isDeleting?: boolean;
+  username?: string;
 }
 
 export interface EpisodeRating {
@@ -41,7 +42,7 @@ export interface EpisodeRating {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserMediaInteractionsService {
   private apiUrl = `${environment.apiUrl}/user-media-interactions`;
@@ -53,8 +54,14 @@ export class UserMediaInteractionsService {
    * @param userId L'ID de l'utilisateur
    * @param interaction Les données de l'interaction à créer
    */
-  createInteraction(userId: string, interaction: CreateUserMediaInteractionDto): Observable<UserMediaInteraction> {
-    return this.http.post<UserMediaInteraction>(`${this.apiUrl}/${userId}`, interaction);
+  createInteraction(
+    userId: string,
+    interaction: CreateUserMediaInteractionDto
+  ): Observable<UserMediaInteraction> {
+    return this.http.post<UserMediaInteraction>(
+      `${this.apiUrl}/${userId}`,
+      interaction
+    );
   }
 
   /**
@@ -62,7 +69,9 @@ export class UserMediaInteractionsService {
    * @param userId L'ID de l'utilisateur
    */
   getUserInteractions(userId: string): Observable<UserMediaInteraction[]> {
-    return this.http.get<UserMediaInteraction[]>(`${this.apiUrl}/user/${userId}`);
+    return this.http.get<UserMediaInteraction[]>(
+      `${this.apiUrl}/user/${userId}`
+    );
   }
 
   /**
@@ -90,7 +99,10 @@ export class UserMediaInteractionsService {
       params = params.set('episodeNumber', episodeNumber.toString());
     }
 
-    return this.http.get<UserMediaInteraction>(`${this.apiUrl}/user/${userId}/media/${mediaId}/details`, { params });
+    return this.http.get<UserMediaInteraction>(
+      `${this.apiUrl}/user/${userId}/media/${mediaId}/details`,
+      { params }
+    );
   }
 
   /**
@@ -110,7 +122,10 @@ export class UserMediaInteractionsService {
       params = params.set('seasonNumber', seasonNumber.toString());
     }
 
-    return this.http.get<EpisodeRating[]>(`${this.apiUrl}/user/${userId}/media/${mediaId}/episodes/ratings`, { params });
+    return this.http.get<EpisodeRating[]>(
+      `${this.apiUrl}/user/${userId}/media/${mediaId}/episodes/ratings`,
+      { params }
+    );
   }
 
   /**
@@ -136,7 +151,10 @@ export class UserMediaInteractionsService {
       params = params.set('episodeNumber', episodeNumber.toString());
     }
 
-    return this.http.get<UserMediaInteraction[]>(`${this.apiUrl}/media/${mediaId}/ratings`, { params });
+    return this.http.get<UserMediaInteraction[]>(
+      `${this.apiUrl}/media/${mediaId}/ratings`,
+      { params }
+    );
   }
 
   /**
@@ -144,7 +162,9 @@ export class UserMediaInteractionsService {
    * @param interactionId L'ID de l'interaction
    */
   getInteractionById(interactionId: string): Observable<UserMediaInteraction> {
-    return this.http.get<UserMediaInteraction>(`${this.apiUrl}/${interactionId}`);
+    return this.http.get<UserMediaInteraction>(
+      `${this.apiUrl}/${interactionId}`
+    );
   }
 
   /**
@@ -153,8 +173,15 @@ export class UserMediaInteractionsService {
    * @param userId L'ID de l'utilisateur (pour vérification)
    * @param updates Les données à mettre à jour
    */
-  updateInteraction(interactionId: string, userId: string, updates: UpdateUserMediaInteractionDto): Observable<UserMediaInteraction> {
-    return this.http.patch<UserMediaInteraction>(`${this.apiUrl}/${interactionId}/user/${userId}`, updates);
+  updateInteraction(
+    interactionId: string,
+    userId: string,
+    updates: UpdateUserMediaInteractionDto
+  ): Observable<UserMediaInteraction> {
+    return this.http.patch<UserMediaInteraction>(
+      `${this.apiUrl}/${interactionId}/user/${userId}`,
+      updates
+    );
   }
 
   /**
@@ -162,7 +189,12 @@ export class UserMediaInteractionsService {
    * @param interactionId L'ID de l'interaction
    * @param userId L'ID de l'utilisateur (pour vérification)
    */
-  deleteInteraction(interactionId: string, userId: string): Observable<{message: string}> {
-    return this.http.delete<{message: string}>(`${this.apiUrl}/${interactionId}/user/${userId}`);
+  deleteInteraction(
+    interactionId: string,
+    userId: string
+  ): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(
+      `${this.apiUrl}/${interactionId}/user/${userId}`
+    );
   }
 }

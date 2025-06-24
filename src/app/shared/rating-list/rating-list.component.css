@@ -11,10 +11,8 @@
 .ratings-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
+  align-items: flex-start;
 }
 
 .ratings-header h3 {
@@ -131,6 +129,23 @@
 
 .text-yellow-500 {
   color: #fcd34d;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.username {
+  font-weight: 600;
+  color: #58a6ff;
+}
+
+.user-rating-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 @media (max-width: 768px) {
