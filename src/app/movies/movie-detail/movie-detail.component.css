@@ -1,14 +1,12 @@
 /* Style pour les détails du film */
 .movie-detail-container {
-  min-height: 100vh;
   position: relative;
   color: #e2e8f0;
-  overflow-x: hidden;
 }
 
 .back-button-wrapper {
-  position: sticky;
-  top: 20px;
+  position: fixed;
+  top: 80px;
   left: 20px;
   z-index: 1000;
 }
@@ -82,7 +80,8 @@
 /* Utilisation du backdrop comme arrière-plan */
 .movie-content {
   position: relative;
-  min-height: calc(100vh - 60px);
+  padding-bottom: 40px;
+  overflow-x: hidden;
 }
 
 .movie-info-container {
@@ -92,6 +91,7 @@
   margin: 0 auto;
   padding: 2rem 1rem;
   gap: 2rem;
+  overflow-x: hidden;
 }
 
 .movie-poster {

@@ -16,7 +16,7 @@ import {
 } from '../../services/userMediaInteractions.service';
 import { AuthService } from '../../services/auth.service';
 import { CarouselComponent } from '../../shared/carousel/carousel.component';
-import { PersonCardComponent } from '../../shared/person-card/person-card.component';
+import { PersonCardVariantComponent } from '../../shared/person-card-variant/person-card-variant.component';
 import { BackButtonComponent } from '../../shared/back-button/back-button.component';
 import { TopButtonComponent } from '../../shared/top-button/top-button.component';
 import { RatingComponent } from '../../shared/rating/rating.component';
@@ -29,7 +29,7 @@ import { RatingListComponent } from '../../shared/rating-list/rating-list.compon
     CommonModule,
     LucideAngularModule,
     CarouselComponent,
-    PersonCardComponent,
+    PersonCardVariantComponent,
     BackButtonComponent,
     TopButtonComponent,
     RatingComponent,
