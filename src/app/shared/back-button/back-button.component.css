@@ -10,6 +10,7 @@
   transition: all 0.2s ease;
   padding: 0 12px;
   margin-bottom: 10px;
+  z-index: 1000;
 }
 
 /* Styles de couleur */

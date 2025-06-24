@@ -1,8 +1,7 @@
 <div class="movie-detail-container">
-  <div class="back-button-container">
-    <button (click)="goBack()" class="back-button">
-      <lucide-icon [img]="ArrowLeft"></lucide-icon> Volver
-    </button>
+  <div class="back-button-wrapper">
+    <app-back-button text="Regresar" color="dark" size="medium" [icon]="true">
+    </app-back-button>
   </div>
 
   <div *ngIf="loading" class="loading-container">
@@ -11,7 +10,7 @@
 
   <div *ngIf="error" class="error-container">
     <p class="error-message">{{ error }}</p>
-    <button (click)="goBack()" class="back-button">Volver</button>
+    <app-back-button></app-back-button>
   </div>
 
   <div *ngIf="movie && !loading && !error" class="movie-content">

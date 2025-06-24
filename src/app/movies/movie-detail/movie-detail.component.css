@@ -6,6 +6,28 @@
   overflow-x: hidden;
 }
 
+.back-button-wrapper {
+  position: sticky;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+/* Personnalisation optionnelle du bouton dans ce contexte */
+:host ::ng-deep .back-button-wrapper .back-button.dark {
+  background-color: rgba(13, 17, 23, 0.8);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:host ::ng-deep .back-button-wrapper .back-button.dark:hover {
+  background-color: rgba(36, 41, 47, 0.9);
+  transform: translateY(-2px);
+}
+
 /* Solution pour l'arrière-plan */
 .movie-backdrop-wrapper {
   position: fixed;
@@ -41,34 +63,6 @@
     rgba(13, 17, 23, 0.8) 50%,
     rgba(13, 17, 23, 0.9) 100%
   );
-}
-
-.back-button-container {
-  position: sticky;
-  top: 0;
-  padding: 1rem;
-  background-color: rgba(13, 17, 23, 0.8);
-  backdrop-filter: blur(10px);
-  z-index: 10;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.back-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: #30363d;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.back-button:hover {
-  background-color: #444c56;
-  transform: translateY(-1px);
 }
 
 .loading-container,
