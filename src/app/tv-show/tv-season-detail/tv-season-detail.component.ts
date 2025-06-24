@@ -2,13 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SerieService } from '../../services/serie.service';
 import { CommonModule, Location } from '@angular/common';
-import { LucideAngularModule, ArrowLeft, Star, Calendar, Clock } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  ArrowLeft,
+  Star,
+  Calendar,
+  Clock,
+} from 'lucide-angular';
+import { BackButtonComponent } from '../../shared/back-button/back-button.component';
+import { TopButtonComponent } from '../../shared/top-button/top-button.component';
 
 @Component({
   selector: 'app-tv-season-detail',
-  imports: [CommonModule, LucideAngularModule],
+  imports: [
+    CommonModule,
+    LucideAngularModule,
+    BackButtonComponent,
+    TopButtonComponent,
+  ],
   templateUrl: './tv-season-detail.component.html',
-  styleUrls: ['./tv-season-detail.component.css']
+  styleUrls: ['./tv-season-detail.component.css'],
 })
 export class TvSeasonDetailComponent implements OnInit {
   seasonDetail: any;
@@ -31,7 +44,7 @@ export class TvSeasonDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.showId = params['showId'];
       this.seasonNumber = parseInt(params['seasonNumber']);
 
@@ -49,17 +62,24 @@ export class TvSeasonDetailComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        console.log(error)
+        console.log(error);
         this.error = 'Error al cargar los detalles de la temporada';
         this.loading = false;
-      }
+      },
     });
   }
 
   // Navigation vers les détails d'un épisode
   navigateToEpisode(episodeNumber: number): void {
     // Utiliser la route correcte selon app.routes.ts
-    this.router.navigate(['/tv', this.showId, 'season', this.seasonNumber, 'episode', episodeNumber]);
+    this.router.navigate([
+      '/tv',
+      this.showId,
+      'season',
+      this.seasonNumber,
+      'episode',
+      episodeNumber,
+    ]);
   }
 
   // Navigation vers la série
@@ -84,7 +104,7 @@ export class TvSeasonDetailComponent implements OnInit {
     return new Date(dateString).toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 
