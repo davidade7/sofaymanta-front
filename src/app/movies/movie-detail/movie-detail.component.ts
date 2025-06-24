@@ -15,11 +15,10 @@ import {
   UserMediaInteraction,
 } from '../../services/userMediaInteractions.service';
 import { AuthService } from '../../services/auth.service';
-import { RatingModalComponent } from '../../shared/rating-modal/rating-modal.component';
-import { DeleteConfirmationModalComponent } from '../../shared/delete-confirmation-modal/delete-confirmation-modal.component';
 import { CarouselComponent } from '../../shared/carousel/carousel.component';
 import { PersonCardComponent } from '../../shared/person-card/person-card.component';
 import { BackButtonComponent } from '../../shared/back-button/back-button.component';
+import { RatingComponent } from '../../shared/rating/rating.component';
 
 @Component({
   selector: 'app-movie-detail',
@@ -27,11 +26,10 @@ import { BackButtonComponent } from '../../shared/back-button/back-button.compon
   imports: [
     CommonModule,
     LucideAngularModule,
-    RatingModalComponent,
-    DeleteConfirmationModalComponent,
     CarouselComponent,
     PersonCardComponent,
     BackButtonComponent,
+    RatingComponent,
   ],
   templateUrl: './movie-detail.component.html',
   styleUrls: ['./movie-detail.component.css'],
@@ -53,9 +51,6 @@ export class MovieDetailComponent implements OnInit {
   allRatings: UserMediaInteraction[] = [];
   loadingRatings = false;
   showAllRatings = false;
-  showRatingModal = false;
-  showDeleteModal = false;
-  isDeleting = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -162,55 +157,6 @@ export class MovieDetailComponent implements OnInit {
           console.error('Error loading ratings:', error);
           this.allRatings = [];
           this.loadingRatings = false;
-        },
-      });
-  }
-
-  openRatingModal() {
-    if (!this.currentUser) {
-      alert('Debes iniciar sesión para evaluar esta película');
-      return;
-    }
-    this.showRatingModal = true;
-  }
-
-  closeRatingModal() {
-    this.showRatingModal = false;
-  }
-
-  onInteractionSaved(interaction: UserMediaInteraction) {
-    this.userInteraction = interaction;
-    this.showRatingModal = false;
-    this.loadAllRatings();
-  }
-
-  // Méthodes pour la suppression
-  openDeleteModal() {
-    this.showDeleteModal = true;
-  }
-
-  closeDeleteModal() {
-    this.showDeleteModal = false;
-  }
-
-  confirmDeleteInteraction() {
-    if (!this.userInteraction || !this.currentUser) return;
-
-    this.isDeleting = true;
-
-    this.userMediaInteractionsService
-      .deleteInteraction(this.userInteraction.id, this.currentUser.id)
-      .subscribe({
-        next: (response) => {
-          this.userInteraction = null;
-          this.isDeleting = false;
-          this.showDeleteModal = false;
-          this.loadAllRatings();
-        },
-        error: (error) => {
-          this.isDeleting = false;
-          console.error('Error deleting interaction:', error);
-          alert('Error al eliminar la evaluación. Intenta de nuevo.');
         },
       });
   }
