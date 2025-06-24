@@ -46,7 +46,6 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transform: scale(1.05);
 }
 
 .backdrop-overlay {
@@ -80,7 +79,6 @@
 /* Utilisation du backdrop comme arrière-plan */
 .movie-content {
   position: relative;
-  padding-bottom: 40px;
   overflow-x: hidden;
 }
 
@@ -305,7 +303,7 @@
 
 /* Styles pour les crédits */
 .credits-section {
-  background-color: rgba(13, 17, 23, 0.8);
+  background-color: rgba(21, 30, 47, 0.5);
   padding: 2rem 1rem;
   margin: 0;
   backdrop-filter: blur(10px);
