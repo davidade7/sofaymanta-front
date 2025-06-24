@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LucideAngularModule, ArrowLeft, Star } from 'lucide-angular';
 import { SerieService } from '../../services/serie.service';
-import { UserMediaInteractionsService, UserMediaInteraction } from '../../services/userMediaInteractions.service';
+import {
+  UserMediaInteractionsService,
+  UserMediaInteraction,
+} from '../../services/userMediaInteractions.service';
 import { AuthService } from '../../services/auth.service';
-import { ArrowLeft, Star, ChevronRight, MessageSquare, Trash2 } from 'lucide-angular';
-import { LucideAngularModule } from 'lucide-angular';
-import { RatingModalComponent } from '../../shared/rating-modal/rating-modal.component';
-import { DeleteConfirmationModalComponent } from '../../shared/delete-confirmation-modal/delete-confirmation-modal.component';
+import { BackButtonComponent } from '../../shared/back-button/back-button.component';
+import { TopButtonComponent } from '../../shared/top-button/top-button.component';
+import { RatingComponent } from '../../shared/rating/rating.component';
+import { RatingListComponent } from '../../shared/rating-list/rating-list.component';
 
 interface Season {
   air_date: string;
@@ -66,50 +70,48 @@ interface TvShowDetail {
 @Component({
   selector: 'app-tv-show-detail',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, RatingModalComponent, DeleteConfirmationModalComponent],
+  imports: [
+    CommonModule,
+    LucideAngularModule,
+    BackButtonComponent,
+    TopButtonComponent,
+    RatingComponent,
+    RatingListComponent,
+  ],
   templateUrl: './tv-show-detail.component.html',
-  styleUrls: ['./tv-show-detail.component.css']
+  styleUrls: ['./tv-show-detail.component.css'],
 })
 export class TvShowDetailComponent implements OnInit {
-  tvShow?: TvShowDetail;
-  loading = true;
-  error = '';
+  // Icônes disponibles pour le template
+  readonly ArrowLeft = ArrowLeft;
+  readonly Star = Star;
 
-  // Propriétés pour les interactions utilisateur
+  tvShow: TvShowDetail | null = null;
+  loading = true;
+  error: string | null = null;
   currentUser: any = null;
   userInteraction: UserMediaInteraction | null = null;
-  showRatingModal = false;
-
-  // Propriétés pour la suppression
-  showDeleteModal = false;
-  isDeleting = false;
-
-  // Lucide icons
-  ArrowLeft = ArrowLeft;
-  Star = Star;
-  ChevronRight = ChevronRight;
-  MessageSquare = MessageSquare;
-  Trash2 = Trash2;
+  allRatings: UserMediaInteraction[] = [];
+  loadingRatings = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private tvShowService: SerieService,
     private userMediaInteractionsService: UserMediaInteractionsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private location: Location
   ) {}
 
   async ngOnInit(): Promise<void> {
     // Charger l'utilisateur actuel
     await this.loadCurrentUser();
 
-    this.route.paramMap.subscribe(params => {
+    // Charger la série TV
+    this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
-        this.loadTvShowDetails(id);
-      } else {
-        this.error = 'ID de serie TV inválido';
-        this.loading = false;
+        this.loadTvShow(id);
       }
     });
   }
@@ -125,89 +127,67 @@ export class TvShowDetailComponent implements OnInit {
     }
   }
 
-  loadTvShowDetails(id: string): void {
+  loadTvShow(id: string): void {
+    this.loading = true;
     this.tvShowService.getTvShowDetail(id).subscribe({
       next: (data) => {
         this.tvShow = data as TvShowDetail;
         this.loading = false;
 
-        // Charger l'interaction utilisateur si l'utilisateur est connecté
+        // Charger l'interaction utilisateur si connecté
         if (this.currentUser) {
           this.loadUserInteraction();
         }
+
+        // Charger tous les ratings pour cette série
+        this.loadAllRatings();
       },
-      error: (error) => {
-        this.error = 'Error al cargar los detalles de la serie TV';
+      error: (err) => {
+        console.error('Error loading TV show details', err);
+        this.error = 'Error al cargar los detalles de la serie';
         this.loading = false;
-        console.error('Error:', error);
-      }
+      },
     });
   }
 
   loadUserInteraction() {
     if (!this.currentUser || !this.tvShow) return;
 
-    this.userMediaInteractionsService.getUserMediaInteraction(
-      this.currentUser.id,
-      this.tvShow.id,
-      'tv'  // Type 'tv' pour les séries
-    ).subscribe({
-      next: (interaction) => {
-        this.userInteraction = interaction;
-      },
-      error: (error) => {
-        console.log('No existing interaction found (normal for new ratings):', error.status);
-        this.userInteraction = null;
-      }
-    });
+    this.userMediaInteractionsService
+      .getUserMediaInteraction(this.currentUser.id, this.tvShow.id, 'tv')
+      .subscribe({
+        next: (interaction) => {
+          this.userInteraction = interaction;
+        },
+        error: (error) => {
+          this.userInteraction = null;
+        },
+      });
   }
 
-  openRatingModal() {
-    if (!this.currentUser) {
-      alert('Debes iniciar sesión para evaluar esta serie');
-      return;
-    }
-    this.showRatingModal = true;
+  loadAllRatings() {
+    if (!this.tvShow) return;
+
+    this.loadingRatings = true;
+    this.userMediaInteractionsService
+      .getMediaRatings(this.tvShow.id, 'tv')
+      .subscribe({
+        next: (ratings) => {
+          this.allRatings = ratings.filter(
+            (rating) => rating.rating !== null && rating.rating !== undefined
+          );
+          this.loadingRatings = false;
+        },
+        error: (error) => {
+          console.error('Error loading ratings:', error);
+          this.allRatings = [];
+          this.loadingRatings = false;
+        },
+      });
   }
 
-  closeRatingModal() {
-    this.showRatingModal = false;
-  }
-
-  onInteractionSaved(interaction: UserMediaInteraction) {
-    this.userInteraction = interaction;
-    this.showRatingModal = false;
-  }
-
-  // Méthodes pour la suppression
-  openDeleteModal() {
-    this.showDeleteModal = true;
-  }
-
-  closeDeleteModal() {
-    this.showDeleteModal = false;
-  }
-
-  confirmDeleteInteraction() {
-    if (!this.userInteraction || !this.currentUser) return;
-
-    this.isDeleting = true;
-
-    this.userMediaInteractionsService.deleteInteraction(
-      this.userInteraction.id,
-      this.currentUser.id
-    ).subscribe({
-      next: (response) => {
-        this.userInteraction = null;
-        this.isDeleting = false;
-        this.showDeleteModal = false;
-      },
-      error: (error) => {
-        this.isDeleting = false;
-        console.error('Error deleting interaction:', error);
-        alert('Error al eliminar la evaluación. Intenta de nuevo.');
-      }
-    });
+  goBack(): void {
+    this.location.back();
   }
 
   getImageUrl(path: string | null | undefined, size: string = 'w500'): string {
@@ -233,23 +213,13 @@ export class TvShowDetailComponent implements OnInit {
     }
   }
 
-  goBack(): void {
-    window.history.back();
-  }
-
   getSortedSeasons(): Season[] {
     if (!this.tvShow || !this.tvShow.seasons) {
       return [];
     }
 
-    // Create a copy of seasons array to avoid modifying the original
     return [...this.tvShow.seasons].sort((a, b) => {
-      // First, handle cases where air_date might be missing
-      if (!a.air_date) return 1;  // Put items without date at the end
-      if (!b.air_date) return -1;
-
-      // Sort by air_date in descending order (newest first)
-      return new Date(b.air_date).getTime() - new Date(a.air_date).getTime();
+      return a.season_number - b.season_number;
     });
   }
 
