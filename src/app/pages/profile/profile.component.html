@@ -265,6 +265,9 @@
     </div>
   </section>
 
+  <!-- Component to delete account -->
+  <app-delete-account [profileId]="userId"></app-delete-account>
+
   <!-- Modal de confirmation de suppression -->
   <app-delete-confirmation-modal
     *ngIf="showDeleteModal"

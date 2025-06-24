@@ -1,0 +1,64 @@
+<div class="delete-account-container">
+  <div class="delete-account-card">
+    <div class="warning-header">
+      <lucide-icon name="alert-triangle" class="warning-icon"></lucide-icon>
+      <h2>Eliminar cuenta definitivamente</h2>
+    </div>
+
+    <div class="warning-content">
+      <p><strong>Atención:</strong> Esta acción es irreversible.</p>
+      <p>Al eliminar tu cuenta, perderás:</p>
+      <ul>
+        <li>Todas tus valoraciones y comentarios</li>
+        <li>Tus listas de favoritos</li>
+        <li>Tus preferencias de plataformas</li>
+        <li>Todo el historial de tu cuenta</li>
+      </ul>
+    </div>
+
+    <div class="confirmation-section">
+      <label for="confirmationInput">
+        Para confirmar, escribe "<strong>ELIMINAR</strong>" en el campo de
+        abajo:
+      </label>
+      <input
+        id="confirmationInput"
+        type="text"
+        [(ngModel)]="confirmationText"
+        placeholder="Escribe ELIMINAR"
+        class="confirmation-input"
+        [class.valid]="isConfirmationValid()"
+      />
+    </div>
+
+    <div class="action-buttons">
+      <button
+        type="button"
+        class="btn-cancel"
+        (click)="onCancel()"
+        [disabled]="isDeleting"
+      >
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="btn-delete"
+        (click)="onDeleteAccount()"
+        [disabled]="!isConfirmationValid() || isDeleting"
+      >
+        <lucide-icon
+          *ngIf="isDeleting"
+          name="loader-2"
+          class="spinner"
+        ></lucide-icon>
+        <lucide-icon *ngIf="!isDeleting" name="trash-2"></lucide-icon>
+        {{ isDeleting ? "Eliminando..." : "Eliminar definitivamente" }}
+      </button>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>
