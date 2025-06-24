@@ -1,0 +1,51 @@
+<div class="user-interaction-section" *ngIf="currentUser">
+  <h3>Tu evaluación</h3>
+  <div class="interaction-content">
+    <div *ngIf="userInteraction" class="existing-interaction">
+      <div class="user-rating" *ngIf="userInteraction.rating">
+        <lucide-icon [img]="Star" class="text-yellow-500"></lucide-icon>
+        <span>{{ userInteraction.rating }}/10</span>
+      </div>
+      <div class="user-comment" *ngIf="userInteraction.comment">
+        <lucide-icon [img]="MessageSquare" size="16"></lucide-icon>
+        <p>{{ userInteraction.comment }}</p>
+      </div>
+      <div class="interaction-actions">
+        <button class="edit-rating-btn" (click)="openRatingModal()">
+          Editar
+        </button>
+        <button class="delete-rating-btn" (click)="openDeleteModal()">
+          <lucide-icon [img]="Trash2" size="16"></lucide-icon>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="!userInteraction" class="no-interaction">
+      <p>¿Qué te pareció este {{ getContentTypeText() }}?</p>
+      <button class="rate-movie-btn" (click)="openRatingModal()">
+        <lucide-icon [img]="Star" size="16"></lucide-icon>
+        Evaluar {{ getContentTypeText() }}
+      </button>
+    </div>
+  </div>
+
+  <app-rating-modal
+    *ngIf="showRatingModal"
+    [mediaId]="mediaId"
+    [mediaType]="mediaType"
+    [mediaTitle]="mediaTitle"
+    [userId]="currentUser.id"
+    [existingInteraction]="userInteraction"
+    [seasonNumber]="seasonNumber"
+    [episodeNumber]="episodeNumber"
+    (closeModalEvent)="closeRatingModal()"
+    (interactionSaved)="onInteractionSaved($event)"
+  ></app-rating-modal>
+
+  <app-delete-confirmation-modal
+    *ngIf="showDeleteModal"
+    [message]="'¿Estás seguro de que quieres eliminar tu evaluación?'"
+    [isDeleting]="isDeleting"
+    (confirmDelete)="confirmDeleteInteraction()"
+    (cancelDelete)="closeDeleteModal()"
+  ></app-delete-confirmation-modal>
+</div>
