@@ -19,6 +19,7 @@ import { CarouselComponent } from '../../shared/carousel/carousel.component';
 import { PersonCardComponent } from '../../shared/person-card/person-card.component';
 import { BackButtonComponent } from '../../shared/back-button/back-button.component';
 import { RatingComponent } from '../../shared/rating/rating.component';
+import { RatingListComponent } from '../../shared/rating-list/rating-list.component';
 
 @Component({
   selector: 'app-movie-detail',
@@ -30,6 +31,7 @@ import { RatingComponent } from '../../shared/rating/rating.component';
     PersonCardComponent,
     BackButtonComponent,
     RatingComponent,
+    RatingListComponent,
   ],
   templateUrl: './movie-detail.component.html',
   styleUrls: ['./movie-detail.component.css'],
@@ -50,7 +52,6 @@ export class MovieDetailComponent implements OnInit {
   userInteraction: UserMediaInteraction | null = null;
   allRatings: UserMediaInteraction[] = [];
   loadingRatings = false;
-  showAllRatings = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -291,22 +292,5 @@ export class MovieDetailComponent implements OnInit {
   // TrackBy function pour optimiser le rendu
   trackByPersonId(index: number, person: any): number {
     return person.id;
-  }
-
-  toggleShowAllRatings() {
-    this.showAllRatings = !this.showAllRatings;
-  }
-
-  get averageRating(): number {
-    if (this.allRatings.length === 0) return 0;
-    const sum = this.allRatings.reduce(
-      (acc, rating) => acc + (rating.rating || 0),
-      0
-    );
-    return Math.round((sum / this.allRatings.length) * 10) / 10;
-  }
-
-  get totalRatings(): number {
-    return this.allRatings.length;
   }
 }
