@@ -47,6 +47,7 @@ export class TvEpisodeDetailComponent implements OnInit {
   readonly Clock = Clock;
 
   episode: any = null;
+  episodeCredits: any = null;
   tvShowId: string = '';
   seasonNumber: number = 0;
   episodeNumber: number = 0;
@@ -97,6 +98,8 @@ export class TvEpisodeDetailComponent implements OnInit {
 
   loadEpisode(): void {
     this.loading = true;
+
+    // Charger les détails de l'épisode
     this.serieService
       .getTvShowEpisodeDetail(
         this.tvShowId,
@@ -106,8 +109,10 @@ export class TvEpisodeDetailComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.episode = data;
-          console.log(this.episode);
-          this.loading = false;
+          console.log('Episode details:', this.episode);
+
+          // Charger les crédits de l'épisode
+          this.loadEpisodeCredits();
 
           // Charger l'interaction utilisateur
           if (this.currentUser && this.seriesId) {
@@ -117,6 +122,26 @@ export class TvEpisodeDetailComponent implements OnInit {
         error: (err) => {
           console.error('Error loading episode details', err);
           this.error = 'Error al cargar los detalles del episodio';
+          this.loading = false;
+        },
+      });
+  }
+
+  loadEpisodeCredits(): void {
+    this.serieService
+      .getTvShowEpisodesCredits(
+        this.tvShowId,
+        this.seasonNumber,
+        this.episodeNumber
+      )
+      .subscribe({
+        next: (credits) => {
+          this.episodeCredits = credits;
+          console.log('Episode credits:', this.episodeCredits);
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Error loading episode credits', err);
           this.loading = false;
         },
       });
@@ -152,15 +177,15 @@ export class TvEpisodeDetailComponent implements OnInit {
 
   // Propriétés calculées pour les carrousels
   get cast() {
-    return this.episode?.cast || [];
+    return this.episodeCredits?.cast || [];
   }
 
   get guestStars() {
-    return this.episode?.guest_stars || [];
+    return this.episodeCredits?.guest_stars || [];
   }
 
   get crewMembers() {
-    return this.episode?.crew || [];
+    return this.episodeCredits?.crew || [];
   }
 
   // Méthodes pour adapter les données pour PersonCard
