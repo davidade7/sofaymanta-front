@@ -131,6 +131,13 @@ export class UserProfileService {
   }
 
   /**
+   * Récupère le nombre total d'utilisateurs
+   */
+  getUserCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.apiUrl}/count`);
+  }
+
+  /**
    * Supprime définitivement le compte utilisateur
    * @param profileId L'ID du profil utilisateur
    */
