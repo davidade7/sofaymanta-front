@@ -6,20 +6,6 @@
   </div>
 
   <div *ngIf="!isLoading" class="admin-content">
-    <div class="welcome-section">
-      <h2>¡Bienvenido, Admin!</h2>
-      <p>Has accedido exitosamente al panel de administración.</p>
-    </div>
-
-    <div class="user-info">
-      <h3>Información del Usuario</h3>
-      <div class="info-card">
-        <p><strong>Email:</strong> {{ currentUser?.email }}</p>
-        <p><strong>ID:</strong> {{ currentUser?.id }}</p>
-        <p><strong>Fecha de creación:</strong> {{ currentUser?.created_at | date:'short' }}</p>
-      </div>
-    </div>
-
     <div class="quick-actions">
       <h3>Acciones Rápidas</h3>
       <div class="actions-grid">
@@ -46,7 +32,7 @@
 
       <button (click)="isCreating = !isCreating" class="add-platform-btn">
         <lucide-icon [img]="isCreating ? X : Plus"></lucide-icon>
-        {{ isCreating ? 'Cancelar' : 'Agregar Plataforma' }}
+        {{ isCreating ? "Cancelar" : "Agregar Plataforma" }}
       </button>
 
       <div *ngIf="isCreating" class="platform-form">
@@ -55,28 +41,48 @@
           Agregar Plataforma
         </h4>
         <div class="form-group">
-          <label>Code:</label>
-          <input type="text" [(ngModel)]="newPlatform.code" placeholder="netflix, disney, etc." />
+          <label>Code TMDB:</label>
+          <input
+            type="text"
+            [(ngModel)]="newPlatform.code"
+            placeholder="netflix, disney, etc."
+          />
         </div>
 
         <div class="form-group">
           <label>Name:</label>
-          <input type="text" [(ngModel)]="newPlatform.name" placeholder="Netflix, Disney+, etc." />
+          <input
+            type="text"
+            [(ngModel)]="newPlatform.name"
+            placeholder="Netflix, Disney+, etc."
+          />
         </div>
 
         <div class="form-group">
           <label>Logo URL:</label>
-          <input type="text" [(ngModel)]="newPlatform.logo_url" placeholder="https://..." />
+          <input
+            type="text"
+            [(ngModel)]="newPlatform.logo_url"
+            placeholder="https://..."
+          />
         </div>
 
         <div class="form-group">
           <label>Website URL:</label>
-          <input type="text" [(ngModel)]="newPlatform.website_url" placeholder="https://..." />
+          <input
+            type="text"
+            [(ngModel)]="newPlatform.website_url"
+            placeholder="https://..."
+          />
         </div>
 
         <div class="form-group">
           <label class="toggle-label">
-            <input type="checkbox" [(ngModel)]="newPlatform.is_active" class="toggle-input" />
+            <input
+              type="checkbox"
+              [(ngModel)]="newPlatform.is_active"
+              class="toggle-input"
+            />
             <span class="toggle-slider"></span>
             Plataforma activa
           </label>
@@ -93,24 +99,42 @@
       <!-- Lista de plataformas existentes -->
       <div class="platforms-list">
         <h4>Plataformas Existentes</h4>
-        <div *ngFor="let platform of streamingPlatforms" class="platform-item" [class.inactive]="!platform.is_active">
+        <div
+          *ngFor="let platform of streamingPlatforms"
+          class="platform-item"
+          [class.inactive]="!platform.is_active"
+        >
           <div class="platform-info">
-            <img [src]="platform.logo_url" [alt]="platform.name" class="platform-logo" />
+            <img
+              [src]="platform.logo_url"
+              [alt]="platform.name"
+              class="platform-logo"
+            />
             <div class="platform-details">
               <h5>
                 {{ platform.name }}
-                <span class="status-badge" [class.active]="platform.is_active" [class.inactive]="!platform.is_active">
-                  {{ platform.is_active ? 'Activa' : 'Inactiva' }}
+                <span
+                  class="status-badge"
+                  [class.active]="platform.is_active"
+                  [class.inactive]="!platform.is_active"
+                >
+                  {{ platform.is_active ? "Activa" : "Inactiva" }}
                 </span>
               </h5>
               <p><strong>Code:</strong> {{ platform.code }}</p>
-              <a [href]="platform.website_url" target="_blank">{{ platform.website_url }}</a>
+              <a [href]="platform.website_url" target="_blank">{{
+                platform.website_url
+              }}</a>
             </div>
           </div>
           <div class="platform-actions">
-            <button (click)="togglePlatformStatus(platform)" class="btn-toggle" [class.active]="platform.is_active">
+            <button
+              (click)="togglePlatformStatus(platform)"
+              class="btn-toggle"
+              [class.active]="platform.is_active"
+            >
               <lucide-icon [img]="Power"></lucide-icon>
-              {{ platform.is_active ? 'Desactivar' : 'Activar' }}
+              {{ platform.is_active ? "Desactivar" : "Activar" }}
             </button>
             <button (click)="openEditForm(platform)" class="btn-edit">
               <lucide-icon [img]="Pencil"></lucide-icon>
@@ -152,7 +176,11 @@
 
         <div class="form-group">
           <label class="toggle-label">
-            <input type="checkbox" [(ngModel)]="selectedPlatform.is_active" class="toggle-input" />
+            <input
+              type="checkbox"
+              [(ngModel)]="selectedPlatform.is_active"
+              class="toggle-input"
+            />
             <span class="toggle-slider"></span>
             Plataforma activa
           </label>
@@ -169,5 +197,6 @@
           </button>
         </div>
       </div>
+    </div>
   </div>
 </div>
