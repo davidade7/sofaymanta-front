@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { MovieCard } from '../models/movie.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MovieService {
   private apiUrl = 'https://sofaymanta-back-production.up.railway.app';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getRecentMovies(): Observable<MovieCard[]> {
     return this.http.get<MovieCard[]>(`${this.apiUrl}/media/movies/recent`);
@@ -20,10 +20,30 @@ export class MovieService {
   }
 
   getMovieDetail(id: string, lang: string = 'es-ES'): Observable<any> {
-    return this.http.get(`${this.apiUrl}/media/movies/detail/${id}?lang=${lang}`);
+    return this.http.get(
+      `${this.apiUrl}/media/movies/detail/${id}?lang=${lang}`
+    );
   }
 
   getMovieCredits(id: string, lang: string = 'es-ES'): Observable<any> {
-    return this.http.get(`${this.apiUrl}/media/movies/${id}/credits?lang=${lang}`);
+    return this.http.get(
+      `${this.apiUrl}/media/movies/${id}/credits?lang=${lang}`
+    );
+  }
+
+  getPersonalizedMovieRecommendations(
+    userId: string,
+    lang: string = 'es-ES',
+    page: number = 1,
+    limit: number = 50
+  ): Observable<any> {
+    return this.http.get(`${this.apiUrl}/media/recommendations/movies`, {
+      params: {
+        userId,
+        lang,
+        page: page.toString(),
+        limit: limit.toString(),
+      },
+    });
   }
 }

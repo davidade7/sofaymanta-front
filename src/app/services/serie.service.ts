@@ -71,4 +71,20 @@ export class SerieService {
       `${this.apiUrl}/media/tv/${id}/season/${season}/episode/${episode}/credits?lang=${lang}`
     );
   }
+
+  getPersonalizedTvRecommendations(
+    userId: string,
+    lang: string = 'es-ES',
+    page: number = 1,
+    limit: number = 50
+  ): Observable<any> {
+    return this.http.get(`${this.apiUrl}/media/recommendations/tv`, {
+      params: {
+        userId,
+        lang,
+        page: page.toString(),
+        limit: limit.toString(),
+      },
+    });
+  }
 }

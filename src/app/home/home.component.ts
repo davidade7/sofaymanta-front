@@ -43,6 +43,8 @@ export class HomeComponent implements OnInit {
   popularMovies: MovieCard[] = [];
   recentSeries: SerieCard[] = [];
   popularSeries: SerieCard[] = [];
+  recommendedMovies: MovieCard[] = [];
+  recommendedSeries: SerieCard[] = [];
 
   readonly TrendingUp = TrendingUp;
   readonly Star = Star;
@@ -54,6 +56,8 @@ export class HomeComponent implements OnInit {
     popularMovies: false,
     recentSeries: false,
     popularSeries: false,
+    recommendedMovies: false,
+    recommendedSeries: false,
   };
 
   constructor(
@@ -68,6 +72,12 @@ export class HomeComponent implements OnInit {
     this.loadPopularMovies();
     this.loadRecentSeries();
     this.loadPopularSeries();
+
+    // Charger les recommandations seulement si l'utilisateur est connecté
+    if (this.currentUser) {
+      this.loadRecommendedMovies();
+      this.loadRecommendedSeries();
+    }
   }
 
   async loadCurrentUser() {
@@ -141,5 +151,41 @@ export class HomeComponent implements OnInit {
         this.loading.popularSeries = false;
       },
     });
+  }
+
+  loadRecommendedMovies() {
+    if (!this.currentUser?.id) return;
+
+    this.loading.recommendedMovies = true;
+    this.movieService
+      .getPersonalizedMovieRecommendations(this.currentUser.id)
+      .subscribe({
+        next: (data) => {
+          this.recommendedMovies = data.results || data;
+          this.loading.recommendedMovies = false;
+        },
+        error: (error) => {
+          console.error('Error fetching recommended movies:', error);
+          this.loading.recommendedMovies = false;
+        },
+      });
+  }
+
+  loadRecommendedSeries() {
+    if (!this.currentUser?.id) return;
+
+    this.loading.recommendedSeries = true;
+    this.serieService
+      .getPersonalizedTvRecommendations(this.currentUser.id)
+      .subscribe({
+        next: (data) => {
+          this.recommendedSeries = data.results || data;
+          this.loading.recommendedSeries = false;
+        },
+        error: (error) => {
+          console.error('Error fetching recommended series:', error);
+          this.loading.recommendedSeries = false;
+        },
+      });
   }
 }

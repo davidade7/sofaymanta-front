@@ -5,6 +5,39 @@
   <!-- Message pour les utilisateurs non connectés -->
   <app-guest-welcome-section *ngIf="!currentUser"></app-guest-welcome-section>
 
+  <!-- Recommandations personnalisées pour les utilisateurs connectés -->
+  <ng-container *ngIf="currentUser">
+    <app-carousel [carousel-title]="'Películas recomendadas para ti'">
+      <div *ngIf="loading.recommendedMovies" class="loading-spinner">
+        Cargando recomendaciones...
+      </div>
+      <ng-container *ngIf="!loading.recommendedMovies">
+        <app-movie-card
+          *ngFor="let movie of recommendedMovies"
+          [movie]="movie"
+        ></app-movie-card>
+        <div *ngIf="recommendedMovies.length === 0" class="no-results">
+          No hay recomendaciones disponibles por el momento.
+        </div>
+      </ng-container>
+    </app-carousel>
+
+    <app-carousel [carousel-title]="'Series recomendadas para ti'">
+      <div *ngIf="loading.recommendedSeries" class="loading-spinner">
+        Cargando recomendaciones...
+      </div>
+      <ng-container *ngIf="!loading.recommendedSeries">
+        <app-serie-card
+          *ngFor="let serie of recommendedSeries"
+          [serie]="serie"
+        ></app-serie-card>
+        <div *ngIf="recommendedSeries.length === 0" class="no-results">
+          No hay recomendaciones disponibles por el momento.
+        </div>
+      </ng-container>
+    </app-carousel>
+  </ng-container>
+
   <app-carousel [carousel-title]="'Películas recientes'">
     <div *ngIf="loading.recentMovies" class="loading-spinner">Cargando...</div>
     <ng-container *ngIf="!loading.recentMovies">
