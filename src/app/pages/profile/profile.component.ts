@@ -87,6 +87,10 @@ export class ProfileComponent implements OnInit {
   interactionToDelete: UserMediaInteraction | null = null;
   isDeletingInteraction = false;
 
+  // Pagination pour les évaluations
+  showAllInteractions = false;
+  readonly INTERACTIONS_LIMIT = 5;
+
   constructor(
     private fb: FormBuilder,
     private userProfileService: UserProfileService,
@@ -542,5 +546,31 @@ export class ProfileComponent implements OnInit {
     }
 
     return `¿Estás seguro de que quieres eliminar tu evaluación de este ${title}?`;
+  }
+
+  // Méthodes pour la pagination des évaluations
+  getDisplayedInteractions(): UserMediaInteraction[] {
+    if (this.showAllInteractions) {
+      return this.userInteractions;
+    }
+    return this.userInteractions.slice(0, this.INTERACTIONS_LIMIT);
+  }
+
+  toggleShowAllInteractions(): void {
+    this.showAllInteractions = !this.showAllInteractions;
+  }
+
+  shouldShowMoreButton(): boolean {
+    return (
+      !this.showAllInteractions &&
+      this.userInteractions.length > this.INTERACTIONS_LIMIT
+    );
+  }
+
+  shouldShowLessButton(): boolean {
+    return (
+      this.showAllInteractions &&
+      this.userInteractions.length > this.INTERACTIONS_LIMIT
+    );
   }
 }

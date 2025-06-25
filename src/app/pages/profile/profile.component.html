@@ -206,7 +206,7 @@
       <!-- Liste des évaluations -->
       <div class="interactions-list">
         <div
-          *ngFor="let interaction of userInteractions"
+          *ngFor="let interaction of getDisplayedInteractions()"
           class="interaction-card"
         >
           <div class="interaction-header">
@@ -260,6 +260,22 @@
               </button>
             </div>
           </div>
+        </div>
+
+        <!-- Bouton pour afficher plus/moins -->
+        <div
+          class="show-more-container"
+          *ngIf="shouldShowMoreButton() || shouldShowLessButton()"
+        >
+          <button
+            class="show-more-button"
+            (click)="toggleShowAllInteractions()"
+          >
+            <span *ngIf="!showAllInteractions">
+              Mostrar todas las evaluaciones ({{ userInteractions.length }})
+            </span>
+            <span *ngIf="showAllInteractions"> Mostrar menos </span>
+          </button>
         </div>
       </div>
     </div>
