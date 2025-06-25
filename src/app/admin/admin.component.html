@@ -9,8 +9,11 @@
     <div class="quick-actions">
       <h3>Acciones Rápidas</h3>
       <div class="actions-grid">
+        <button class="action-btn" (click)="toggleStatistics()">
+          📊 Estadísticas
+        </button>
         <button class="action-btn" (click)="toggleStreamingPlatforms()">
-          🎞️ Plataformas
+          🎞️ Gestionar Plataformas
         </button>
         <button class="action-btn" disabled>
           👥 Gestionar Usuarios
@@ -21,9 +24,36 @@
           <small>Próximamente</small>
         </button>
         <button class="action-btn" disabled>
-          📊 Estadísticas
+          💰 Gestionar Publicidad
           <small>Próximamente</small>
         </button>
+      </div>
+    </div>
+
+    <!-- Sección de Estadísticas -->
+    <div *ngIf="showStatistics" class="statistics-section">
+      <h3>📊 Estadísticas de la Plataforma</h3>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-content">
+            <h4>Usuarios Registrados</h4>
+            <p class="stat-number" *ngIf="!loadingStats">
+              {{ totalUsers | number }}
+            </p>
+            <p class="stat-loading" *ngIf="loadingStats">Cargando...</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-content">
+            <h4>Evaluaciones Totales</h4>
+            <p class="stat-number" *ngIf="!loadingStats">
+              {{ totalRatings | number }}
+            </p>
+            <p class="stat-loading" *ngIf="loadingStats">Cargando...</p>
+          </div>
+        </div>
       </div>
     </div>
 
