@@ -109,7 +109,6 @@ export class TvEpisodeDetailComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.episode = data;
-          console.log('Episode details:', this.episode);
 
           // Charger les crédits de l'épisode
           this.loadEpisodeCredits();
@@ -137,7 +136,6 @@ export class TvEpisodeDetailComponent implements OnInit {
       .subscribe({
         next: (credits) => {
           this.episodeCredits = credits;
-          console.log('Episode credits:', this.episodeCredits);
           this.loading = false;
         },
         error: (err) => {

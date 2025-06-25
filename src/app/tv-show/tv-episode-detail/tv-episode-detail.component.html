@@ -44,19 +44,6 @@
       </div>
 
       <div class="episode-info">
-        <!-- Navigation breadcrumb -->
-        <nav class="breadcrumb">
-          <button (click)="navigateToSeries()" class="breadcrumb-link">
-            Serie
-          </button>
-          <span class="breadcrumb-separator">></span>
-          <button (click)="navigateToSeason()" class="breadcrumb-link">
-            Temporada {{ seasonNumber }}
-          </button>
-          <span class="breadcrumb-separator">></span>
-          <span class="breadcrumb-current">Episodio {{ episodeNumber }}</span>
-        </nav>
-
         <h1 class="episode-title">{{ episode.name }}</h1>
 
         <div class="episode-meta">
