@@ -185,6 +185,13 @@ export class UserMediaInteractionsService {
   }
 
   /**
+   * Récupère le nombre total d'évaluations
+   */
+  getRatingsCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.apiUrl}/ratings/count`);
+  }
+
+  /**
    * Supprime une interaction
    * @param interactionId L'ID de l'interaction
    * @param userId L'ID de l'utilisateur (pour vérification)
