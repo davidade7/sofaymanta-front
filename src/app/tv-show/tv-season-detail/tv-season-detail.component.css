@@ -190,9 +190,8 @@
 /* Episodes section with dark theme */
 .episodes-section {
   max-width: 1200px;
-  margin: 3rem auto 0;
+  margin: 0 auto;
   padding: 0 2rem;
-  background-color: rgba(21, 30, 47, 0.3);
   border-radius: 12px 12px 0 0;
   backdrop-filter: blur(10px);
 }

@@ -96,6 +96,9 @@
 
 .tv-show-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .tv-show-title {
@@ -117,7 +120,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
   background-color: rgba(21, 30, 47, 0.5);
   padding: 1rem;
   border-radius: 12px;
@@ -152,7 +154,6 @@
 .additional-info,
 .seasons,
 .networks {
-  margin-bottom: 2rem;
   background-color: rgba(21, 30, 47, 0.5);
   padding: 1.5rem;
   border-radius: 12px;
