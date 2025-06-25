@@ -68,7 +68,11 @@ export class HeaderComponent implements OnInit {
       await this.authService.signOut();
       this.currentUser = null;
       this.closeMenu();
-      this.router.navigate(['/']);
+
+      // Rediriger vers la home et actualiser la page
+      this.router.navigate(['/']).then(() => {
+        window.location.reload();
+      });
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
