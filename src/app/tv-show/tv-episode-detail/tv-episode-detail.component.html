@@ -98,6 +98,14 @@
             <p>{{ episode.production_code }}</p>
           </div>
         </div>
+        <!-- Rating list section -->
+        <div class="rating-list-section">
+          <app-rating-list
+            [allRatings]="episodeRatings"
+            [loadingRatings]="loadingRatings"
+            [mediaType]="'tv'"
+          ></app-rating-list>
+        </div>
       </div>
     </div>
 

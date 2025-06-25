@@ -19,6 +19,7 @@ import { AuthService } from '../../services/auth.service';
 import { BackButtonComponent } from '../../shared/back-button/back-button.component';
 import { TopButtonComponent } from '../../shared/top-button/top-button.component';
 import { RatingComponent } from '../../shared/rating/rating.component';
+import { RatingListComponent } from '../../shared/rating-list/rating-list.component';
 import { CarouselComponent } from '../../shared/carousel/carousel.component';
 import { PersonCardVariantComponent } from '../../shared/person-card-variant/person-card-variant.component';
 
@@ -31,6 +32,7 @@ import { PersonCardVariantComponent } from '../../shared/person-card-variant/per
     BackButtonComponent,
     TopButtonComponent,
     RatingComponent,
+    RatingListComponent,
     CarouselComponent,
     PersonCardVariantComponent,
   ],
@@ -48,6 +50,8 @@ export class TvEpisodeDetailComponent implements OnInit {
 
   episode: any = null;
   episodeCredits: any = null;
+  episodeRatings: UserMediaInteraction[] = [];
+  loadingRatings = false;
   tvShowId: string = '';
   seasonNumber: number = 0;
   episodeNumber: number = 0;
@@ -117,6 +121,9 @@ export class TvEpisodeDetailComponent implements OnInit {
           if (this.currentUser && this.seriesId) {
             this.loadUserInteraction();
           }
+
+          // Charger les évaluations de l'épisode
+          this.loadEpisodeRatings();
         },
         error: (err) => {
           console.error('Error loading episode details', err);
@@ -169,6 +176,32 @@ export class TvEpisodeDetailComponent implements OnInit {
         },
         error: (error) => {
           this.userInteraction = null;
+        },
+      });
+  }
+
+  loadEpisodeRatings(): void {
+    if (!this.seriesId || !this.seasonNumber || !this.episodeNumber) {
+      return;
+    }
+
+    this.loadingRatings = true;
+    this.userMediaInteractionsService
+      .getMediaRatings(
+        this.seriesId,
+        'tv',
+        this.seasonNumber,
+        this.episodeNumber
+      )
+      .subscribe({
+        next: (ratings) => {
+          this.episodeRatings = ratings;
+          this.loadingRatings = false;
+        },
+        error: (error) => {
+          console.error('Error loading episode ratings:', error);
+          this.episodeRatings = [];
+          this.loadingRatings = false;
         },
       });
   }
