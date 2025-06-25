@@ -107,38 +107,6 @@
   z-index: 1;
 }
 
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #8b949e;
-  margin-bottom: 2rem;
-}
-
-.breadcrumb-link {
-  background: none;
-  border: none;
-  color: #58a6ff;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 14px;
-  transition: color 0.2s ease;
-}
-
-.breadcrumb-link:hover {
-  color: #79c0ff;
-}
-
-.breadcrumb-separator {
-  color: #8b949e;
-}
-
-.breadcrumb-current {
-  color: #f0f6fc;
-  font-weight: 500;
-}
-
 .season-info-container {
   display: flex;
   gap: 3rem;

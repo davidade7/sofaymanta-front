@@ -30,15 +30,6 @@
     </div>
 
     <div class="season-header">
-      <!-- Navigation breadcrumb -->
-      <nav class="breadcrumb">
-        <button (click)="navigateToSeries()" class="breadcrumb-link">
-          Serie
-        </button>
-        <span class="breadcrumb-separator">></span>
-        <span class="breadcrumb-current">{{ seasonDetail?.name }}</span>
-      </nav>
-
       <div class="season-info-container">
         <img
           [src]="getImageUrl(seasonDetail?.poster_path)"
