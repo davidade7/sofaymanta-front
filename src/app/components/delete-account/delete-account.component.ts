@@ -2,7 +2,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserProfileService } from '../../services/userProfile.service';
 import { AuthService } from '../../services/auth.service';
-import { LucideAngularModule, Loader2, Trash2 } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  Loader2,
+  Trash2,
+  TriangleAlert,
+} from 'lucide-angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -19,6 +24,7 @@ export class DeleteAccountComponent {
 
   Loader2 = Loader2;
   Trash2 = Trash2;
+  TriangleAlert = TriangleAlert;
 
   confirmationText = '';
   isDeleting = false;

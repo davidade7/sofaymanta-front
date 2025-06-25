@@ -1,7 +1,7 @@
 <div class="delete-account-container">
   <div class="delete-account-card">
     <div class="warning-header">
-      <lucide-icon name="alert-triangle" class="warning-icon"></lucide-icon>
+      <lucide-icon [img]="TriangleAlert" class="warning-icon"></lucide-icon>
       <h2>Eliminar cuenta definitivamente</h2>
     </div>
 
@@ -49,10 +49,10 @@
       >
         <lucide-icon
           *ngIf="isDeleting"
-          name="loader-2"
+          [img]="Loader2"
           class="spinner"
         ></lucide-icon>
-        <lucide-icon *ngIf="!isDeleting" name="trash-2"></lucide-icon>
+        <lucide-icon *ngIf="!isDeleting" [img]="Trash2"></lucide-icon>
         {{ isDeleting ? "Eliminando..." : "Eliminar definitivamente" }}
       </button>
     </div>
