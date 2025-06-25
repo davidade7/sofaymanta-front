@@ -1,6 +1,6 @@
 .person-card {
-  width: 200px;
-  min-width: 200px;
+  width: 220px;
+  min-width: 220px;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
@@ -102,8 +102,8 @@
 /* Ajout de media queries pour la responsive comme dans movie-card */
 @media (max-width: 768px) {
   .person-card {
-    width: 175px;
-    min-width: 175px;
+    width: 200px;
+    min-width: 200px;
   }
 
   .card-content {
@@ -126,8 +126,8 @@
 
 @media (max-width: 480px) {
   .person-card {
-    width: 150px;
-    min-width: 150px;
+    width: 165px;
+    min-width: 165px;
   }
 
   .title {

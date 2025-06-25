@@ -2,6 +2,8 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  color: #e6edf3;
+  min-height: 100vh;
 }
 
 .search-header {
@@ -12,10 +14,11 @@
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 5px;
+  color: #f0f6fc;
 }
 
 .result-count {
-  color: #666;
+  color: #8b949e;
   font-size: 14px;
 }
 
@@ -27,20 +30,27 @@
 
 .filters button {
   padding: 8px 16px;
-  border: 1px solid #ddd;
-  background: white;
+  border: 1px solid #30363d;
+  background: rgba(21, 30, 47, 0.8);
+  color: #c9d1d9;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 5px;
+  backdrop-filter: blur(10px);
+}
+
+.filters button:hover {
+  background: rgba(21, 30, 47, 1);
+  border-color: #58a6ff;
 }
 
 .filters button.active {
-  background-color: #0f172a;
-  color: white;
-  border-color: #0f172a;
+  background-color: #58a6ff;
+  color: #ffffff;
+  border-color: #58a6ff;
 }
 
 .filters .count {
@@ -53,34 +63,15 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
   margin-bottom: 30px;
 }
 
-/* Ajuster la largeur des cards pour qu'elles prennent toute la largeur disponible */
+/* Ajuster la largeur des cards */
 .search-results-grid app-movie-card,
 .search-results-grid app-serie-card,
 .search-results-grid app-person-card {
-  width: 200px;
-  margin-bottom: 10px;
-}
-
-:host {
-  display: block;
-  width: 100%;
-}
-
-/* Modification pour que les cartes prennent toute la largeur disponible */
-.movie-card, .serie-card {
-  width: 100%;
-  min-width: auto;
-  height: 100%;
-}
-
-.poster-container {
-  width: 100%;
-  height: 0;
-  padding-top: 150%; /* Ratio 2:3 pour les posters */
+  width: 220px;
 }
 
 /* Messages d'état */
@@ -89,7 +80,7 @@
 .no-results {
   text-align: center;
   padding: 40px 0;
-  color: #666;
+  color: #8b949e;
 }
 
 .loading-spinner {
@@ -97,6 +88,19 @@
   justify-content: center;
   align-items: center;
   min-height: 200px;
+  color: #58a6ff;
+}
+
+.error-message {
+  color: #ff7b72;
+}
+
+.no-results {
+  background: rgba(21, 30, 47, 0.5);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 20px 0;
 }
 
 /* Pagination */
@@ -110,11 +114,13 @@
 
 .pagination-button {
   padding: 8px 16px;
-  border: 1px solid #ddd;
-  background: white;
+  border: 1px solid #30363d;
+  background: rgba(21, 30, 47, 0.8);
+  color: #c9d1d9;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
 }
 
 .pagination-button:disabled {
@@ -123,19 +129,24 @@
 }
 
 .pagination-button:not(:disabled):hover {
-  background-color: #f5f5f5;
+  background-color: rgba(21, 30, 47, 1);
+  border-color: #58a6ff;
 }
 
 .page-info {
-  color: #666;
+  color: #8b949e;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
+  .search-results-grid {
+    gap: 20px;
+  }
+
   .search-results-grid app-movie-card,
   .search-results-grid app-serie-card,
   .search-results-grid app-person-card {
-    width: 185px;
+    width: 200px;
   }
 
   .search-header h1 {
@@ -144,19 +155,23 @@
 }
 
 @media (max-width: 480px) {
+  .search-results-grid {
+    gap: 15px;
+  }
+
   .search-results-grid app-movie-card,
   .search-results-grid app-serie-card,
   .search-results-grid app-person-card {
-    width: 170px;
+    width: 165px;
+  }
+
+  .search-header h1 {
+    font-size: 18px;
   }
 
   .filters {
     overflow-x: auto;
     padding-bottom: 5px;
     margin-bottom: 15px;
-  }
-
-  .search-header h1 {
-    font-size: 18px;
   }
 }
