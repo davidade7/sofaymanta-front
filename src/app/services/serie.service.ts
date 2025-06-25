@@ -21,12 +21,12 @@ export interface TvShow {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SerieService {
   private apiUrl = 'https://sofaymanta-back-production.up.railway.app';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getRecentTvShows(): Observable<SerieCard[]> {
     return this.http.get<SerieCard[]>(`${this.apiUrl}/media/tv/recent`);
@@ -40,11 +40,35 @@ export class SerieService {
     return this.http.get(`${this.apiUrl}/media/tv/detail/${id}?lang=${lang}`);
   }
 
-  getTvShowSeasonDetail(id: string, season: number, lang: string = 'es-ES'): Observable<any> {
-    return this.http.get(`${this.apiUrl}/media/tv/${id}/season/${season}?lang=${lang}`);
+  getTvShowSeasonDetail(
+    id: string,
+    season: number,
+    lang: string = 'es-ES'
+  ): Observable<any> {
+    return this.http.get(
+      `${this.apiUrl}/media/tv/${id}/season/${season}?lang=${lang}`
+    );
   }
 
-  getTvShowEpisodeDetail(id: string, season: number, episode: number, lang: string = 'es-ES'): Observable<any> {
-    return this.http.get(`${this.apiUrl}/media/tv/${id}/season/${season}/episode/${episode}?lang=${lang}`);
+  getTvShowEpisodeDetail(
+    id: string,
+    season: number,
+    episode: number,
+    lang: string = 'es-ES'
+  ): Observable<any> {
+    return this.http.get(
+      `${this.apiUrl}/media/tv/${id}/season/${season}/episode/${episode}?lang=${lang}`
+    );
+  }
+
+  getTvShowEpisodesCredits(
+    id: string,
+    season: number,
+    episode: number,
+    lang: string = 'es-ES'
+  ): Observable<any> {
+    return this.http.get(
+      `${this.apiUrl}/media/tv/${id}/season/${season}/episode/${episode}/credits?lang=${lang}`
+    );
   }
 }
