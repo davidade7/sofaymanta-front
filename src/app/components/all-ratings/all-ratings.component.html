@@ -1,0 +1,60 @@
+<div class="ratings-section">
+  <h3>⭐ Gestión de Evaluaciones</h3>
+  <div *ngIf="loadingRatings" class="loading">
+    <p>Cargando evaluaciones...</p>
+  </div>
+  <div *ngIf="!loadingRatings" class="ratings-list">
+    <div class="ratings-header">
+      <h4>Evaluaciones Totales ({{ ratings.length }})</h4>
+    </div>
+    <div *ngIf="ratings.length === 0" class="no-ratings">
+      <p>No hay evaluaciones.</p>
+    </div>
+    <div *ngFor="let rating of ratings" class="rating-item">
+      <div class="rating-info">
+        <div class="rating-user">
+          <span class="user-avatar">
+            {{
+              rating.username ? rating.username.charAt(0).toUpperCase() : "?"
+            }}
+          </span>
+          <span class="username">{{
+            rating.username || "Usuario desconocido"
+          }}</span>
+        </div>
+        <div class="rating-media">
+          <img
+            *ngIf="rating.media_poster"
+            [src]="'https://image.tmdb.org/t/p/w92' + rating.media_poster"
+            [alt]="rating.media_title"
+            class="media-poster"
+          />
+          <span class="media-title">
+            {{
+              rating.media_title || rating.media_type + " #" + rating.media_id
+            }}
+          </span>
+        </div>
+        <div class="rating-details">
+          <span class="rating-score">⭐ {{ rating.rating }}</span>
+          <span class="rating-date">{{
+            rating.createdAt | date : "dd/MM/yyyy HH:mm"
+          }}</span>
+          <span *ngIf="rating.comment" class="rating-comment">
+            "{{ rating.comment }}"
+          </span>
+        </div>
+      </div>
+      <div class="rating-actions">
+        <button
+          (click)="deleteRating(rating.id, rating.user_id)"
+          class="btn-delete-rating"
+          title="Eliminar evaluación"
+        >
+          <lucide-icon [img]="Trash2"></lucide-icon>
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

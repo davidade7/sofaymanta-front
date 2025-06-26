@@ -14,11 +14,17 @@ import {
   X,
   Power,
 } from 'lucide-angular';
+import { AllRatingsComponent } from '../components/all-ratings/all-ratings.component';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideAngularModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    LucideAngularModule,
+    AllRatingsComponent,
+  ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
 })
