@@ -81,7 +81,6 @@ export class AdminComponent implements OnInit {
         await this.authService.getUserWithMetadata();
 
       if (authError || !authData?.data?.user) {
-        console.error('Error al cargar el usuario:', authError);
         return;
       }
 
