@@ -153,16 +153,64 @@
 }
 
 @media (max-width: 768px) {
+  .ratings-section {
+    padding: 15px;
+  }
   .rating-item {
     flex-direction: column;
-    gap: 15px;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 18px;
+    padding: 15px 8px;
   }
   .rating-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
     width: 100%;
+  }
+  .rating-user {
+    gap: 6px;
+  }
+  .media-poster {
+    width: 48px;
+    height: 72px;
+    margin-bottom: 8px;
+  }
+  .media-title {
+    font-size: 0.95rem;
+    word-break: break-word;
+  }
+  .rating-details {
+    font-size: 0.92rem;
+    gap: 1px;
   }
   .rating-actions {
     width: 100%;
     justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .btn-delete-rating {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 0;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ratings-section {
+    padding: 8px;
+  }
+  .rating-item {
+    padding: 10px 2px;
+    gap: 12px;
+  }
+  .media-poster {
+    display: none;
+  }
+  .btn-delete-rating {
+    font-size: 0.95rem;
+    padding: 8px 0;
   }
 }
