@@ -185,13 +185,6 @@ export class UserMediaInteractionsService {
   }
 
   /**
-   * Récupère le nombre total d'évaluations
-   */
-  getRatingsCount(): Observable<{ count: number }> {
-    return this.http.get<{ count: number }>(`${this.apiUrl}/ratings/count`);
-  }
-
-  /**
    * Supprime une interaction
    * @param interactionId L'ID de l'interaction
    * @param userId L'ID de l'utilisateur (pour vérification)
@@ -203,5 +196,24 @@ export class UserMediaInteractionsService {
     return this.http.delete<{ message: string }>(
       `${this.apiUrl}/${interactionId}/user/${userId}`
     );
+  }
+
+  /**
+   * Récupère toutes les évaluations (tous utilisateurs, toutes œuvres)
+   */
+  getAllRatings(): Observable<
+    (UserMediaInteraction & {
+      username?: string;
+      media_title?: string;
+      media_poster?: string;
+    })[]
+  > {
+    return this.http.get<
+      (UserMediaInteraction & {
+        username?: string;
+        media_title?: string;
+        media_poster?: string;
+      })[]
+    >(`${this.apiUrl}/all/ratings`);
   }
 }
