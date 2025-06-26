@@ -70,24 +70,24 @@ export class ProfileComponent implements OnInit {
   ExternalLink = ExternalLink;
   Trash2 = Trash2;
 
-  // Stockage temporaire de l'ID utilisateur
+  // Almacenamiento temporal del ID de usuario
   userId: string = '';
 
-  // Genres disponibles (récupérés du GenreService)
+  // Géneros disponibles (obtenidos del GenreService)
   availableMovieGenres: any[] = [];
   availableTvGenres: any[] = [];
 
-  // Évaluations de l'utilisateur
+  // Evaluaciones del usuario
   userInteractions: UserMediaInteraction[] = [];
 
-  // Plateformes disponibles (récupérées du service)
+  // Plataformas disponibles (obtenidas del servicio)
   availablePlatforms: StreamingPlatform[] = [];
 
   showDeleteModal = false;
   interactionToDelete: UserMediaInteraction | null = null;
   isDeletingInteraction = false;
 
-  // Pagination pour les évaluations
+  // Paginación para las evaluaciones
   showAllInteractions = false;
   readonly INTERACTIONS_LIMIT = 5;
 
@@ -115,7 +115,7 @@ export class ProfileComponent implements OnInit {
   }
 
   loadGenres() {
-    // Charger tous les genres disponibles depuis le GenreService
+    // Cargar todos los géneros disponibles desde GenreService
     const movieGenreIds = [
       28, 12, 16, 35, 80, 99, 18, 10751, 14, 36, 27, 10402, 9648, 10749, 878,
       10770, 53, 10752, 37,
@@ -143,7 +143,7 @@ export class ProfileComponent implements OnInit {
           this.availablePlatforms = platforms;
         },
         error: (error) => {
-          console.error('Erreur lors du chargement des plateformes:', error);
+          console.error('Error al cargar las plataformas:', error);
         },
       });
   }
@@ -159,7 +159,7 @@ export class ProfileComponent implements OnInit {
       }
 
       if (!data.user) {
-        throw new Error('Utilisateur non connecté');
+        throw new Error('Usuario no conectado');
       }
 
       this.userId = data.user.id;
@@ -173,22 +173,19 @@ export class ProfileComponent implements OnInit {
             this.profileForm.patchValue({
               username: profile.username,
             });
-            // Charger les interactions après avoir chargé le profil
+            // Cargar las interacciones después de cargar el perfil
             this.loadUserInteractions();
           },
           error: (error) => {
-            console.log('Aucun profil trouvé ou erreur:', error);
+            console.log('No se encontró perfil o error:', error);
             this.isLoading = false;
           },
         });
     } catch (error) {
-      console.error(
-        "Erreur lors de la récupération de l'ID utilisateur:",
-        error
-      );
+      console.error('Error al obtener el ID de usuario:', error);
       this.isLoading = false;
       this.profileUpdateError =
-        'Impossible de charger les données utilisateur. Veuillez vous connecter.';
+        'No se pueden cargar los datos del usuario. Por favor, inicia sesión.';
       this.router.navigate(['/signin']);
     }
   }
@@ -208,7 +205,7 @@ export class ProfileComponent implements OnInit {
           );
         },
         error: (error) => {
-          console.error('Erreur lors du chargement des interactions:', error);
+          console.error('Error al cargar las interacciones:', error);
         },
       });
   }
@@ -241,9 +238,8 @@ export class ProfileComponent implements OnInit {
           this.profileUpdateSuccess = true;
         },
         error: (error) => {
-          console.error('Erreur lors de la création du profil:', error);
-          this.profileUpdateError =
-            error.message || 'Erreur lors de la création du profil';
+          console.error('Error al crear el perfil:', error);
+          this.profileUpdateError = error.message || 'Error al crear el perfil';
         },
       });
   }
@@ -251,7 +247,7 @@ export class ProfileComponent implements OnInit {
   updateProfile(profileData: any) {
     if (!this.userProfile?.id) {
       this.profileUpdateError =
-        'Impossible de mettre à jour le profil: ID introuvable';
+        'No se puede actualizar el perfil: ID no encontrado';
       return;
     }
 
@@ -270,17 +266,17 @@ export class ProfileComponent implements OnInit {
         next: (profile) => {
           this.userProfile = profile;
           this.profileUpdateSuccess = true;
-          console.log('Profil mis à jour avec succès:', profile);
+          console.log('Perfil actualizado con éxito:', profile);
         },
         error: (error) => {
-          console.error('Erreur lors de la mise à jour du profil:', error);
+          console.error('Error al actualizar el perfil:', error);
           this.profileUpdateError =
-            error.message || 'Erreur lors de la mise à jour du profil';
+            error.message || 'Error al actualizar el perfil';
         },
       });
   }
 
-  // === Méthodes pour les genres favoris ===
+  // === Métodos para géneros favoritos ===
 
   addFavoriteGenre(genreId: number, mediaType: 'movie' | 'tv') {
     if (!this.userProfile?.id) return;
@@ -292,7 +288,7 @@ export class ProfileComponent implements OnInit {
           this.loadUserProfile();
         },
         error: (error) => {
-          console.error("Erreur lors de l'ajout du genre:", error);
+          console.error('Error al agregar el género:', error);
         },
       });
   }
@@ -307,7 +303,7 @@ export class ProfileComponent implements OnInit {
           this.loadUserProfile();
         },
         error: (error) => {
-          console.error('Erreur lors de la suppression du genre:', error);
+          console.error('Error al eliminar el género:', error);
         },
       });
   }
@@ -320,13 +316,13 @@ export class ProfileComponent implements OnInit {
     return this.userProfile?.favorite_tv_genres?.includes(genreId) || false;
   }
 
-  // Utiliser le GenreService pour obtenir le nom d'un genre
+  // Usar GenreService para obtener el nombre de un género
   getGenreName(genreId: number, mediaType: 'movie' | 'tv'): string {
     return this.genreService.getGenreObject(genreId, mediaType === 'movie')
       .name;
   }
 
-  // Obtenir les objets genres complets pour l'affichage des favoris
+  // Obtener los objetos de géneros completos para mostrar favoritos
   getFavoriteMovieGenres(): any[] {
     if (!this.userProfile?.favorite_movie_genres) return [];
     return this.genreService.getGenresFromIds(
@@ -343,7 +339,7 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  // === Méthodes pour les plateformes de streaming ===
+  // === Métodos para plataformas de streaming ===
   addStreamingPlatform(platformCode: string) {
     if (!this.userProfile?.id) return;
 
@@ -354,7 +350,7 @@ export class ProfileComponent implements OnInit {
           this.loadUserProfile();
         },
         error: (error) => {
-          console.error("Erreur lors de l'ajout de la plateforme:", error);
+          console.error('Error al agregar la plataforma:', error);
         },
       });
   }
@@ -369,10 +365,7 @@ export class ProfileComponent implements OnInit {
           this.loadUserProfile();
         },
         error: (error) => {
-          console.error(
-            'Erreur lors de la suppression de la plateforme:',
-            error
-          );
+          console.error('Error al eliminar la plataforma:', error);
         },
       });
   }
@@ -383,7 +376,7 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  // Obtenir les plateformes sélectionnées pour l'affichage
+  // Obtener las plataformas seleccionadas para mostrar
   getSelectedPlatforms(): StreamingPlatform[] {
     if (!this.userProfile?.streaming_platforms) return [];
     return this.availablePlatforms.filter((platform) =>
@@ -391,35 +384,35 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  // Obtenir le nom d'une plateforme par son code
+  // Obtener el nombre de una plataforma por su código
   getPlatformName(code: string): string {
     const platform = this.availablePlatforms.find((p) => p.code === code);
     return platform ? platform.name : code;
   }
 
-  // === Méthodes pour les interactions utilisateur ===
+  // === Métodos para interacciones de usuario ===
 
-  // Obtenir le lien vers le détail du média
+  // Obtener el enlace al detalle del medio
   getMediaDetailLink(interaction: UserMediaInteraction): string {
     if (interaction.media_type === 'movie') {
       return `/movie/detail/${interaction.media_id}`;
     } else if (interaction.media_type === 'tv') {
-      // Si c'est un épisode (avec season/episode)
+      // Si es un episodio (con season/episode)
       if (interaction.season_number && interaction.episode_number) {
         return `/tv/${interaction.media_id}/season/${interaction.season_number}/episode/${interaction.episode_number}`;
       }
-      // Sinon c'est une série
+      // Si no, es una serie
       return `/serie/detail/${interaction.media_id}`;
     }
     return `/`;
   }
 
-  // Obtenir le nom du type de média pour l'affichage
+  // Obtener el nombre del tipo de medio para mostrar
   getMediaTypeName(interaction: UserMediaInteraction): string {
     if (interaction.media_type === 'movie') {
       return 'Película';
     } else if (interaction.media_type === 'tv') {
-      // Si c'est une série avec season/episode, c'est un épisode
+      // Si es una serie con season/episode, es un episodio
       if (interaction.season_number && interaction.episode_number) {
         return 'Episodio';
       }
@@ -428,7 +421,7 @@ export class ProfileComponent implements OnInit {
     return 'Desconocido';
   }
 
-  // Filtrer les interactions par type
+  // Filtrar interacciones por tipo
   getMovieInteractions(): UserMediaInteraction[] {
     return this.userInteractions.filter(
       (interaction) => interaction.media_type === 'movie'
@@ -452,7 +445,7 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  // Obtenir les interactions avec rating seulement
+  // Obtener solo las interacciones con rating
   getRatedInteractions(): UserMediaInteraction[] {
     return this.userInteractions.filter(
       (interaction) =>
@@ -460,14 +453,14 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  // Obtenir les interactions avec commentaire seulement
+  // Obtener solo las interacciones con comentario
   getCommentedInteractions(): UserMediaInteraction[] {
     return this.userInteractions.filter(
       (interaction) => interaction.comment && interaction.comment.trim() !== ''
     );
   }
 
-  // Méthode pour formater l'affichage des épisodes
+  // Método para formatear la visualización de episodios
   getEpisodeDisplayTitle(interaction: UserMediaInteraction): string {
     if (
       interaction.media_type === 'tv' &&
@@ -479,7 +472,7 @@ export class ProfileComponent implements OnInit {
     return '';
   }
 
-  // Vérifier si c'est un épisode
+  // Verificar si es un episodio
   isEpisodeInteraction(interaction: UserMediaInteraction): boolean {
     return (
       interaction.media_type === 'tv' &&
@@ -488,7 +481,7 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  // Supprimer une interaction
+  // Eliminar una interacción
   prepareDeleteInteraction(interaction: UserMediaInteraction) {
     this.interactionToDelete = interaction;
     this.showDeleteModal = true;
@@ -503,29 +496,29 @@ export class ProfileComponent implements OnInit {
       .deleteInteraction(this.interactionToDelete.id, this.userId)
       .subscribe({
         next: (response) => {
-          console.log('Interaction supprimée:', response);
-          // Retirer l'interaction de la liste locale
+          console.log('Interacción eliminada:', response);
+          // Quitar la interacción de la lista local
           this.userInteractions = this.userInteractions.filter(
             (i) => i.id !== this.interactionToDelete!.id
           );
           this.cancelDeleteInteraction();
         },
         error: (error) => {
-          console.error('Erreur lors de la suppression:', error);
+          console.error('Error al eliminar la evaluación:', error);
           this.isDeletingInteraction = false;
           alert('Error al eliminar la evaluación. Intenta de nuevo.');
         },
       });
   }
 
-  // Annuler la suppression
+  // Cancelar la eliminación
   cancelDeleteInteraction() {
     this.showDeleteModal = false;
     this.interactionToDelete = null;
     this.isDeletingInteraction = false;
   }
 
-  // Générer le message de confirmation
+  // Generar el mensaje de confirmación
   getDeleteMessage(): string {
     if (!this.interactionToDelete) return '';
 
@@ -535,10 +528,10 @@ export class ProfileComponent implements OnInit {
       this.interactionToDelete.season_number &&
       this.interactionToDelete.episode_number
     ) {
-      // C'est un épisode
+      // Es un episodio
       title = `episodio T${this.interactionToDelete.season_number}E${this.interactionToDelete.episode_number} de la serie (ID: ${this.interactionToDelete.media_id})`;
     } else {
-      // C'est un film ou une série
+      // Es una película o serie
       const mediaTypeName = this.getMediaTypeName(this.interactionToDelete);
       title = `${mediaTypeName.toLowerCase()} (ID: ${
         this.interactionToDelete.media_id
@@ -548,7 +541,7 @@ export class ProfileComponent implements OnInit {
     return `¿Estás seguro de que quieres eliminar tu evaluación de este ${title}?`;
   }
 
-  // Méthodes pour la pagination des évaluations
+  // Métodos para la paginación de evaluaciones
   getDisplayedInteractions(): UserMediaInteraction[] {
     if (this.showAllInteractions) {
       return this.userInteractions;

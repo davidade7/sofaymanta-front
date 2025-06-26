@@ -42,14 +42,14 @@ export class AdminComponent implements OnInit {
   };
   selectedPlatform: any = null;
 
-  // Statistiques
+  // Estadísticas
   totalUsers = 0;
   totalRatings = 0;
   loadingStats = false;
   loadingUsers = false;
   loadingRatings = false;
 
-  // Icônes Lucide
+  // Iconos Lucide
   Pencil = Pencil;
   Trash2 = Trash2;
   Plus = Plus;
@@ -73,23 +73,23 @@ export class AdminComponent implements OnInit {
         await this.authService.getUserWithMetadata();
 
       if (authError || !authData?.data?.user) {
-        console.error('Error loading user:', authError);
+        console.error('Error al cargar el usuario:', authError);
         return;
       }
 
       const userId = authData.data.user.id;
 
-      // Fetch the user profile using the UserProfileService
+      // Obtener el perfil del usuario usando UserProfileService
       this.userProfileService.getUserProfile(userId).subscribe(
         (profile) => {
           this.currentUser = profile;
         },
         (error) => {
-          console.error('Error loading user profile:', error);
+          console.error('Error al cargar el perfil del usuario:', error);
         }
       );
     } catch (error) {
-      console.error('Error loading user:', error);
+      console.error('Error al cargar el usuario:', error);
     } finally {
       this.isLoading = false;
     }
@@ -98,17 +98,17 @@ export class AdminComponent implements OnInit {
   loadStatistics() {
     this.loadingStats = true;
 
-    // Charger tous les utilisateurs et compter leur nombre
+    // Cargar todos los usuarios y contar su número
     this.userProfileService.getAllUsers().subscribe(
       (users) => {
         this.totalUsers = users.length;
       },
       (error) => {
-        console.error('Error loading users:', error);
+        console.error('Error al cargar los usuarios:', error);
       }
     );
 
-    // Charger le nombre d'évaluations via getAllRatings
+    // Cargar el número de evaluaciones vía getAllRatings
     this.loadingStats = true;
     this.userMediaInteractionsService.getAllRatings().subscribe(
       (ratings) => {
@@ -116,7 +116,7 @@ export class AdminComponent implements OnInit {
         this.loadingStats = false;
       },
       (error) => {
-        console.error('Error loading ratings:', error);
+        console.error('Error al cargar las evaluaciones:', error);
         this.loadingStats = false;
       }
     );
@@ -163,7 +163,7 @@ export class AdminComponent implements OnInit {
         this.loadingUsers = false;
       },
       (error) => {
-        console.error('Error loading users:', error);
+        console.error('Error al cargar los usuarios:', error);
         this.loadingUsers = false;
       }
     );
@@ -177,7 +177,7 @@ export class AdminComponent implements OnInit {
         this.loadingRatings = false;
       },
       (error) => {
-        console.error('Error loading ratings:', error);
+        console.error('Error al cargar las evaluaciones:', error);
         this.loadingRatings = false;
       }
     );
@@ -216,7 +216,7 @@ export class AdminComponent implements OnInit {
         this.streamingPlatforms = platforms;
       },
       (error) => {
-        console.error('Error loading streaming platforms:', error);
+        console.error('Error al cargar las plataformas de streaming:', error);
       }
     );
   }
@@ -231,11 +231,11 @@ export class AdminComponent implements OnInit {
           logo_url: '',
           website_url: '',
           is_active: true,
-        }; // Reset form
+        }; // Reiniciar formulario
         this.isCreating = false;
       },
       (error) => {
-        console.error('Error creating platform:', error);
+        console.error('Error al crear la plataforma:', error);
       }
     );
   }
@@ -254,7 +254,7 @@ export class AdminComponent implements OnInit {
             this.selectedPlatform = null;
           },
           (error) => {
-            console.error('Error updating platform:', error);
+            console.error('Error al actualizar la plataforma:', error);
           }
         );
     }
@@ -269,7 +269,10 @@ export class AdminComponent implements OnInit {
           this.loadStreamingPlatforms();
         },
         (error) => {
-          console.error('Error updating platform status:', error);
+          console.error(
+            'Error al actualizar el estado de la plataforma:',
+            error
+          );
         }
       );
   }
@@ -279,33 +282,30 @@ export class AdminComponent implements OnInit {
   }
 
   deletePlatform(id: string) {
-    if (confirm('Are you sure you want to delete this platform?')) {
+    if (confirm('¿Estás seguro de que quieres eliminar esta plataforma?')) {
       this.streamingPlatformService.remove(id).subscribe(
         () => {
           this.loadStreamingPlatforms();
         },
         (error) => {
-          console.error('Error deleting platform:', error);
+          console.error('Error al eliminar la plataforma:', error);
         }
       );
     }
   }
 
   deleteRating(ratingId: string, userId: string) {
-    if (confirm('Voulez-vous vraiment supprimer cette évaluation ?')) {
+    if (confirm('¿Estás seguro de que quieres eliminar esta evaluación?')) {
       this.userMediaInteractionsService
         .deleteInteraction(ratingId, userId)
         .subscribe(
           () => {
             this.loadRatings();
-            this.loadStatistics(); // Met à jour le compteur
+            this.loadStatistics(); // Actualizar el contador
           },
           (error) => {
-            console.error(
-              "Erreur lors de la suppression de l'évaluation :",
-              error
-            );
-            alert("Erreur lors de la suppression de l'évaluation");
+            console.error('Error al eliminar la evaluación:', error);
+            alert('Error al eliminar la evaluación');
           }
         );
     }
