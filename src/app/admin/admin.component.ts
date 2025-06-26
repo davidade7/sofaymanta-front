@@ -15,6 +15,7 @@ import {
   Power,
 } from 'lucide-angular';
 import { AllRatingsComponent } from '../components/all-ratings/all-ratings.component';
+import { AllUsersComponent } from '../components/all-users/all-users.component';
 
 @Component({
   selector: 'app-admin',
@@ -24,6 +25,7 @@ import { AllRatingsComponent } from '../components/all-ratings/all-ratings.compo
     FormsModule,
     LucideAngularModule,
     AllRatingsComponent,
+    AllUsersComponent,
   ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
