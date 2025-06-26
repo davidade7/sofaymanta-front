@@ -27,7 +27,9 @@ export class AdminComponent implements OnInit {
   currentUser: any = null;
   showStreamingPlatforms = false;
   showStatistics = false;
+  showUsers = false;
   streamingPlatforms: any[] = [];
+  users: any[] = [];
   isCreating = false;
   newPlatform: any = {
     code: '',
@@ -42,6 +44,7 @@ export class AdminComponent implements OnInit {
   totalUsers = 0;
   totalRatings = 0;
   loadingStats = false;
+  loadingUsers = false;
 
   // Icônes Lucide
   Pencil = Pencil;
@@ -131,6 +134,54 @@ export class AdminComponent implements OnInit {
       this.totalRatings === 0
     ) {
       this.loadStatistics();
+    }
+  }
+
+  toggleUsers() {
+    this.showUsers = !this.showUsers;
+    if (this.showUsers && this.users.length === 0) {
+      this.loadUsers();
+    }
+  }
+
+  loadUsers() {
+    this.loadingUsers = true;
+    this.userProfileService.getAllUsers().subscribe(
+      (users) => {
+        this.users = users;
+        this.loadingUsers = false;
+      },
+      (error) => {
+        console.error('Error loading users:', error);
+        this.loadingUsers = false;
+      }
+    );
+  }
+
+  deleteUser(userId: string) {
+    if (
+      confirm(
+        '¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.'
+      )
+    ) {
+      this.userProfileService.deleteUserAccount(userId).subscribe(
+        (response) => {
+          if (response.success) {
+            console.log('Usuario eliminado exitosamente');
+            this.loadUsers(); // Recargar la lista
+          } else {
+            console.error('Error eliminando usuario:', response.error);
+            alert(
+              'Error al eliminar el usuario: ' +
+                (response.message || 'Error desconocido')
+            );
+          }
+        },
+        (error) => {
+          console.error('Error eliminando usuario:', error);
+          alert('Error al eliminar el usuario');
+        }
+      );
     }
   }
 

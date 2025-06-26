@@ -15,9 +15,8 @@
         <button class="action-btn" (click)="toggleStreamingPlatforms()">
           🎞️ Gestionar Plataformas
         </button>
-        <button class="action-btn" disabled>
+        <button class="action-btn" (click)="toggleUsers()">
           👥 Gestionar Usuarios
-          <small>Próximamente</small>
         </button>
         <button class="action-btn" disabled>
           ⭐ Ver Evaluaciones
@@ -52,6 +51,55 @@
               {{ totalRatings | number }}
             </p>
             <p class="stat-loading" *ngIf="loadingStats">Cargando...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Gestión de Usuarios -->
+    <div *ngIf="showUsers" class="users-section">
+      <h3>👥 Gestión de Usuarios</h3>
+
+      <div *ngIf="loadingUsers" class="loading">
+        <p>Cargando usuarios...</p>
+      </div>
+
+      <div *ngIf="!loadingUsers" class="users-list">
+        <div class="users-header">
+          <h4>Usuarios Registrados ({{ users.length }})</h4>
+        </div>
+
+        <div *ngIf="users.length === 0" class="no-users">
+          <p>No hay usuarios registrados.</p>
+        </div>
+
+        <div *ngFor="let user of users" class="user-item">
+          <div class="user-info">
+            <div class="user-avatar">👤</div>
+            <div class="user-details">
+              <h5>{{ user.username || "Sin nombre de usuario" }}</h5>
+              <p class="user-email">{{ user.email }}</p>
+              <p class="user-date">
+                <strong>Registrado:</strong>
+                {{ user.created_at | date : "dd/MM/yyyy HH:mm" }}
+              </p>
+              <span class="user-role" [class.admin]="user.role === 'admin'">
+                {{ user.role === "admin" ? "👑 Admin" : "👤 Usuario" }}
+              </span>
+            </div>
+          </div>
+          <div class="user-actions" *ngIf="user.role !== 'admin'">
+            <button
+              (click)="deleteUser(user.id)"
+              class="btn-delete-user"
+              title="Eliminar usuario"
+            >
+              <lucide-icon [img]="Trash2"></lucide-icon>
+              Eliminar
+            </button>
+          </div>
+          <div class="user-actions" *ngIf="user.role === 'admin'">
+            <span class="admin-protection">Protegido</span>
           </div>
         </div>
       </div>
