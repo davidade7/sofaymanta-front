@@ -131,10 +131,10 @@ export class UserProfileService {
   }
 
   /**
-   * Récupère le nombre total d'utilisateurs
+   * Récupère tous les utilisateurs
    */
-  getUserCount(): Observable<{ count: number }> {
-    return this.http.get<{ count: number }>(`${this.apiUrl}/count`);
+  getAllUsers(): Observable<UserProfile[]> {
+    return this.http.get<UserProfile[]>(`${this.apiUrl}/all-users`);
   }
 
   /**

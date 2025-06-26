@@ -92,13 +92,13 @@ export class AdminComponent implements OnInit {
   loadStatistics() {
     this.loadingStats = true;
 
-    // Charger le nombre d'utilisateurs
-    this.userProfileService.getUserCount().subscribe(
-      (response) => {
-        this.totalUsers = response.count;
+    // Charger tous les utilisateurs et compter leur nombre
+    this.userProfileService.getAllUsers().subscribe(
+      (users) => {
+        this.totalUsers = users.length;
       },
       (error) => {
-        console.error('Error loading user count:', error);
+        console.error('Error loading users:', error);
       }
     );
 
