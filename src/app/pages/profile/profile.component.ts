@@ -99,7 +99,7 @@ export class ProfileComponent implements OnInit {
     private streamingPlatformService: StreamingPlatformService,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initForm();
@@ -285,7 +285,17 @@ export class ProfileComponent implements OnInit {
       .addFavoriteGenre(this.userProfile.id, genreId, mediaType)
       .subscribe({
         next: () => {
-          this.loadUserProfile();
+          if (mediaType === 'movie') {
+            this.userProfile!.favorite_movie_genres = [
+              ...(this.userProfile!.favorite_movie_genres || []),
+              genreId
+            ];
+          } else {
+            this.userProfile!.favorite_tv_genres = [
+              ...(this.userProfile!.favorite_tv_genres || []),
+              genreId
+            ];
+          }
         },
         error: (error) => {
           console.error('Error al agregar el género:', error);
@@ -300,7 +310,11 @@ export class ProfileComponent implements OnInit {
       .removeFavoriteGenre(this.userProfile.id, genreId, mediaType)
       .subscribe({
         next: () => {
-          this.loadUserProfile();
+          if (mediaType === 'movie') {
+            this.userProfile!.favorite_movie_genres = (this.userProfile!.favorite_movie_genres || []).filter(id => id !== genreId);
+          } else {
+            this.userProfile!.favorite_tv_genres = (this.userProfile!.favorite_tv_genres || []).filter(id => id !== genreId);
+          }
         },
         error: (error) => {
           console.error('Error al eliminar el género:', error);
@@ -533,9 +547,8 @@ export class ProfileComponent implements OnInit {
     } else {
       // Es una película o serie
       const mediaTypeName = this.getMediaTypeName(this.interactionToDelete);
-      title = `${mediaTypeName.toLowerCase()} (ID: ${
-        this.interactionToDelete.media_id
-      })`;
+      title = `${mediaTypeName.toLowerCase()} (ID: ${this.interactionToDelete.media_id
+        })`;
     }
 
     return `¿Estás seguro de que quieres eliminar tu evaluación de este ${title}?`;
