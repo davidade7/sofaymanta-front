@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+// Importation de la fonction de traduction
+import { translateSupabaseError } from '../../services/supabase-error-messages';
 
 @Component({
   selector: 'app-signin',
@@ -43,13 +45,13 @@ export class SigninComponent {
       );
 
       if (error) {
-        this.errorMessage = error.message;
+        this.errorMessage = translateSupabaseError(error.message);
       } else {
         // Redirect after successful login
         this.router.navigate(['/dashboard']);
       }
     } catch (err: any) {
-      this.errorMessage = err.message || 'Ha ocurrido un error durante el inicio de sesión';
+      this.errorMessage = translateSupabaseError(err.message) || 'Ha ocurrido un error durante el inicio de sesión';
       console.log('Error en el inicio de sesión:', err);
     } finally {
       this.isLoading = false;

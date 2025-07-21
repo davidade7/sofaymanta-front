@@ -19,7 +19,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export class AuthService {
   public supabase: SupabaseClient = supabase;
 
-  constructor(private userProfileService: UserProfileService) {}
+  constructor(private userProfileService: UserProfileService) { }
 
   async signUp(email: string, password: string) {
     return await supabase.auth.signUp({ email, password });

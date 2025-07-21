@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { translateSupabaseError } from '../../services/supabase-error-messages';
 
 @Component({
   selector: 'app-signup',
@@ -52,7 +53,7 @@ export class SignupComponent {
       );
 
       if (error) {
-        this.errorMessage = error.message;
+        this.errorMessage = translateSupabaseError(error.message);
       } else {
         // Redirect to signin page with success message
         this.router.navigate(['/signin'], {
@@ -60,7 +61,7 @@ export class SignupComponent {
         });
       }
     } catch (err: any) {
-      this.errorMessage = err.message || 'Ha ocurrido un error durante el registro';
+      this.errorMessage = translateSupabaseError(err.message) || 'Ha ocurrido un error durante el registro';
       console.log('Error en el registro:', err);
     } finally {
       this.isLoading = false;
