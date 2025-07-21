@@ -108,6 +108,40 @@ button:disabled {
   text-decoration: underline;
 }
 
+/* Tooltip pour le champ mot de passe */
+.password-tooltip {
+  position: relative;
+  cursor: pointer;
+  margin-left: 6px;
+  display: inline-block;
+}
+
+.password-tooltip .tooltip-text {
+  visibility: hidden;
+  width: 320px;
+  background-color: #2563eb;
+  /* Bleu vif, différent du reste */
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px 12px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-size: 0.95em;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+.password-tooltip:hover .tooltip-text,
+.password-tooltip:focus .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
 @media (max-width: 480px) {
   .signup-container {
     padding: 1rem;

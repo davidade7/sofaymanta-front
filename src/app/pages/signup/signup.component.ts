@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { translateSupabaseError } from '../../services/supabase-error-messages';
+import { LucideAngularModule, Info } from 'lucide-angular';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule,],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
@@ -16,6 +17,7 @@ export class SignupComponent {
   signupForm: FormGroup;
   errorMessage: string | null = null;
   isLoading = false;
+  Info = Info;
 
   constructor(
     private formBuilder: FormBuilder,
