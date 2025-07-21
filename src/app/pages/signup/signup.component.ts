@@ -27,6 +27,11 @@ export class SignupComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
     }, { validators: this.checkPasswords });
+
+    // Reset error message when form value changes
+    this.signupForm.valueChanges.subscribe(() => {
+      this.errorMessage = null;
+    });
   }
 
   // Check if passwords match in form validation

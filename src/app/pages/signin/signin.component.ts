@@ -27,6 +27,11 @@ export class SigninComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+
+    // Reset error message when form value changes
+    this.signinForm.valueChanges.subscribe(() => {
+      this.errorMessage = null;
+    });
   }
 
   async onSubmit() {
