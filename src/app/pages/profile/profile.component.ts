@@ -361,7 +361,10 @@ export class ProfileComponent implements OnInit {
       .addStreamingPlatform(this.userProfile.id, platformCode)
       .subscribe({
         next: () => {
-          this.loadUserProfile();
+          this.userProfile!.streaming_platforms = [
+            ...(this.userProfile!.streaming_platforms || []),
+            platformCode
+          ];
         },
         error: (error) => {
           console.error('Error al agregar la plataforma:', error);
@@ -376,7 +379,7 @@ export class ProfileComponent implements OnInit {
       .removeStreamingPlatform(this.userProfile.id, platformCode)
       .subscribe({
         next: () => {
-          this.loadUserProfile();
+          this.userProfile!.streaming_platforms = (this.userProfile!.streaming_platforms || []).filter(code => code !== platformCode);
         },
         error: (error) => {
           console.error('Error al eliminar la plataforma:', error);
